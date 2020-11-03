@@ -1,5 +1,5 @@
 # Settings
-PhotoView aims to help produce an easily usable implementation of a zooming Android ImageView.
+Settings is an easy wrapper with type safety for SharedPreferences. By using it, you will no longer use Strings as keys
 
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3AInstrumentation-Test"><img src="https://github.com/Ch4rl3x/Settings/workflows/Instrumentation-Test/badge.svg" alt="Instrumentation-Test"></a>
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3ALint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Lint/badge.svg" alt="Lint"></a>
