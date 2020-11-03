@@ -21,5 +21,3 @@ interface Settings {
     fun _getSharedPreferences(): SharedPreferences?
     fun _getSharedPreferencesEditor(): SharedPreferences.Editor?
 }
-
-

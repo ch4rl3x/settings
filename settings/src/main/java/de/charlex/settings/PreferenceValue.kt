@@ -6,5 +6,4 @@ class PreferenceValue<T>(
 ) : IPreferenceValue<T> {
 
     override val preferenceKey: String = preferences.preferenceKey
-
 }

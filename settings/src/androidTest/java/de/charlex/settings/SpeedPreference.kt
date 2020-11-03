@@ -1,6 +1,5 @@
 package de.charlex.settings
 
-
 class SpeedPreference(override val preferenceKey: String) : IPreference<String> {
 
     val Slow: PreferenceValue<String> = PreferenceValue(this, "slow")
