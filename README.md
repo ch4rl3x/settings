@@ -34,11 +34,11 @@ dependencies {
 ```kotlin
 val settings = SettingsImpl(context)
 
-//Read
+//Write
 settings.putString(Preferences.PreferenceString, "my value")
 settings.putString(Preferences.PreferenceComplex.Slow)
 
-//Write
+//Read
 settings.getString(Preferences.PreferenceString)
 settings.getString(Preferences.PreferenceComplex)
 ```
