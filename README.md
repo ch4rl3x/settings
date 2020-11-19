@@ -5,6 +5,8 @@ Settings is an easy wrapper with type safety for SharedPreferences. By using it,
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3ALint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Lint/badge.svg" alt="Lint"></a>
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3AKtlint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Ktlint/badge.svg" alt="Ktlint"></a>
 
+<a href="https://www.codefactor.io/repository/github/ch4rl3x/settings"><img src="https://www.codefactor.io/repository/github/ch4rl3x/settings/badge" alt="CodeFactor" /></a>
+
 [![](https://jitpack.io/v/Ch4rl3x/Settings.svg)](https://jitpack.io/#Ch4rl3x/Settings)
 
 ## Dependency
