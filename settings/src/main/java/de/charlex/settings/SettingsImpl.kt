@@ -3,7 +3,7 @@ package de.charlex.settings
 import android.content.Context
 import android.content.SharedPreferences
 
-class SettingsImpl(
+internal class SettingsImpl(
     context: Context
 ) : Settings {
 

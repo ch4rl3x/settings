@@ -1,5 +1,6 @@
 package de.charlex.settings
 
+import android.content.Context
 import android.content.SharedPreferences
 
 interface Settings {
@@ -20,4 +21,8 @@ interface Settings {
     fun putLong(pref: IPreference<Long>, value: Long)
     fun _getSharedPreferences(): SharedPreferences?
     fun _getSharedPreferencesEditor(): SharedPreferences.Editor?
+
+    fun create(context: Context): Settings {
+        return SettingsImpl(context)
+    }
 }

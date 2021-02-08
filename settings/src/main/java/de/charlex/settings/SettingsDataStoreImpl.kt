@@ -12,8 +12,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-@Deprecated("Still WIP", level = DeprecationLevel.WARNING)
-class SettingsDataStoreImpl(
+internal class SettingsDataStoreImpl(
     override val dataStore: DataStore<Preferences>
 ) : SettingsDataStore {
 
@@ -33,27 +32,27 @@ class SettingsDataStoreImpl(
         scope = scope
     ))
 
-    override fun createStringFlow(pref: IPreference<String>): Flow<String> = dataStore.data
+    override fun getString(pref: IPreference<String>): Flow<String> = dataStore.data
         .map { currentPreferences ->
             currentPreferences[stringPreferencesKey(pref.preferenceKey)] ?: pref.defaultValue
         }
 
-    override fun createIntFlow(pref: IPreference<Int>): Flow<Int> = dataStore.data
+    override fun getInt(pref: IPreference<Int>): Flow<Int> = dataStore.data
         .map { currentPreferences ->
             currentPreferences[intPreferencesKey(pref.preferenceKey)] ?: pref.defaultValue
         }
 
-    override fun createFloatFlow(pref: IPreference<Float>): Flow<Float> = dataStore.data
+    override fun getFloat(pref: IPreference<Float>): Flow<Float> = dataStore.data
         .map { currentPreferences ->
             currentPreferences[floatPreferencesKey(pref.preferenceKey)] ?: pref.defaultValue
         }
 
-    override fun createBooleanFlow(pref: IPreference<Boolean>): Flow<Boolean> = dataStore.data
+    override fun getBoolean(pref: IPreference<Boolean>): Flow<Boolean> = dataStore.data
         .map { currentPreferences ->
             currentPreferences[booleanPreferencesKey(pref.preferenceKey)] ?: pref.defaultValue
         }
 
-    override fun createLongFlow(pref: IPreference<Long>): Flow<Long> = dataStore.data
+    override fun getLong(pref: IPreference<Long>): Flow<Long> = dataStore.data
         .map { currentPreferences ->
             currentPreferences[longPreferencesKey(pref.preferenceKey)] ?: pref.defaultValue
         }
