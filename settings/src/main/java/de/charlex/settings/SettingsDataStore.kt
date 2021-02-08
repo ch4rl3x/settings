@@ -26,7 +26,10 @@ interface SettingsDataStore {
     suspend fun putBoolean(pref: IPreference<Boolean>, value: Boolean)
     suspend fun putLong(pref: IPreference<Long>, value: Long)
 
-    fun create(context: Context): SettingsDataStore {
-        return SettingsDataStoreImpl(context)
+
+    companion object {
+        fun create(context: Context): SettingsDataStore {
+            return SettingsDataStoreImpl(context)
+        }
     }
 }

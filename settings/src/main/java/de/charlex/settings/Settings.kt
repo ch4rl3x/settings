@@ -22,7 +22,9 @@ interface Settings {
     fun _getSharedPreferences(): SharedPreferences?
     fun _getSharedPreferencesEditor(): SharedPreferences.Editor?
 
-    fun create(context: Context): Settings {
-        return SettingsImpl(context)
+    companion object {
+        fun create(context: Context): Settings {
+            return SettingsImpl(context)
+        }
     }
 }
