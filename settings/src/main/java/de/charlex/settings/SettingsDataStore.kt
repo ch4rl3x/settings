@@ -1,14 +1,9 @@
 package de.charlex.settings
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsDataStore {
-    val dataStore: DataStore<Preferences>
-
     fun getString(pref: IPreference<String>): Flow<String>
     fun getInt(pref: IPreference<Int>): Flow<Int>
     fun getFloat(pref: IPreference<Float>): Flow<Float>
@@ -26,10 +21,12 @@ interface SettingsDataStore {
     suspend fun putBoolean(pref: IPreference<Boolean>, value: Boolean)
     suspend fun putLong(pref: IPreference<Long>, value: Long)
 
-
     companion object {
         fun create(context: Context): SettingsDataStore {
             return SettingsDataStoreImpl(context)
+        }
+        fun createInMemory(): SettingsDataStore {
+            return SettingsDataStoreInMemoryImpl()
         }
     }
 }
