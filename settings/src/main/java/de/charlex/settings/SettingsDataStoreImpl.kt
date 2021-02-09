@@ -16,17 +16,21 @@ class SettingsDataStoreImpl(
     val dataStore: DataStore<Preferences>
 ) : SettingsDataStore {
 
-    internal constructor(context: Context,
-                sharedPreferencesName: String,
-                scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())): this(context.createDataStore(
+    internal constructor(
+        context: Context,
+        sharedPreferencesName: String,
+        scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    ) : this(context.createDataStore(
         name = "settings",
         migrations = listOf(SharedPreferencesMigration(context = context, sharedPreferencesName = sharedPreferencesName)),
         scope = scope
     ))
 
-    internal constructor(context: Context,
-                migrations: List<DataMigration<Preferences>> = listOf(),
-                scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())): this(context.createDataStore(
+    internal constructor(
+        context: Context,
+        migrations: List<DataMigration<Preferences>> = listOf(),
+        scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    ) : this(context.createDataStore(
         name = "settings",
         migrations = migrations,
         scope = scope

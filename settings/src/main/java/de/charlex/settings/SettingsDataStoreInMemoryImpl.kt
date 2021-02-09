@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 @Suppress("UNCHECKED_CAST")
-class SettingsDataStoreInMemoryImpl: SettingsDataStore {
+class SettingsDataStoreInMemoryImpl : SettingsDataStore {
 
     private val flows = mutableMapOf<Preferences.Key<*>, MutableStateFlow<*>>()
 
@@ -84,5 +84,4 @@ class SettingsDataStoreInMemoryImpl: SettingsDataStore {
         val stateFlow = flows.getOrPut(longPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Long>
         stateFlow.value = value
     }
-
 }

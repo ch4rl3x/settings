@@ -73,7 +73,7 @@ abstract class SettingsDataStoreTest() {
         try {
             intFlow.first()
             Assert.fail("Exception expected")
-        } catch (e:ClassCastException) {
+        } catch (e: ClassCastException) {
             true
         }
     }
