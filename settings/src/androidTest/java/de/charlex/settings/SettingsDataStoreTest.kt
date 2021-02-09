@@ -64,17 +64,19 @@ abstract class SettingsDataStoreTest() {
     }
 
     @Test
-    fun testTypeError() = runBlocking {
-        settings.putInt(Preferences.PreferenceInt, Preferences.PreferenceInt.defaultValue)
-        val intFlow = settings.getInt(Preferences.PreferenceInt)
+    fun testTypeError() {
+        runBlocking {
+            settings.putInt(Preferences.PreferenceInt, Preferences.PreferenceInt.defaultValue)
+            val intFlow = settings.getInt(Preferences.PreferenceInt)
 
-        settings.putString(Preferences.PreferenceString_WithIntKey, "TEST2")
+            settings.putString(Preferences.PreferenceString_WithIntKey, "TEST2")
 
-        try {
-            intFlow.first()
-            Assert.fail("Exception expected")
-        } catch (e: ClassCastException) {
-            true
+            try {
+                intFlow.first()
+                Assert.fail("Exception expected")
+            } catch (e: ClassCastException) {
+                true
+            }
         }
     }
 }
