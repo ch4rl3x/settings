@@ -12,11 +12,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-internal class SettingsDataStoreImpl(
-    override val dataStore: DataStore<Preferences>
+class SettingsDataStoreImpl(
+    val dataStore: DataStore<Preferences>
 ) : SettingsDataStore {
 
-    constructor(context: Context,
+    internal constructor(context: Context,
                 sharedPreferencesName: String,
                 scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())): this(context.createDataStore(
         name = "settings",
@@ -24,7 +24,7 @@ internal class SettingsDataStoreImpl(
         scope = scope
     ))
 
-    constructor(context: Context,
+    internal constructor(context: Context,
                 migrations: List<DataMigration<Preferences>> = listOf(),
                 scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())): this(context.createDataStore(
         name = "settings",
