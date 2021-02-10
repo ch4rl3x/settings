@@ -1,14 +1,12 @@
 site_name: 'Settings'
 site_description: 'A simplified the use of SharedPreferences and Preferences DataStore.'
 site_author: 'Alexander Karkossa'
-site_url: 'https://Ch4rl3x.github.io/settings/'
+site_url: 'https://ch4rl3x.github.io/settings/'
 
-
-docs_dir: docs-gen
 
 # Repository
 repo_name: 'Settings'
-repo_url: 'https://github.com/Ch4rl3x/settings'
+repo_url: 'https://github.com/ch4rl3x/settings'
 
 # Navigation
 nav:
