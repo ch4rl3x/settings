@@ -4,6 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsDataStore {
+
     fun getString(pref: IPreference<String>): Flow<String>
     fun getInt(pref: IPreference<Int>): Flow<Int>
     fun getFloat(pref: IPreference<Float>): Flow<Float>

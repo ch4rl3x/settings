@@ -3,11 +3,9 @@ package de.charlex.settings
 import android.content.Context
 import android.content.SharedPreferences
 
-internal class SettingsImpl(
-    context: Context
-) : Settings {
+class SettingsImpl internal constructor(context: Context) : Settings {
 
-    private val settings: SharedPreferences = context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
+    val settings: SharedPreferences = context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
 
     override fun getString(pref: IPreference<String>): String {
         return settings.getString(pref.preferenceKey, pref.defaultValue) ?: ""
@@ -67,13 +65,5 @@ internal class SettingsImpl(
 
     override fun putLong(pref: IPreference<Long>, value: Long) {
         settings.edit().putLong(pref.preferenceKey, value).apply()
-    }
-
-    override fun _getSharedPreferences(): SharedPreferences? {
-        return settings
-    }
-
-    override fun _getSharedPreferencesEditor(): SharedPreferences.Editor? {
-        return settings.edit()
     }
 }
