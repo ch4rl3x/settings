@@ -1,0 +1,44 @@
+site_name: 'Settings'
+site_description: 'A simplified the use of SharedPreferences and Preferences DataStore.'
+site_author: 'Alexander Karkossa'
+site_url: 'https://Ch4rl3x.github.io/settings/'
+
+
+docs_dir: docs-gen
+
+# Repository
+repo_name: 'Settings'
+repo_url: 'https://github.com/Ch4rl3x/settings'
+
+# Navigation
+nav:
+  - 'Overview': index.md
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'black'
+    accent: 'deep orange'
+  font:
+    text: 'IBM Plex Sans'
+    code: 'IBM Plex Mono'
+
+# Extensions
+#markdown_extensions:
+#  - admonition
+#  - attr_list
+#  - codehilite:
+#      guess_lang: false
+#  - footnotes
+#  - toc:
+#      permalink: true
+#  - pymdownx.betterem
+#  - pymdownx.superfences
+#  - pymdownx.tabbed
+
+#extra:
+#  social:
+#    - icon: fontawesome/brands/twitter
+#      link: https://twitter.com/ch4rl3x
