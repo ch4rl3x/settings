@@ -1,7 +1,6 @@
 package de.charlex.settings
 
 import android.content.Context
-import android.content.SharedPreferences
 
 interface Settings {
 
