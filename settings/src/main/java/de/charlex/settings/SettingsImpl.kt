@@ -3,9 +3,13 @@ package de.charlex.settings
 import android.content.Context
 import android.content.SharedPreferences
 
-class SettingsImpl internal constructor(context: Context) : Settings {
+class SettingsImpl internal constructor(
+    context: Context,
+    name: String = context.packageName + "_preferences",
+    mode: Int = Context.MODE_PRIVATE
+) : Settings {
 
-    val settings: SharedPreferences = context.getSharedPreferences(context.packageName + "_preferences", Context.MODE_PRIVATE)
+    val settings: SharedPreferences = context.getSharedPreferences(name, mode)
 
     override fun getString(pref: IPreference<String>): String {
         return settings.getString(pref.preferenceKey, pref.defaultValue) ?: ""
@@ -17,6 +21,10 @@ class SettingsImpl internal constructor(context: Context) : Settings {
 
     override fun getFloat(pref: IPreference<Float>): Float {
         return settings.getFloat(pref.preferenceKey, pref.defaultValue)
+    }
+
+    override fun getDouble(pref: IPreference<Double>): Double {
+        return java.lang.Double.longBitsToDouble(settings.getLong(pref.preferenceKey, java.lang.Double.doubleToRawLongBits(pref.defaultValue)))
     }
 
     override fun getBoolean(pref: IPreference<Boolean>): Boolean {
@@ -39,6 +47,10 @@ class SettingsImpl internal constructor(context: Context) : Settings {
         settings.edit().putFloat(value.preferenceKey, value.value).apply()
     }
 
+    override fun putDouble(value: IPreferenceValue<Double>) {
+        settings.edit().putLong(value.preferenceKey, java.lang.Double.doubleToRawLongBits(value.value)).apply()
+    }
+
     override fun putBoolean(value: IPreferenceValue<Boolean>) {
         settings.edit().putBoolean(value.preferenceKey, value.value).apply()
     }
@@ -57,6 +69,10 @@ class SettingsImpl internal constructor(context: Context) : Settings {
 
     override fun putFloat(pref: IPreference<Float>, value: Float) {
         settings.edit().putFloat(pref.preferenceKey, value).apply()
+    }
+
+    override fun putDouble(pref: IPreference<Double>, value: Double) {
+        settings.edit().putLong(pref.preferenceKey, java.lang.Double.doubleToRawLongBits(value)).apply()
     }
 
     override fun putBoolean(pref: IPreference<Boolean>, value: Boolean) {

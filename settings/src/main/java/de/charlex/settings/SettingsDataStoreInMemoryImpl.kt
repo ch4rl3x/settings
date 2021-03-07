@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 @Suppress("UNCHECKED_CAST")
-class SettingsDataStoreInMemoryImpl : SettingsDataStore {
+class SettingsDataStoreInMemoryImpl internal constructor() : SettingsDataStore {
 
     private val flows = mutableMapOf<Preferences.Key<*>, MutableStateFlow<*>>()
 
@@ -23,6 +23,11 @@ class SettingsDataStoreInMemoryImpl : SettingsDataStore {
     override fun getFloat(pref: IPreference<Float>): Flow<Float> {
         val stateFlow = flows.getOrPut(floatPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
         return stateFlow.map { it as Float }
+    }
+
+    override fun getDouble(pref: IPreference<Double>): Flow<Double> {
+        val stateFlow = flows.getOrPut(doublePreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
+        return stateFlow.map { it as Double }
     }
 
     override fun getBoolean(pref: IPreference<Boolean>): Flow<Boolean> {
@@ -60,8 +65,18 @@ class SettingsDataStoreInMemoryImpl : SettingsDataStore {
         stateFlow.value = value.value
     }
 
+    override suspend fun putDouble(value: IPreferenceValue<Double>) {
+        val stateFlow = flows.getOrPut(doublePreferencesKey(value.preferenceKey), { MutableStateFlow(value.value) }) as MutableStateFlow<Double>
+        stateFlow.value = value.value
+    }
+
     override suspend fun putFloat(pref: IPreference<Float>, value: Float) {
         val stateFlow = flows.getOrPut(floatPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Float>
+        stateFlow.value = value
+    }
+
+    override suspend fun putDouble(pref: IPreference<Double>, value: Double) {
+        val stateFlow = flows.getOrPut(doublePreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Double>
         stateFlow.value = value
     }
 

@@ -11,6 +11,6 @@ class SettingsDataStoreAndroidTest : SettingsDataStoreTest() {
     @Before
     fun setup() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        settings = SettingsDataStoreImpl(context)
+        settings = SettingsDataStore.create(context)
     }
 }

@@ -1,27 +1,16 @@
 package de.charlex.settings
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@RunWith(AndroidJUnit4::class)
-class SettingsTest {
+abstract class SettingsTest {
 
     lateinit var settings: Settings
-
-    @Before
-    fun setup() {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        settings = SettingsImpl(appContext)
-    }
 
     @Test
     fun test_Int_Settings() {
@@ -48,6 +37,15 @@ class SettingsTest {
 
         settings.putFloat(Preferences.PreferenceFloat, 2.2f)
         assertEquals(2.2f, settings.getFloat(Preferences.PreferenceFloat))
+    }
+
+    @Test
+    fun test_Double_Settings() {
+        settings.putDouble(Preferences.PreferenceDouble, Preferences.PreferenceDouble.defaultValue)
+        assertEquals(1.1, settings.getDouble(Preferences.PreferenceDouble), 0.0)
+
+        settings.putDouble(Preferences.PreferenceDouble, 2.2)
+        assertEquals(2.2, settings.getDouble(Preferences.PreferenceDouble), 0.0)
     }
 
     @Test

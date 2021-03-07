@@ -5,7 +5,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 
-abstract class SettingsDataStoreTest() {
+abstract class SettingsDataStoreTest {
 
     lateinit var settings: SettingsDataStore
 
@@ -34,6 +34,15 @@ abstract class SettingsDataStoreTest() {
 
         settings.putFloat(Preferences.PreferenceFloat, 2.2f)
         Assert.assertEquals(2.2f, settings.getFloat(Preferences.PreferenceFloat).first())
+    }
+
+    @Test
+    fun test_Double_Settings() = runBlocking {
+        settings.putDouble(Preferences.PreferenceDouble, Preferences.PreferenceDouble.defaultValue)
+        Assert.assertEquals(1.1, settings.getDouble(Preferences.PreferenceDouble).first(), 0.0)
+
+        settings.putDouble(Preferences.PreferenceDouble, 2.2)
+        Assert.assertEquals(2.2, settings.getDouble(Preferences.PreferenceDouble).first(), 0.0)
     }
 
     @Test

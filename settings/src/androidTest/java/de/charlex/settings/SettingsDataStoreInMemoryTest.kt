@@ -6,6 +6,6 @@ class SettingsDataStoreInMemoryTest : SettingsDataStoreTest() {
 
     @Before
     fun setup() {
-        settings = SettingsDataStoreInMemoryImpl()
+        settings = SettingsDataStore.createInMemory()
     }
 }
