@@ -14,7 +14,7 @@ Settings is an easy wrapper with type safety for SharedPreferences. By using it,
 Add the library to your module `build.gradle`
 ```gradle
 dependencies {
-        implementation 'de.charlex.settings:settings:4.0.2'
+    implementation 'de.charlex.settings:settings:4.0.2'
 }
 ```
 
