@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 
 class SettingsImpl internal constructor(
     context: Context,
-    name: String = context.packageName + "_preferences",
-    mode: Int = Context.MODE_PRIVATE
+    name: String,
+    mode: Int
 ) : Settings {
 
     val settings: SharedPreferences = context.getSharedPreferences(name, mode)

@@ -7,8 +7,6 @@ on:
       - 'README.md'
     branches:
       - main
-    tags:
-      - '*'
 
 jobs:
   lint:

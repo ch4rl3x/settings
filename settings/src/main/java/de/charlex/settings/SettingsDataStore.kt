@@ -40,7 +40,7 @@ interface SettingsDataStore {
             context: Context,
             name: String = "settings",
             corruptionHandler: ReplaceFileCorruptionHandler<Preferences>? = null,
-            migrations: List<DataMigration<Preferences>> = listOf(),
+            migrations: (Context) -> List<DataMigration<Preferences>> = { listOf() },
             scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
         ): SettingsDataStore {
             if (settingsDataStore == null) {

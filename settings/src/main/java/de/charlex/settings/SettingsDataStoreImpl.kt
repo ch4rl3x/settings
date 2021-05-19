@@ -7,23 +7,21 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class SettingsDataStoreImpl internal constructor(
     private val context: Context,
-    name: String = "settings",
-    corruptionHandler: ReplaceFileCorruptionHandler<Preferences>? = null,
-    migrations: List<DataMigration<Preferences>> = listOf(),
-    scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    name: String,
+    corruptionHandler: ReplaceFileCorruptionHandler<Preferences>?,
+    migrations: (Context) -> List<DataMigration<Preferences>>,
+    scope: CoroutineScope
 ) : SettingsDataStore {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
         name = name,
         corruptionHandler = corruptionHandler,
-        migrations = migrations,
+        produceMigrations = migrations,
         scope = scope
     )
 

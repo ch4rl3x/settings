@@ -6,29 +6,20 @@ Settings is an easy wrapper with type safety for SharedPreferences. By using it,
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3AKtlint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Ktlint/badge.svg" alt="Ktlint"></a>
 
 <a href="https://www.codefactor.io/repository/github/ch4rl3x/settings"><img src="https://www.codefactor.io/repository/github/ch4rl3x/settings/badge" alt="CodeFactor" /></a>
-[![](https://jitpack.io/v/Ch4rl3x/Settings.svg)](https://jitpack.io/#Ch4rl3x/Settings)
+<a href="https://repo1.maven.org/maven2/de/charlex/settings/settings/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings" alt="Maven Central" /></a>
+
 
 ## Dependency
 
-Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
-
-```gradle
-allprojects {
-	repositories {
-        maven { url "https://jitpack.io" }
-    }
-}
-```
-
-Then, add the library to your module `build.gradle`
+Add the library to your module `build.gradle`
 ```gradle
 dependencies {
-    implementation 'com.github.Ch4rl3x:Settings:latest.release.here'
+        implementation 'de.charlex.settings:settings:4.0.2'
 }
 ```
 
 ## Features
-- Typed access and easy access to SharedPreferences
+- Typed access and easy access to SharedPreferences and Preferences DataStore
 
 ## Usage
 
