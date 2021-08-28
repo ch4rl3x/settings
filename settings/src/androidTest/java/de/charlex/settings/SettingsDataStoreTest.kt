@@ -16,6 +16,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putInt(Preferences.PreferenceInt, 10)
         Assert.assertEquals(10, settings.getInt(Preferences.PreferenceInt).first())
+
+        settings.putInt(PreferenceValue(Preferences.PreferenceInt, 20))
+        Assert.assertEquals(20, settings.getInt(Preferences.PreferenceInt).first())
     }
 
     @Test
@@ -25,6 +28,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putString(Preferences.PreferenceString, "test")
         Assert.assertEquals("test", settings.getString(Preferences.PreferenceString).first())
+
+        settings.putString(PreferenceValue(Preferences.PreferenceString, "value"))
+        Assert.assertEquals("value", settings.getString(Preferences.PreferenceString).first())
     }
 
     @Test
@@ -34,6 +40,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putFloat(Preferences.PreferenceFloat, 2.2f)
         Assert.assertEquals(2.2f, settings.getFloat(Preferences.PreferenceFloat).first())
+
+        settings.putFloat(PreferenceValue(Preferences.PreferenceFloat, 3.3f))
+        Assert.assertEquals(3.3f, settings.getFloat(Preferences.PreferenceFloat).first())
     }
 
     @Test
@@ -43,6 +52,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putDouble(Preferences.PreferenceDouble, 2.2)
         Assert.assertEquals(2.2, settings.getDouble(Preferences.PreferenceDouble).first(), 0.0)
+
+        settings.putDouble(PreferenceValue(Preferences.PreferenceDouble, 3.3))
+        Assert.assertEquals(3.3, settings.getDouble(Preferences.PreferenceDouble).first(), 0.0)
     }
 
     @Test
@@ -52,6 +64,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putLong(Preferences.PreferenceLong, 2L)
         Assert.assertEquals(2L, settings.getLong(Preferences.PreferenceLong).first())
+
+        settings.putLong(PreferenceValue(Preferences.PreferenceLong, 3L))
+        Assert.assertEquals(3L, settings.getLong(Preferences.PreferenceLong).first())
     }
 
     @Test
@@ -61,6 +76,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putBoolean(Preferences.PreferenceBoolean, false)
         Assert.assertEquals(false, settings.getBoolean(Preferences.PreferenceBoolean).first())
+
+        settings.putBoolean(PreferenceValue(Preferences.PreferenceBoolean, true))
+        Assert.assertEquals(true, settings.getBoolean(Preferences.PreferenceBoolean).first())
     }
 
     @Test
@@ -70,6 +88,9 @@ abstract class SettingsDataStoreTest {
 
         settings.putString(Preferences.PreferenceComplex.Slow)
         Assert.assertEquals("slow", settings.getString(Preferences.PreferenceComplex).first())
+
+        settings.putString(PreferenceValue(Preferences.PreferenceComplex, "fast"))
+        Assert.assertEquals("fast", settings.getString(Preferences.PreferenceComplex).first())
     }
 
     @Test

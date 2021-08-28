@@ -1,6 +1,7 @@
 package de.charlex.settings
 
 import android.content.Context
+import org.jetbrains.annotations.NonNls
 
 interface Settings {
 
@@ -17,6 +18,7 @@ interface Settings {
     fun putDouble(value: IPreferenceValue<Double>)
     fun putBoolean(value: IPreferenceValue<Boolean>)
     fun putLong(value: IPreferenceValue<Long>)
+    @NonNls
     fun putString(pref: IPreference<String>, value: String)
     fun putInt(pref: IPreference<Int>, value: Int)
     fun putFloat(pref: IPreference<Float>, value: Float)

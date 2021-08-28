@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import org.jetbrains.annotations.NonNls
 
 interface SettingsDataStore {
 
@@ -24,6 +25,7 @@ interface SettingsDataStore {
     suspend fun putDouble(value: IPreferenceValue<Double>)
     suspend fun putBoolean(value: IPreferenceValue<Boolean>)
     suspend fun putLong(value: IPreferenceValue<Long>)
+    @NonNls
     suspend fun putString(pref: IPreference<String>, value: String)
     suspend fun putInt(pref: IPreference<Int>, value: Int)
     suspend fun putFloat(pref: IPreference<Float>, value: Float)

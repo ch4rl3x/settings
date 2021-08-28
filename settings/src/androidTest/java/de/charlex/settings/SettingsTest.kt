@@ -19,6 +19,9 @@ abstract class SettingsTest {
 
         settings.putInt(Preferences.PreferenceInt, 10)
         assertEquals(10, settings.getInt(Preferences.PreferenceInt))
+
+        settings.putInt(PreferenceValue(Preferences.PreferenceInt, 100))
+        assertEquals(100, settings.getInt(Preferences.PreferenceInt))
     }
 
     @Test
@@ -28,6 +31,9 @@ abstract class SettingsTest {
 
         settings.putString(Preferences.PreferenceString, "test")
         assertEquals("test", settings.getString(Preferences.PreferenceString))
+
+        settings.putString(PreferenceValue(Preferences.PreferenceString, "value"))
+        assertEquals("value", settings.getString(Preferences.PreferenceString))
     }
 
     @Test
@@ -37,6 +43,9 @@ abstract class SettingsTest {
 
         settings.putFloat(Preferences.PreferenceFloat, 2.2f)
         assertEquals(2.2f, settings.getFloat(Preferences.PreferenceFloat))
+
+        settings.putFloat(PreferenceValue(Preferences.PreferenceFloat, 3.3f))
+        assertEquals(3.3f, settings.getFloat(Preferences.PreferenceFloat))
     }
 
     @Test
@@ -46,6 +55,9 @@ abstract class SettingsTest {
 
         settings.putDouble(Preferences.PreferenceDouble, 2.2)
         assertEquals(2.2, settings.getDouble(Preferences.PreferenceDouble), 0.0)
+
+        settings.putDouble(PreferenceValue(Preferences.PreferenceDouble, 3.3))
+        assertEquals(3.3, settings.getDouble(Preferences.PreferenceDouble), 0.0)
     }
 
     @Test
@@ -55,6 +67,9 @@ abstract class SettingsTest {
 
         settings.putLong(Preferences.PreferenceLong, 2L)
         assertEquals(2L, settings.getLong(Preferences.PreferenceLong))
+
+        settings.putLong(PreferenceValue(Preferences.PreferenceLong, 3L))
+        assertEquals(3L, settings.getLong(Preferences.PreferenceLong))
     }
 
     @Test
@@ -64,6 +79,9 @@ abstract class SettingsTest {
 
         settings.putBoolean(Preferences.PreferenceBoolean, false)
         assertEquals(false, settings.getBoolean(Preferences.PreferenceBoolean))
+
+        settings.putBoolean(PreferenceValue(Preferences.PreferenceBoolean, true))
+        assertEquals(true, settings.getBoolean(Preferences.PreferenceBoolean))
     }
 
     @Test
@@ -73,5 +91,8 @@ abstract class SettingsTest {
 
         settings.putString(Preferences.PreferenceComplex.Slow)
         assertEquals("slow", settings.getString(Preferences.PreferenceComplex))
+
+        settings.putString(PreferenceValue(Preferences.PreferenceComplex, "fast"))
+        assertEquals("fast", settings.getString(Preferences.PreferenceComplex))
     }
 }
