@@ -6,7 +6,7 @@ Settings is an easy wrapper with type safety for SharedPreferences. By using it,
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3AKtlint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Ktlint/badge.svg" alt="Ktlint"></a>
 
 <a href="https://www.codefactor.io/repository/github/ch4rl3x/settings"><img src="https://www.codefactor.io/repository/github/ch4rl3x/settings/badge" alt="CodeFactor" /></a>
-<a href="https://repo1.maven.org/maven2/de/charlex/settings/settings/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings" alt="Maven Central" /></a>
+<a href="https://repo1.maven.org/maven2/de/charlex/settings/settings-core/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings-core" alt="Maven Central" /></a>
 
 
 ## Dependency
