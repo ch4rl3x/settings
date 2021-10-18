@@ -5,7 +5,7 @@ buildscript {
         roboelectric = "4.5.1"
         buildConfig = [
                 'compileSdk': 31,
-                'minSdk'    : 26,
+                'minSdk'    : 23,
                 'targetSdk' : 31,
         ]
     }
