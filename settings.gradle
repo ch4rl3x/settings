@@ -1,2 +1,7 @@
-include ':settings'
+include ':settings-core'
+include ':settings-core-encryption'
+include ':settings-datastore'
+include ':settings-datastore-encryption'
+include ':settings-sharedpreferences'
+include ':settings-sharedpreferences-encryption'
 rootProject.name = "Settings"

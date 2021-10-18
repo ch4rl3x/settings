@@ -1,0 +1,22 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+    id "java-test-fixtures"
+}
+
+apply from: '../_ktlint.gradle'
+
+ext {
+    PUBLISH_ARTIFACT_ID = 'settings-core'
+}
+
+apply from: '../_publish.gradle'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

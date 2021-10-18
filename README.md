@@ -14,7 +14,12 @@ Settings is an easy wrapper with type safety for SharedPreferences. By using it,
 Add the library to your module `build.gradle`
 ```gradle
 dependencies {
-    implementation 'de.charlex.settings:settings:4.0.2'
+    implementation 'de.charlex.settings:settings-core:1.0.0-rc01'
+    implementation 'de.charlex.settings:settings-core-encryption:1.0.0-rc01'
+    implementation 'de.charlex.settings:settings-datastore:1.0.0-rc01'
+    implementation 'de.charlex.settings:settings-datastore-encryption:1.0.0-rc01'
+    implementation 'de.charlex.settings:settings-sharedpreferences:1.0.0-rc01'
+    implementation 'de.charlex.settings:settings-sharedpreferences-encryption:1.0.0-rc01'
 }
 ```
 
@@ -24,7 +29,7 @@ dependencies {
 ## Usage
 
 ```kotlin
-val settings = SettingsImpl(context)
+val settings = Settings.create(context)
 
 //Write
 settings.putString(Preferences.PreferenceString, "my value")

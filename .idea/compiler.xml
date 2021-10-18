@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="Settings.settings-datastore" target="11" />
+      <module name="Settings.settings-datastore-encryption" target="11" />
+      <module name="Settings.settings-sharedpreferences" target="11" />
+      <module name="Settings.settings-sharedpreferences-encryption" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
