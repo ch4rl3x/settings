@@ -1,6 +1,5 @@
 package de.charlex.settings.datastore.encryption
 
-import android.R.attr
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties.*
 import java.security.KeyStore
@@ -8,10 +7,6 @@ import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
-import android.R.attr.tag
-
-
-
 
 object Security {
 
@@ -25,7 +20,6 @@ object Security {
     }
     private val charset by lazy {
         charset("UTF-8")
-
     }
     private val keyStore by lazy {
         KeyStore.getInstance(provider).apply {
@@ -51,7 +45,7 @@ object Security {
 
     fun extractIvAndCipherText(encryptedText: String): Pair<ByteArray, ByteArray>? {
         val parts = encryptedText.split("$bytesToStringSeparator$bytesToStringSeparator")
-        if(parts.size != 2) return null
+        if (parts.size != 2) return null
         val iv = parts[0].split(bytesToStringSeparator).map { it.toByte() }.toByteArray()
         val ciphertext = parts[1].split(bytesToStringSeparator).map { it.toByte() }.toByteArray()
         return iv to ciphertext
@@ -71,5 +65,4 @@ object Security {
 
     private fun getSecretKey(keyAlias: String): SecretKey? =
         (keyStore.getEntry(keyAlias, null) as KeyStore.SecretKeyEntry?)?.secretKey
-
 }

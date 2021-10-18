@@ -6,7 +6,6 @@ import de.charlex.settings.sharedpreferences.Settings
 import org.junit.Before
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 class AndroidSettingsEncryptionTest : SettingsEncryptionTest() {
 
@@ -15,6 +14,4 @@ class AndroidSettingsEncryptionTest : SettingsEncryptionTest() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         settings = Settings.createEncrypted(appContext)
     }
-
-
 }

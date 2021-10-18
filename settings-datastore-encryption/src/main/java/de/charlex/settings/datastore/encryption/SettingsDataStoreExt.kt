@@ -7,11 +7,10 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-
 val json = Json { encodeDefaults = true }
 
 inline fun <reified T> SettingsDataStore.get(pref: de.charlex.settings.core.IEncryptedPreference<T>): Flow<T> = getRaw(pref.preferenceKey).map {
-    if(it == null) {
+    if (it == null) {
         pref.defaultValue
     } else {
         val (iv, cipherText) = Security.extractIvAndCipherText(it) ?: error("Invalid data stored in ${pref.preferenceKey}")
@@ -22,7 +21,7 @@ inline fun <reified T> SettingsDataStore.get(pref: de.charlex.settings.core.IEnc
         )
         try {
             json.decodeFromString(decryptedValue)
-        } catch(exception: Exception) {
+        } catch (exception: Exception) {
             throw ClassCastException()
         }
     }

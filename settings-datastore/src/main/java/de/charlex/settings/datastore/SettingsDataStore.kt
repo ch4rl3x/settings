@@ -16,7 +16,6 @@ interface SettingsDataStore {
     fun getRaw(key: String): Flow<String?>
     suspend fun putRaw(key: String, value: String)
 
-
     fun getString(pref: IPreference<String>): Flow<String>
     fun getInt(pref: IPreference<Int>): Flow<Int>
     fun getFloat(pref: IPreference<Float>): Flow<Float>
@@ -24,14 +23,12 @@ interface SettingsDataStore {
     fun getBoolean(pref: IPreference<Boolean>): Flow<Boolean>
     fun getLong(pref: IPreference<Long>): Flow<Long>
 
-
     suspend fun putString(value: IPreferenceValue<String>)
     suspend fun putInt(value: IPreferenceValue<Int>)
     suspend fun putFloat(value: IPreferenceValue<Float>)
     suspend fun putDouble(value: IPreferenceValue<Double>)
     suspend fun putBoolean(value: IPreferenceValue<Boolean>)
     suspend fun putLong(value: IPreferenceValue<Long>)
-
 
     suspend fun putString(pref: IPreference<String>, value: String)
     suspend fun putInt(pref: IPreference<Int>, value: Int)
@@ -71,7 +68,7 @@ interface SettingsDataStore {
 }
 
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T> SettingsDataStore.get(pref: IPreference<T>): Flow<T> = when(T::class) {
+inline fun <reified T> SettingsDataStore.get(pref: IPreference<T>): Flow<T> = when (T::class) {
     String::class ->
         getString(pref = pref as IPreference<String>) as Flow<T>
     Int::class ->
@@ -89,7 +86,7 @@ inline fun <reified T> SettingsDataStore.get(pref: IPreference<T>): Flow<T> = wh
 }
 
 @Suppress("UNCHECKED_CAST")
-suspend inline fun <reified T> SettingsDataStore.put(value: IPreferenceValue<T>) = when(T::class) {
+suspend inline fun <reified T> SettingsDataStore.put(value: IPreferenceValue<T>) = when (T::class) {
     String::class ->
         putString(value = value as IPreferenceValue<String>)
     Int::class ->
@@ -107,7 +104,7 @@ suspend inline fun <reified T> SettingsDataStore.put(value: IPreferenceValue<T>)
 }
 
 @Suppress("UNCHECKED_CAST")
-suspend inline fun <reified T> SettingsDataStore.put(pref: IPreference<T>, value: T) = when(T::class) {
+suspend inline fun <reified T> SettingsDataStore.put(pref: IPreference<T>, value: T) = when (T::class) {
     String::class ->
         putString(pref = pref as IPreference<String>, value = value as String)
     Int::class ->

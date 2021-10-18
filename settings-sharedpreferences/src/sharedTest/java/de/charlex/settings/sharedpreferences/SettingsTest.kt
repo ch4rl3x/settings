@@ -5,7 +5,6 @@ import de.charlex.settings.core.Preferences
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-
 abstract class SettingsTest {
 
     lateinit var settings: Settings

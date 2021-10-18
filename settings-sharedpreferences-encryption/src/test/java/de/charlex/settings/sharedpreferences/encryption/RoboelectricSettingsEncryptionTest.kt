@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Ignore
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 @Ignore("java.security.KeyStoreException: AndroidKeyStore not found https://github.com/robolectric/robolectric/issues/1518")
 class RoboelectricSettingsEncryptionTest : SettingsEncryptionTest() {

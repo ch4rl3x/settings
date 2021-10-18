@@ -1,13 +1,9 @@
 package de.charlex.settings.sharedpreferences.encryption
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import de.charlex.settings.core.EncryptedPreferenceValue
 import de.charlex.settings.core.encryption.EncryptedPreferences
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Test
-
 
 abstract class SettingsEncryptionTest {
 

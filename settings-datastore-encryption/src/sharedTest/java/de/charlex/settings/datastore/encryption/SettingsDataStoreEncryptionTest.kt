@@ -6,7 +6,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 
-
 abstract class SettingsDataStoreEncryptionTest {
 
     lateinit var settings: SettingsDataStore

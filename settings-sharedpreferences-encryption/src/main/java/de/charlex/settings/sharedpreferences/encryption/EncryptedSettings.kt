@@ -32,7 +32,7 @@ fun Settings.Companion.createEncrypted(
     context: Context,
     name: String = context.packageName + "_preferences",
     mainKeyAlias: String = "sharedPreferences",
-    prefKeyEncryptionScheme:  EncryptedSharedPreferences.PrefKeyEncryptionScheme = EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+    prefKeyEncryptionScheme: EncryptedSharedPreferences.PrefKeyEncryptionScheme = EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
     prefValueEncryptionScheme: EncryptedSharedPreferences.PrefValueEncryptionScheme = EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
 ): EncryptedSettings {
     return EncryptedSettingsImpl(
