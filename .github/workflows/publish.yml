@@ -31,8 +31,8 @@ jobs:
         run: ./gradlew assembleRelease
 
         # Generates other artifacts
-      - name: Source jar and dokka
-        run: ./gradlew androidSourcesJar sourcesJar javadocJar
+      - name: Source jar and javadoc
+        run: ./gradlew androidSourcesJar javadocJar
 
         # Runs upload, and then closes & releases the repository
       - name: Publish to MavenCentral
