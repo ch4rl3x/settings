@@ -1,7 +1,6 @@
 package de.charlex.settings.core
 
-open class Preference<T>(
+class EncryptedEnumPreference<T>(
     override val preferenceKey: String,
     override val defaultValue: T
-) : IPreference<T>
-
+) : IEncryptedEnumPreference<T>

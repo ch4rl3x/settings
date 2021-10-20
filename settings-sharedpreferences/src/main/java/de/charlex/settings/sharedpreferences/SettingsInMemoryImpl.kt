@@ -1,11 +1,15 @@
 package de.charlex.settings.sharedpreferences
 
 import de.charlex.settings.core.IPreference
-import de.charlex.settings.core.IPreferenceValue
+import de.charlex.settings.core.Keyed
 
 class SettingsInMemoryImpl internal constructor() : Settings {
 
     private val settings = mutableMapOf<String, Any>()
+
+    override fun getRaw(key: String): String? {
+        return settings[key] as? String
+    }
 
     override fun getString(pref: IPreference<String>): String {
         return settings[pref.preferenceKey] as? String ?: pref.defaultValue
@@ -31,51 +35,31 @@ class SettingsInMemoryImpl internal constructor() : Settings {
         return settings[pref.preferenceKey] as? Long ?: pref.defaultValue
     }
 
-    override fun putString(value: IPreferenceValue<String>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
     override fun putString(pref: IPreference<String>, value: String) {
-        settings[pref.preferenceKey] = value as Any
-    }
-
-    override fun putInt(value: IPreferenceValue<Int>) {
-        settings[value.preferenceKey] = value.value as Any
+        settings[pref.preferenceKey] = value
     }
 
     override fun putInt(pref: IPreference<Int>, value: Int) {
-        settings[pref.preferenceKey] = value as Any
-    }
-
-    override fun putFloat(value: IPreferenceValue<Float>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
-    override fun putDouble(value: IPreferenceValue<Double>) {
-        settings[value.preferenceKey] = java.lang.Double.doubleToRawLongBits(value.value) as Any
+        settings[pref.preferenceKey] = value
     }
 
     override fun putFloat(pref: IPreference<Float>, value: Float) {
-        settings[pref.preferenceKey] = value as Any
+        settings[pref.preferenceKey] = value
     }
 
     override fun putDouble(pref: IPreference<Double>, value: Double) {
-        settings[pref.preferenceKey] = java.lang.Double.doubleToRawLongBits(value) as Any
-    }
-
-    override fun putBoolean(value: IPreferenceValue<Boolean>) {
-        settings[value.preferenceKey] = value.value as Any
+        settings[pref.preferenceKey] = java.lang.Double.doubleToRawLongBits(value)
     }
 
     override fun putBoolean(pref: IPreference<Boolean>, value: Boolean) {
-        settings[pref.preferenceKey] = value as Any
-    }
-
-    override fun putLong(value: IPreferenceValue<Long>) {
-        settings[value.preferenceKey] = value.value as Any
+        settings[pref.preferenceKey] = value
     }
 
     override fun putLong(pref: IPreference<Long>, value: Long) {
-        settings[pref.preferenceKey] = value as Any
+        settings[pref.preferenceKey] = value
+    }
+
+    override fun <T> putEnum(pref: IPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+        settings[pref.preferenceKey] = value.key
     }
 }

@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.datastore.core.DataMigration
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.Preferences
-import de.charlex.settings.core.IPreference
-import de.charlex.settings.core.IPreferenceValue
+import de.charlex.settings.core.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.mapLatest
 
 interface SettingsDataStore {
 
@@ -23,19 +25,14 @@ interface SettingsDataStore {
     fun getBoolean(pref: IPreference<Boolean>): Flow<Boolean>
     fun getLong(pref: IPreference<Long>): Flow<Long>
 
-    suspend fun putString(value: IPreferenceValue<String>)
-    suspend fun putInt(value: IPreferenceValue<Int>)
-    suspend fun putFloat(value: IPreferenceValue<Float>)
-    suspend fun putDouble(value: IPreferenceValue<Double>)
-    suspend fun putBoolean(value: IPreferenceValue<Boolean>)
-    suspend fun putLong(value: IPreferenceValue<Long>)
-
     suspend fun putString(pref: IPreference<String>, value: String)
     suspend fun putInt(pref: IPreference<Int>, value: Int)
     suspend fun putFloat(pref: IPreference<Float>, value: Float)
     suspend fun putDouble(pref: IPreference<Double>, value: Double)
     suspend fun putBoolean(pref: IPreference<Boolean>, value: Boolean)
     suspend fun putLong(pref: IPreference<Long>, value: Long)
+    suspend fun <T> putEnum(pref: IPreference<T>, value: T) where T : Enum<T>, T : Keyed
+
 
     companion object {
 
@@ -67,6 +64,21 @@ interface SettingsDataStore {
     }
 }
 
+@ExperimentalCoroutinesApi
+inline fun <reified T> SettingsDataStore.getEnum(pref: IEnumPreference<T>): Flow<T> where T : Enum<T>, T : Keyed {
+    return getRaw(pref.preferenceKey).mapLatest { rawValue ->
+        enumValues<T>().find { it.key == rawValue } ?: pref.defaultValue
+    }
+}
+
+@ExperimentalCoroutinesApi
+inline fun <reified T> SettingsDataStore.get(pref: IEnumPreference<T>): Flow<T> where T : Enum<T>, T : Keyed {
+    return getRaw(pref.preferenceKey).mapLatest { rawValue ->
+        enumValues<T>().find { it.key == rawValue } ?: pref.defaultValue
+    }
+}
+
+
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> SettingsDataStore.get(pref: IPreference<T>): Flow<T> = when (T::class) {
     String::class ->
@@ -81,24 +93,9 @@ inline fun <reified T> SettingsDataStore.get(pref: IPreference<T>): Flow<T> = wh
         getFloat(pref = pref as IPreference<Float>) as Flow<T>
     Long::class ->
         getLong(pref = pref as IPreference<Long>) as Flow<T>
-    else ->
-        error("No valid preference type ${T::class.simpleName}")
-}
-
-@Suppress("UNCHECKED_CAST")
-suspend inline fun <reified T> SettingsDataStore.put(value: IPreferenceValue<T>) = when (T::class) {
-    String::class ->
-        putString(value = value as IPreferenceValue<String>)
-    Int::class ->
-        putInt(value = value as IPreferenceValue<Int>)
-    Boolean::class ->
-        putBoolean(value = value as IPreferenceValue<Boolean>)
-    Double::class ->
-        putDouble(value = value as IPreferenceValue<Double>)
-    Float::class ->
-        putFloat(value = value as IPreferenceValue<Float>)
-    Long::class ->
-        putLong(value = value as IPreferenceValue<Long>)
+    Enum::class -> {
+        error("Enum is currently not valid preference type ${T::class.simpleName}")
+    }
     else ->
         error("No valid preference type ${T::class.simpleName}")
 }
@@ -117,6 +114,14 @@ suspend inline fun <reified T> SettingsDataStore.put(pref: IPreference<T>, value
         putFloat(pref = pref as IPreference<Float>, value = value as Float)
     Long::class ->
         putLong(pref = pref as IPreference<Long>, value = value as Long)
+    Enum::class -> {
+        error("Enum is currently not valid preference type ${T::class.simpleName}")
+    }
     else ->
         error("No valid preference type ${T::class.simpleName}")
+}
+
+@Suppress("UNCHECKED_CAST")
+suspend inline fun <reified T> SettingsDataStore.put(pref: IEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+    putEnum(pref, value)
 }

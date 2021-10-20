@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import de.charlex.settings.core.IEncryptedPreference
-import de.charlex.settings.core.IEncryptedPreferenceValue
+import de.charlex.settings.core.IPreference
+import de.charlex.settings.core.Keyed
 
 class EncryptedSettingsImpl internal constructor(
     context: Context,
@@ -21,6 +22,10 @@ class EncryptedSettingsImpl internal constructor(
         prefKeyEncryptionScheme,
         prefValueEncryptionScheme
     )
+
+    override fun getRaw(key: String): String? {
+        return settings.getString(key, null)
+    }
 
     override fun getString(pref: IEncryptedPreference<String>): String {
         return settings.getString(pref.preferenceKey, pref.defaultValue) ?: ""
@@ -46,30 +51,6 @@ class EncryptedSettingsImpl internal constructor(
         return settings.getLong(pref.preferenceKey, pref.defaultValue)
     }
 
-    override fun putString(value: IEncryptedPreferenceValue<String>) {
-        settings.edit().putString(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putInt(value: IEncryptedPreferenceValue<Int>) {
-        settings.edit().putInt(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putFloat(value: IEncryptedPreferenceValue<Float>) {
-        settings.edit().putFloat(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putDouble(value: IEncryptedPreferenceValue<Double>) {
-        settings.edit().putLong(value.preferenceKey, java.lang.Double.doubleToRawLongBits(value.value)).apply()
-    }
-
-    override fun putBoolean(value: IEncryptedPreferenceValue<Boolean>) {
-        settings.edit().putBoolean(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putLong(value: IEncryptedPreferenceValue<Long>) {
-        settings.edit().putLong(value.preferenceKey, value.value).apply()
-    }
-
     override fun putString(pref: IEncryptedPreference<String>, value: String) {
         settings.edit().putString(pref.preferenceKey, value).apply()
     }
@@ -92,5 +73,9 @@ class EncryptedSettingsImpl internal constructor(
 
     override fun putLong(pref: IEncryptedPreference<Long>, value: Long) {
         settings.edit().putLong(pref.preferenceKey, value).apply()
+    }
+
+    override fun <T> putEnum(pref: IEncryptedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+        settings.edit().putString(pref.preferenceKey, value.key).apply()
     }
 }

@@ -1,7 +1,7 @@
 package de.charlex.settings.datastore
 
-import de.charlex.settings.core.PreferenceValue
 import de.charlex.settings.core.Preferences
+import de.charlex.settings.core.Speed
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -18,9 +18,6 @@ abstract class SettingsDataStoreTest {
 
         settings.putInt(Preferences.PreferenceInt, 10)
         Assert.assertEquals(10, settings.getInt(Preferences.PreferenceInt).first())
-
-        settings.putInt(PreferenceValue(Preferences.PreferenceInt, 20))
-        Assert.assertEquals(20, settings.getInt(Preferences.PreferenceInt).first())
     }
 
     @Test
@@ -30,9 +27,6 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceInt, 10)
         Assert.assertEquals(10, settings.get(Preferences.PreferenceInt).first())
-
-        settings.put(PreferenceValue(Preferences.PreferenceInt, 20))
-        Assert.assertEquals(20, settings.get(Preferences.PreferenceInt).first())
     }
 
     @Test
@@ -42,14 +36,6 @@ abstract class SettingsDataStoreTest {
 
         settings.putString(Preferences.PreferenceString, "test")
         Assert.assertEquals("test", settings.getString(Preferences.PreferenceString).first())
-
-        settings.putString(
-            PreferenceValue(
-                Preferences.PreferenceString,
-                "value"
-            )
-        )
-        Assert.assertEquals("value", settings.getString(Preferences.PreferenceString).first())
     }
 
     @Test
@@ -59,14 +45,6 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceString, "test")
         Assert.assertEquals("test", settings.get(Preferences.PreferenceString).first())
-
-        settings.put(
-            PreferenceValue(
-                Preferences.PreferenceString,
-                "value"
-            )
-        )
-        Assert.assertEquals("value", settings.get(Preferences.PreferenceString).first())
     }
 
     @Test
@@ -76,9 +54,6 @@ abstract class SettingsDataStoreTest {
 
         settings.putFloat(Preferences.PreferenceFloat, 2.2f)
         Assert.assertEquals(2.2f, settings.getFloat(Preferences.PreferenceFloat).first())
-
-        settings.putFloat(PreferenceValue(Preferences.PreferenceFloat, 3.3f))
-        Assert.assertEquals(3.3f, settings.getFloat(Preferences.PreferenceFloat).first())
     }
 
     @Test
@@ -88,9 +63,6 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceFloat, 2.2f)
         Assert.assertEquals(2.2f, settings.get(Preferences.PreferenceFloat).first())
-
-        settings.put(PreferenceValue(Preferences.PreferenceFloat, 3.3f))
-        Assert.assertEquals(3.3f, settings.get(Preferences.PreferenceFloat).first())
     }
 
     @Test
@@ -100,9 +72,6 @@ abstract class SettingsDataStoreTest {
 
         settings.putDouble(Preferences.PreferenceDouble, 2.2)
         Assert.assertEquals(2.2, settings.getDouble(Preferences.PreferenceDouble).first(), 0.0)
-
-        settings.putDouble(PreferenceValue(Preferences.PreferenceDouble, 3.3))
-        Assert.assertEquals(3.3, settings.getDouble(Preferences.PreferenceDouble).first(), 0.0)
     }
 
     @Test
@@ -112,9 +81,6 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceDouble, 2.2)
         Assert.assertEquals(2.2, settings.get(Preferences.PreferenceDouble).first(), 0.0)
-
-        settings.put(PreferenceValue(Preferences.PreferenceDouble, 3.3))
-        Assert.assertEquals(3.3, settings.get(Preferences.PreferenceDouble).first(), 0.0)
     }
 
     @Test
@@ -124,9 +90,6 @@ abstract class SettingsDataStoreTest {
 
         settings.putLong(Preferences.PreferenceLong, 2L)
         Assert.assertEquals(2L, settings.getLong(Preferences.PreferenceLong).first())
-
-        settings.putLong(PreferenceValue(Preferences.PreferenceLong, 3L))
-        Assert.assertEquals(3L, settings.getLong(Preferences.PreferenceLong).first())
     }
 
     @Test
@@ -136,9 +99,6 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceLong, 2L)
         Assert.assertEquals(2L, settings.get(Preferences.PreferenceLong).first())
-
-        settings.put(PreferenceValue(Preferences.PreferenceLong, 3L))
-        Assert.assertEquals(3L, settings.get(Preferences.PreferenceLong).first())
     }
 
     @Test
@@ -148,14 +108,6 @@ abstract class SettingsDataStoreTest {
 
         settings.putBoolean(Preferences.PreferenceBoolean, false)
         Assert.assertEquals(false, settings.getBoolean(Preferences.PreferenceBoolean).first())
-
-        settings.putBoolean(
-            PreferenceValue(
-                Preferences.PreferenceBoolean,
-                true
-            )
-        )
-        Assert.assertEquals(true, settings.getBoolean(Preferences.PreferenceBoolean).first())
     }
 
     @Test
@@ -165,48 +117,24 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceBoolean, false)
         Assert.assertEquals(false, settings.get(Preferences.PreferenceBoolean).first())
-
-        settings.put(
-            PreferenceValue(
-                Preferences.PreferenceBoolean,
-                true
-            )
-        )
-        Assert.assertEquals(true, settings.get(Preferences.PreferenceBoolean).first())
     }
 
     @Test
-    fun test_ComplexPreference_Settings() = runBlocking {
-        settings.putString(Preferences.PreferenceComplex, Preferences.PreferenceComplex.defaultValue)
-        Assert.assertEquals("medium", settings.getString(Preferences.PreferenceComplex).first())
+    fun test_Enum_Settings() = runBlocking {
+        settings.putEnum(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
+        Assert.assertEquals(Speed.Medium, settings.getEnum(Preferences.PreferenceEnum).first())
 
-        settings.putString(Preferences.PreferenceComplex.Slow)
-        Assert.assertEquals("slow", settings.getString(Preferences.PreferenceComplex).first())
-
-        settings.putString(
-            PreferenceValue(
-                Preferences.PreferenceComplex,
-                "fast"
-            )
-        )
-        Assert.assertEquals("fast", settings.getString(Preferences.PreferenceComplex).first())
+        settings.putEnum(Preferences.PreferenceEnum, Speed.Slow)
+        Assert.assertEquals(Speed.Slow, settings.getEnum(Preferences.PreferenceEnum).first())
     }
 
     @Test
-    fun test_ComplexPreference_Generic_Settings() = runBlocking {
-        settings.put(Preferences.PreferenceComplex, Preferences.PreferenceComplex.defaultValue)
-        Assert.assertEquals("medium", settings.get(Preferences.PreferenceComplex).first())
+    fun test_Enum_Generic_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
+        Assert.assertEquals(Speed.Medium, settings.get(Preferences.PreferenceEnum).first())
 
-        settings.put(Preferences.PreferenceComplex.Slow)
-        Assert.assertEquals("slow", settings.get(Preferences.PreferenceComplex).first())
-
-        settings.put(
-            PreferenceValue(
-                Preferences.PreferenceComplex,
-                "fast"
-            )
-        )
-        Assert.assertEquals("fast", settings.get(Preferences.PreferenceComplex).first())
+        settings.put(Preferences.PreferenceEnum, Speed.Slow)
+        Assert.assertEquals(Speed.Slow, settings.get(Preferences.PreferenceEnum).first())
     }
 
     @Test

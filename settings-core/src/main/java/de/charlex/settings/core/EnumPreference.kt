@@ -1,7 +1,7 @@
 package de.charlex.settings.core
 
-open class Preference<T>(
+open class EnumPreference<T>(
     override val preferenceKey: String,
     override val defaultValue: T
-) : IPreference<T>
+) : IEnumPreference<T>  where T: Enum<T>, T: Keyed
 

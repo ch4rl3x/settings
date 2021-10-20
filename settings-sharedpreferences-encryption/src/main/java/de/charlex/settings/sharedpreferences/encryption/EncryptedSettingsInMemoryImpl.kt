@@ -1,11 +1,16 @@
 package de.charlex.settings.sharedpreferences.encryption
 
 import de.charlex.settings.core.IEncryptedPreference
-import de.charlex.settings.core.IEncryptedPreferenceValue
+import de.charlex.settings.core.IPreference
+import de.charlex.settings.core.Keyed
 
 class EncryptedSettingsInMemoryImpl internal constructor() : EncryptedSettings {
 
     private val settings = mutableMapOf<String, Any>()
+
+    override fun getRaw(key: String): String? {
+        return settings[key] as? String
+    }
 
     override fun getString(pref: IEncryptedPreference<String>): String {
         return settings[pref.preferenceKey] as? String ?: pref.defaultValue
@@ -31,28 +36,12 @@ class EncryptedSettingsInMemoryImpl internal constructor() : EncryptedSettings {
         return settings[pref.preferenceKey] as? Long ?: pref.defaultValue
     }
 
-    override fun putString(value: IEncryptedPreferenceValue<String>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
     override fun putString(pref: IEncryptedPreference<String>, value: String) {
         settings[pref.preferenceKey] = value as Any
     }
 
-    override fun putInt(value: IEncryptedPreferenceValue<Int>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
     override fun putInt(pref: IEncryptedPreference<Int>, value: Int) {
         settings[pref.preferenceKey] = value as Any
-    }
-
-    override fun putFloat(value: IEncryptedPreferenceValue<Float>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
-    override fun putDouble(value: IEncryptedPreferenceValue<Double>) {
-        settings[value.preferenceKey] = java.lang.Double.doubleToRawLongBits(value.value) as Any
     }
 
     override fun putFloat(pref: IEncryptedPreference<Float>, value: Float) {
@@ -63,19 +52,15 @@ class EncryptedSettingsInMemoryImpl internal constructor() : EncryptedSettings {
         settings[pref.preferenceKey] = java.lang.Double.doubleToRawLongBits(value) as Any
     }
 
-    override fun putBoolean(value: IEncryptedPreferenceValue<Boolean>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
     override fun putBoolean(pref: IEncryptedPreference<Boolean>, value: Boolean) {
         settings[pref.preferenceKey] = value as Any
     }
 
-    override fun putLong(value: IEncryptedPreferenceValue<Long>) {
-        settings[value.preferenceKey] = value.value as Any
-    }
-
     override fun putLong(pref: IEncryptedPreference<Long>, value: Long) {
         settings[pref.preferenceKey] = value as Any
+    }
+
+    override fun <T> putEnum(pref: IEncryptedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+        settings[pref.preferenceKey] = value.key
     }
 }

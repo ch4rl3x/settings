@@ -1,19 +1,22 @@
 package de.charlex.settings.core.encryption
 
-object EncryptedPreferences {
-    val PreferenceComplex = EncryptedSpeedPreference("preference_complex")
+import de.charlex.settings.core.EncryptedEnumPreference
+import de.charlex.settings.core.EncryptedPreference
 
-    val PreferenceInt = de.charlex.settings.core.EncryptedPreference("preference_int", 1)
+object EncryptedPreferences {
+    val PreferenceEnum = EncryptedEnumPreference("preference_complex", Speed.Medium)
+
+    val PreferenceInt = EncryptedPreference("preference_int", 1)
     val PreferenceString =
-        de.charlex.settings.core.EncryptedPreference("preference_string", "default")
+        EncryptedPreference("preference_string", "default")
     val PreferenceString2 =
-        de.charlex.settings.core.EncryptedPreference("preference_string_2", "default")
+        EncryptedPreference("preference_string_2", "default")
     val PreferenceString3 =
-        de.charlex.settings.core.EncryptedPreference("preference_string_3", "default")
+        EncryptedPreference("preference_string_3", "default")
     val PreferenceString_WithIntKey =
-        de.charlex.settings.core.EncryptedPreference("preference_int", "default")
-    val PreferenceFloat = de.charlex.settings.core.EncryptedPreference("preference_float", 1.1f)
-    val PreferenceDouble = de.charlex.settings.core.EncryptedPreference("preference_double", 1.1)
-    val PreferenceLong = de.charlex.settings.core.EncryptedPreference("preference_long", 1L)
-    val PreferenceBoolean = de.charlex.settings.core.EncryptedPreference("preference_boolean", true)
+        EncryptedPreference("preference_int", "default")
+    val PreferenceFloat = EncryptedPreference("preference_float", 1.1f)
+    val PreferenceDouble = EncryptedPreference("preference_double", 1.1)
+    val PreferenceLong = EncryptedPreference("preference_long", 1L)
+    val PreferenceBoolean = EncryptedPreference("preference_boolean", true)
 }

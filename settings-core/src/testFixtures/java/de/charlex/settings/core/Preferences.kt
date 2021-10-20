@@ -1,7 +1,6 @@
 package de.charlex.settings.core
 
 object Preferences {
-    val PreferenceComplex = SpeedPreference("preference_complex")
 
     val PreferenceInt = Preference("preference_int", 1)
     val PreferenceString = Preference("preference_string", "default")
@@ -10,4 +9,6 @@ object Preferences {
     val PreferenceDouble = Preference("preference_double", 1.1)
     val PreferenceLong = Preference("preference_long", 1L)
     val PreferenceBoolean = Preference("preference_boolean", true)
+
+    val PreferenceEnum = EnumPreference("key", Speed.Medium)
 }

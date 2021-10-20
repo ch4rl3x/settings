@@ -7,7 +7,7 @@ import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import de.charlex.settings.core.IPreference
-import de.charlex.settings.core.IPreferenceValue
+import de.charlex.settings.core.Keyed
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -68,42 +68,6 @@ class SettingsDataStoreImpl internal constructor(
         }
     }
 
-    override suspend fun putString(value: IPreferenceValue<String>) {
-        context.dataStore.edit { settings ->
-            settings[stringPreferencesKey(value.preferenceKey)] = value.value
-        }
-    }
-
-    override suspend fun putInt(value: IPreferenceValue<Int>) {
-        context.dataStore.edit { settings ->
-            settings[intPreferencesKey(value.preferenceKey)] = value.value
-        }
-    }
-
-    override suspend fun putFloat(value: IPreferenceValue<Float>) {
-        context.dataStore.edit { settings ->
-            settings[floatPreferencesKey(value.preferenceKey)] = value.value
-        }
-    }
-
-    override suspend fun putDouble(value: IPreferenceValue<Double>) {
-        context.dataStore.edit { settings ->
-            settings[doublePreferencesKey(value.preferenceKey)] = value.value
-        }
-    }
-
-    override suspend fun putBoolean(value: IPreferenceValue<Boolean>) {
-        context.dataStore.edit { settings ->
-            settings[booleanPreferencesKey(value.preferenceKey)] = value.value
-        }
-    }
-
-    override suspend fun putLong(value: IPreferenceValue<Long>) {
-        context.dataStore.edit { settings ->
-            settings[longPreferencesKey(value.preferenceKey)] = value.value
-        }
-    }
-
     override suspend fun putString(pref: IPreference<String>, value: String) {
         context.dataStore.edit { settings ->
             settings[stringPreferencesKey(pref.preferenceKey)] = value
@@ -137,6 +101,12 @@ class SettingsDataStoreImpl internal constructor(
     override suspend fun putLong(pref: IPreference<Long>, value: Long) {
         context.dataStore.edit { settings ->
             settings[longPreferencesKey(pref.preferenceKey)] = value
+        }
+    }
+
+    override suspend fun <T> putEnum(pref: IPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+        context.dataStore.edit { settings ->
+            settings[stringPreferencesKey(pref.preferenceKey)] = value.key
         }
     }
 }

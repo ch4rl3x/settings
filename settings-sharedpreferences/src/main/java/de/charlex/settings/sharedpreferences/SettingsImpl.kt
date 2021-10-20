@@ -2,8 +2,7 @@ package de.charlex.settings.sharedpreferences
 
 import android.content.Context
 import android.content.SharedPreferences
-import de.charlex.settings.core.IPreference
-import de.charlex.settings.core.IPreferenceValue
+import de.charlex.settings.core.*
 
 class SettingsImpl internal constructor(
     context: Context,
@@ -12,6 +11,10 @@ class SettingsImpl internal constructor(
 ) : Settings {
 
     val settings: SharedPreferences = context.getSharedPreferences(name, mode)
+
+    override fun getRaw(key: String): String? {
+        return settings.getString(key, null)
+    }
 
     override fun getString(pref: IPreference<String>): String {
         return settings.getString(pref.preferenceKey, pref.defaultValue) ?: ""
@@ -37,30 +40,6 @@ class SettingsImpl internal constructor(
         return settings.getLong(pref.preferenceKey, pref.defaultValue)
     }
 
-    override fun putString(value: IPreferenceValue<String>) {
-        settings.edit().putString(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putInt(value: IPreferenceValue<Int>) {
-        settings.edit().putInt(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putFloat(value: IPreferenceValue<Float>) {
-        settings.edit().putFloat(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putDouble(value: IPreferenceValue<Double>) {
-        settings.edit().putLong(value.preferenceKey, java.lang.Double.doubleToRawLongBits(value.value)).apply()
-    }
-
-    override fun putBoolean(value: IPreferenceValue<Boolean>) {
-        settings.edit().putBoolean(value.preferenceKey, value.value).apply()
-    }
-
-    override fun putLong(value: IPreferenceValue<Long>) {
-        settings.edit().putLong(value.preferenceKey, value.value).apply()
-    }
-
     override fun putString(pref: IPreference<String>, value: String) {
         settings.edit().putString(pref.preferenceKey, value).apply()
     }
@@ -84,4 +63,11 @@ class SettingsImpl internal constructor(
     override fun putLong(pref: IPreference<Long>, value: Long) {
         settings.edit().putLong(pref.preferenceKey, value).apply()
     }
+
+    override fun <T> putEnum(pref: IPreference<T>, value:T) where T : Enum<T>, T : Keyed {
+        settings.edit().putString(pref.preferenceKey, value.key).apply()
+    }
+
+
 }
+
