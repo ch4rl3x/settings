@@ -1,5 +1,3 @@
-include ':settings-core'
-include ':settings-core-encryption'
 include ':settings-datastore'
 include ':settings-datastore-encryption'
 include ':settings-sharedpreferences'

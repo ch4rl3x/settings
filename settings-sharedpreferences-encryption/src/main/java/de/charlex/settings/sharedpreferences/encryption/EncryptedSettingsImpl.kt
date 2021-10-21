@@ -3,9 +3,7 @@ package de.charlex.settings.sharedpreferences.encryption
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import de.charlex.settings.core.IEncryptedPreference
-import de.charlex.settings.core.IPreference
-import de.charlex.settings.core.Keyed
+import de.charlex.settings.sharedpreferences.Keyed
 
 class EncryptedSettingsImpl internal constructor(
     context: Context,

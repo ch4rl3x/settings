@@ -1,7 +1,5 @@
 package de.charlex.settings.sharedpreferences
 
-import de.charlex.settings.core.Preferences
-import de.charlex.settings.core.Speed
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -11,64 +9,55 @@ abstract class SettingsTest {
 
     @Test
     fun test_Int_Settings() {
-        settings.putInt(Preferences.PreferenceInt, Preferences.PreferenceInt.defaultValue)
-        assertEquals(1, settings.getInt(Preferences.PreferenceInt))
+        settings.put(Preferences.PreferenceInt, Preferences.PreferenceInt.defaultValue)
+        assertEquals(1, settings.get(Preferences.PreferenceInt))
 
-        settings.putInt(Preferences.PreferenceInt, 10)
-        assertEquals(10, settings.getInt(Preferences.PreferenceInt))
+        settings.put(Preferences.PreferenceInt, 10)
+        assertEquals(10, settings.get(Preferences.PreferenceInt))
     }
 
     @Test
     fun test_String_Settings() {
-        settings.putString(Preferences.PreferenceString, Preferences.PreferenceString.defaultValue)
-        assertEquals("default", settings.getString(Preferences.PreferenceString))
+        settings.put(Preferences.PreferenceString, Preferences.PreferenceString.defaultValue)
+        assertEquals("default", settings.get(Preferences.PreferenceString))
 
-        settings.putString(Preferences.PreferenceString, "test")
-        assertEquals("test", settings.getString(Preferences.PreferenceString))
+        settings.put(Preferences.PreferenceString, "test")
+        assertEquals("test", settings.get(Preferences.PreferenceString))
     }
 
     @Test
     fun test_Float_Settings() {
-        settings.putFloat(Preferences.PreferenceFloat, Preferences.PreferenceFloat.defaultValue)
-        assertEquals(1.1f, settings.getFloat(Preferences.PreferenceFloat))
+        settings.put(Preferences.PreferenceFloat, Preferences.PreferenceFloat.defaultValue)
+        assertEquals(1.1f, settings.get(Preferences.PreferenceFloat))
 
-        settings.putFloat(Preferences.PreferenceFloat, 2.2f)
-        assertEquals(2.2f, settings.getFloat(Preferences.PreferenceFloat))
-    }
-
-    @Test
-    fun test_Double_Settings() {
-        settings.putDouble(Preferences.PreferenceDouble, Preferences.PreferenceDouble.defaultValue)
-        assertEquals(1.1, settings.getDouble(Preferences.PreferenceDouble), 0.0)
-
-        settings.putDouble(Preferences.PreferenceDouble, 2.2)
-        assertEquals(2.2, settings.getDouble(Preferences.PreferenceDouble), 0.0)
+        settings.put(Preferences.PreferenceFloat, 2.2f)
+        assertEquals(2.2f, settings.get(Preferences.PreferenceFloat))
     }
 
     @Test
     fun test_Long_Settings() {
-        settings.putLong(Preferences.PreferenceLong, Preferences.PreferenceLong.defaultValue)
-        assertEquals(1L, settings.getLong(Preferences.PreferenceLong))
+        settings.put(Preferences.PreferenceLong, Preferences.PreferenceLong.defaultValue)
+        assertEquals(1L, settings.get(Preferences.PreferenceLong))
 
-        settings.putLong(Preferences.PreferenceLong, 2L)
-        assertEquals(2L, settings.getLong(Preferences.PreferenceLong))
+        settings.put(Preferences.PreferenceLong, 2L)
+        assertEquals(2L, settings.get(Preferences.PreferenceLong))
     }
 
     @Test
     fun test_Boolean_Settings() {
-        settings.putBoolean(Preferences.PreferenceBoolean, Preferences.PreferenceBoolean.defaultValue)
-        assertEquals(true, settings.getBoolean(Preferences.PreferenceBoolean))
+        settings.put(Preferences.PreferenceBoolean, Preferences.PreferenceBoolean.defaultValue)
+        assertEquals(true, settings.get(Preferences.PreferenceBoolean))
 
-        settings.putBoolean(Preferences.PreferenceBoolean, false)
-        assertEquals(false, settings.getBoolean(Preferences.PreferenceBoolean))
+        settings.put(Preferences.PreferenceBoolean, false)
+        assertEquals(false, settings.get(Preferences.PreferenceBoolean))
     }
 
     @Test
-    fun test_ComplexPreference_Settings() {
-        settings.putEnum(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
-        assertEquals(Speed.Medium, settings.getEnum(Preferences.PreferenceEnum))
+    fun test_Enum_Settings() {
+        settings.put(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
+        assertEquals(Speed.Medium, settings.get(Preferences.PreferenceEnum))
 
-        settings.putEnum(Preferences.PreferenceEnum, Speed.Slow)
-        assertEquals(Speed.Slow, settings.getEnum(Preferences.PreferenceEnum))
+        settings.put(Preferences.PreferenceEnum, Speed.Slow)
+        assertEquals(Speed.Slow, settings.get(Preferences.PreferenceEnum))
     }
 }

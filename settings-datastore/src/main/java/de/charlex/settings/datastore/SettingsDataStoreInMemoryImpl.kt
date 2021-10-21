@@ -1,8 +1,6 @@
 package de.charlex.settings.datastore
 
 import androidx.datastore.preferences.core.*
-import de.charlex.settings.core.IPreference
-import de.charlex.settings.core.Keyed
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -10,80 +8,20 @@ import kotlinx.coroutines.flow.map
 @Suppress("UNCHECKED_CAST")
 class SettingsDataStoreInMemoryImpl internal constructor() : SettingsDataStore {
 
-    private val flows = mutableMapOf<Preferences.Key<*>, MutableStateFlow<*>>()
+    private val flows = mutableMapOf<Preferences.Key<Any>, MutableStateFlow<Any>>()
 
-    override fun getRaw(key: String): Flow<String?> {
-        val stateFlow = flows.getOrPut(stringPreferencesKey(key), { MutableStateFlow(null) })
-        return stateFlow.map { it as? String }
+    override fun <T> get(key: IDataStorePreference<T>): Flow<T> {
+        val stateFlow = flows.getOrPut(key.preferenceKey as Preferences.Key<Any>, { MutableStateFlow(key.defaultValue as Any) }) as Flow<T>
+        return stateFlow.map { it }
     }
 
-    override fun getString(pref: IPreference<String>): Flow<String> {
-        val stateFlow = flows.getOrPut(stringPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
-        return stateFlow.map { it as String }
-    }
-
-    override fun getInt(pref: IPreference<Int>): Flow<Int> {
-        val stateFlow = flows.getOrPut(intPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
-        return stateFlow.map { it as Int }
-    }
-
-    override fun getFloat(pref: IPreference<Float>): Flow<Float> {
-        val stateFlow = flows.getOrPut(floatPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
-        return stateFlow.map { it as Float }
-    }
-
-    override fun getDouble(pref: IPreference<Double>): Flow<Double> {
-        val stateFlow = flows.getOrPut(doublePreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
-        return stateFlow.map { it as Double }
-    }
-
-    override fun getBoolean(pref: IPreference<Boolean>): Flow<Boolean> {
-        val stateFlow = flows.getOrPut(booleanPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
-        return stateFlow.map { it as Boolean }
-    }
-
-    override fun getLong(pref: IPreference<Long>): Flow<Long> {
-        val stateFlow = flows.getOrPut(longPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) })
-        return stateFlow.map { it as Long }
-    }
-
-    override suspend fun putRaw(key: String, value: String) {
-        val stateFlow = flows.getOrPut(stringPreferencesKey(key), { MutableStateFlow(value) }) as MutableStateFlow<String>
+    override suspend fun <T> put(key: IDataStorePreference<T>, value: T) {
+        val stateFlow = flows.getOrPut(key.preferenceKey as Preferences.Key<Any>, { MutableStateFlow(key.defaultValue as Any) }) as MutableStateFlow<T>
         stateFlow.value = value
     }
 
-    override suspend fun putString(pref: IPreference<String>, value: String) {
-        val stateFlow = flows.getOrPut(stringPreferencesKey(pref.preferenceKey), { MutableStateFlow(value) }) as MutableStateFlow<String>
-        stateFlow.value = value
-    }
-
-    override suspend fun putInt(pref: IPreference<Int>, value: Int) {
-        val stateFlow = flows.getOrPut(intPreferencesKey(pref.preferenceKey), { MutableStateFlow(value) }) as MutableStateFlow<Int>
-        stateFlow.value = value
-    }
-
-    override suspend fun putFloat(pref: IPreference<Float>, value: Float) {
-        val stateFlow = flows.getOrPut(floatPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Float>
-        stateFlow.value = value
-    }
-
-    override suspend fun putDouble(pref: IPreference<Double>, value: Double) {
-        val stateFlow = flows.getOrPut(doublePreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Double>
-        stateFlow.value = value
-    }
-
-    override suspend fun putBoolean(pref: IPreference<Boolean>, value: Boolean) {
-        val stateFlow = flows.getOrPut(booleanPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Boolean>
-        stateFlow.value = value
-    }
-
-    override suspend fun putLong(pref: IPreference<Long>, value: Long) {
-        val stateFlow = flows.getOrPut(longPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<Long>
-        stateFlow.value = value
-    }
-
-    override suspend fun <T> putEnum(pref: IPreference<T>, value: T) where T : Enum<T>, T : Keyed {
-        val stateFlow = flows.getOrPut(stringPreferencesKey(pref.preferenceKey), { MutableStateFlow(pref.defaultValue) }) as MutableStateFlow<String>
+    override suspend fun <T> put(key: IDataStoreEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+        val stateFlow = flows.getOrPut(key.preferenceKey as Preferences.Key<Any>, { MutableStateFlow(key.defaultValue.key) }) as MutableStateFlow<String>
         stateFlow.value = value.key
     }
 }

@@ -1,7 +1,6 @@
 package de.charlex.settings.sharedpreferences.encryption
 
-import de.charlex.settings.core.encryption.EncryptedPreferences
-import de.charlex.settings.core.encryption.Speed
+
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -64,7 +63,7 @@ abstract class SettingsEncryptionTest {
     }
 
     @Test
-    fun test_ComplexPreference_Settings() {
+    fun test_Enum_Settings() {
         settings.putEnum(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
         assertEquals("medium", settings.getEnum(EncryptedPreferences.PreferenceEnum))
 
