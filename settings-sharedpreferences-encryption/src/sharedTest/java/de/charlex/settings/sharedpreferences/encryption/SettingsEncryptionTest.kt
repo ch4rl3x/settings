@@ -64,9 +64,9 @@ abstract class SettingsEncryptionTest {
     @Test
     fun test_Enum_Settings() {
         settings.putEnum(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
-        assertEquals("medium", settings.getEnum(EncryptedPreferences.PreferenceEnum))
+        assertEquals(Speed.Medium, settings.getEnum(EncryptedPreferences.PreferenceEnum))
 
         settings.putEnum(EncryptedPreferences.PreferenceEnum, Speed.Slow)
-        assertEquals("slow", settings.getEnum(EncryptedPreferences.PreferenceEnum))
+        assertEquals(Speed.Slow, settings.getEnum(EncryptedPreferences.PreferenceEnum))
     }
 }

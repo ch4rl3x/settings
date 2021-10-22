@@ -67,47 +67,39 @@ abstract class SettingsDataStoreEncryptionTest {
     @Test
     fun test_Enum_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
-        Assert.assertEquals("medium", settings.get(EncryptedPreferences.PreferenceEnum).first())
+        Assert.assertEquals(Speed.Medium, settings.get(EncryptedPreferences.PreferenceEnum).first())
 
         settings.put(EncryptedPreferences.PreferenceEnum, Speed.Slow)
-        Assert.assertEquals("slow", settings.get(EncryptedPreferences.PreferenceEnum).first())
+        Assert.assertEquals(Speed.Slow, settings.get(EncryptedPreferences.PreferenceEnum).first())
     }
 
     @Test
     fun test_Enum_Generic_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
-        Assert.assertEquals("medium", settings.get(EncryptedPreferences.PreferenceEnum).first())
+        Assert.assertEquals(Speed.Medium, settings.get(EncryptedPreferences.PreferenceEnum).first())
 
         settings.put(EncryptedPreferences.PreferenceEnum, Speed.Slow)
-        Assert.assertEquals("slow", settings.get(EncryptedPreferences.PreferenceEnum).first())
+        Assert.assertEquals(Speed.Slow, settings.get(EncryptedPreferences.PreferenceEnum).first())
     }
 
     @Test
-    fun testMultipleEncryption() {
-        runBlocking {
-            settings.put(EncryptedPreferences.PreferenceString, "A")
-            settings.put(EncryptedPreferences.PreferenceString2, "B")
-            settings.put(EncryptedPreferences.PreferenceString3, "C")
-            Assert.assertEquals("A", settings.get(EncryptedPreferences.PreferenceString).first())
-            Assert.assertEquals("B", settings.get(EncryptedPreferences.PreferenceString2).first())
-            Assert.assertEquals("C", settings.get(EncryptedPreferences.PreferenceString3).first())
-        }
+    fun testMultipleEncryption() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceString, "A")
+        settings.put(EncryptedPreferences.PreferenceString2, "B")
+        settings.put(EncryptedPreferences.PreferenceString3, "C")
+        Assert.assertEquals("A", settings.get(EncryptedPreferences.PreferenceString).first())
+        Assert.assertEquals("B", settings.get(EncryptedPreferences.PreferenceString2).first())
+        Assert.assertEquals("C", settings.get(EncryptedPreferences.PreferenceString3).first())
     }
 
-    @Test
-    fun testTypeError_Generic() {
-        runBlocking {
-            settings.put(EncryptedPreferences.PreferenceInt, EncryptedPreferences.PreferenceInt.defaultValue)
-            val intFlow = settings.get(EncryptedPreferences.PreferenceInt)
+    @Test(
+        expected = Throwable::class
+    )
+    fun testTypeError_Generic(): Unit = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceInt, EncryptedPreferences.PreferenceInt.defaultValue)
+        val intFlow = settings.get(EncryptedPreferences.PreferenceInt)
 
-            settings.put(EncryptedPreferences.PreferenceString_WithIntKey, "TEST2")
-
-            try {
-                intFlow.first()
-                Assert.fail("Exception expected")
-            } catch (e: ClassCastException) {
-                true
-            }
-        }
+        settings.put(EncryptedPreferences.PreferenceString_WithIntKey, "TEST2")
+        intFlow.first()
     }
 }
