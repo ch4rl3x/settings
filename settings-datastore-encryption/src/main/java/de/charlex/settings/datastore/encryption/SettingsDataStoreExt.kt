@@ -24,7 +24,7 @@ inline fun <reified T> SettingsDataStore.get(pref: IDataStoreEncryptedPreference
     }
 }
 
-inline fun <reified T> decrypt(encrypted: String):T {
+inline fun <reified T> decrypt(encrypted: String): T {
     val (iv, cipherText) = Security.extractIvAndCipherText(encrypted) ?: error("Invalid data stored")
     val decryptedValue = Security.decryptData(
         Security.securityKeyAlias,

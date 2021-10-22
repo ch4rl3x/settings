@@ -12,7 +12,7 @@ internal data class EncryptedPreference<T> (
 fun encryptedStringPreference(name: String, defaultValue: String): IDataStoreEncryptedPreference<String> =
     EncryptedPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
-fun <T> encryptedEnumPreference(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> where T: Enum<T>, T: Keyed =
+fun <T> encryptedEnumPreference(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> where T : Enum<T>, T : Keyed =
     EncryptedPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
 fun encryptedBooleanPreference(name: String, defaultValue: Boolean): IDataStoreEncryptedPreference<Boolean> =

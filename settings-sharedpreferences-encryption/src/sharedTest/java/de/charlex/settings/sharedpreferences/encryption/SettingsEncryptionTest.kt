@@ -1,6 +1,5 @@
 package de.charlex.settings.sharedpreferences.encryption
 
-
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

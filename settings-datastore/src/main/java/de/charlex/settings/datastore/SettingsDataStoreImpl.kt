@@ -25,12 +25,11 @@ class SettingsDataStoreImpl internal constructor(
         scope = scope
     )
 
-    override fun <T> get(key: IDataStorePreference<T>): Flow<T>  {
+    override fun <T> get(key: IDataStorePreference<T>): Flow<T> {
         return context.dataStore.data.map {
             it[key.preferenceKey] ?: key.defaultValue
         }
     }
-
 
     override suspend fun <T> put(key: IDataStorePreference<T>, value: T) {
         context.dataStore.edit { settings ->
@@ -43,6 +42,4 @@ class SettingsDataStoreImpl internal constructor(
             settings[key.preferenceKey] = value.key
         }
     }
-
 }
-

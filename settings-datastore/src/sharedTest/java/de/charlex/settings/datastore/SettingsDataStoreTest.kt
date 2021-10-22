@@ -73,6 +73,15 @@ abstract class SettingsDataStoreTest {
     }
 
     @Test
+    fun test_StringSet_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceStringSet, Preferences.PreferenceStringSet.defaultValue)
+        Assert.assertEquals(setOf<String>(), settings.get(Preferences.PreferenceStringSet).first())
+
+        settings.put(Preferences.PreferenceStringSet, setOf("1", "2", "3"))
+        Assert.assertEquals(setOf("1", "2", "3"), settings.get(Preferences.PreferenceStringSet).first())
+    }
+
+    @Test
     fun testTypeError() {
         runBlocking {
             settings.put(Preferences.PreferenceInt, Preferences.PreferenceInt.defaultValue)

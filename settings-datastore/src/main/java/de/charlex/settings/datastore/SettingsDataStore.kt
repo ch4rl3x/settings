@@ -10,12 +10,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-
 interface SettingsDataStore {
 
     fun <T> get(key: IDataStorePreference<T>): Flow<T>
-    suspend fun <T> put(key: IDataStorePreference<T>, value:T)
-    suspend fun <T> put(key: IDataStoreEnumPreference<T>, value:T) where T: Enum<T>, T: Keyed
+    suspend fun <T> put(key: IDataStorePreference<T>, value: T)
+    suspend fun <T> put(key: IDataStoreEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed
 
     companion object {
 
@@ -47,10 +46,8 @@ interface SettingsDataStore {
     }
 }
 
-
 inline fun <reified T> SettingsDataStore.get(pref: IDataStoreEnumPreference<T>): Flow<T> where T : Enum<T>, T : Keyed {
     return get(stringPreference(pref.preferenceKey.name, pref.defaultValue.key)).map { prefValue ->
         enumValues<T>().find { it.key == prefValue } ?: pref.defaultValue
     }
 }
-
