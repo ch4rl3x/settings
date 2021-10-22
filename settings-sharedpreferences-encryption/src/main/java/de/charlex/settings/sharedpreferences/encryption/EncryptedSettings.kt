@@ -45,5 +45,6 @@ fun Settings.Companion.createInMemoryEncrypted(): EncryptedSettings {
 }
 
 inline fun <reified T> EncryptedSettings.getEnum(pref: IEncryptedPreference<T>): T where T : Enum<T>, T : Keyed {
-    return enumValues<T>().find { it.key == getRaw(pref.preferenceKey) } ?: pref.defaultValue
+    val enumKey = getRaw(pref.preferenceKey)
+    return enumValues<T>().find { it.key == enumKey } ?: pref.defaultValue
 }
