@@ -53,6 +53,22 @@ abstract class SettingsTest {
     }
 
     @Test
+    fun test_StringSet_Settings() {
+        settings.put(Preferences.PreferenceStringSet, Preferences.PreferenceStringSet.defaultValue)
+        assertEquals(setOf<String>(), settings.get(Preferences.PreferenceStringSet))
+
+        settings.put(Preferences.PreferenceStringSet, setOf("1", "2", "3"))
+        assertEquals(setOf("1", "2", "3"), settings.get(Preferences.PreferenceStringSet))
+    }
+
+    @Test(
+        expected = Throwable::class
+    )
+    fun test_AnySet_Settings_fail() {
+        settings.put(Preferences.PreferenceStringSet, setOf("1", 2, 4) as Set<String>)
+    }
+
+    @Test
     fun test_Enum_Settings() {
         settings.put(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
         assertEquals(Speed.Medium, settings.get(Preferences.PreferenceEnum))

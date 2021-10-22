@@ -3,19 +3,19 @@ package de.charlex.settings.datastore
 import androidx.datastore.preferences.core.*
 
 internal data class Preference<T> (
+    override val preferenceKey: Preferences.Key<T>,
     override val defaultValue: T,
-    override val preferenceKey: Preferences.Key<T>
 ) : IDataStorePreference<T>
 
 internal data class EnumPreference<T> (
-    override val defaultValue: T,
     override val preferenceKey: Preferences.Key<String>,
+    override val defaultValue: T,
 ) : IDataStoreEnumPreference<T>
 
 fun stringPreference(name: String, defaultValue: String): IDataStorePreference<String> =
     Preference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
-fun <T> enumPreference(name: String, defaultValue: T): IDataStoreEnumPreference<T> where T: Enum<T>, T: Keyed =
+fun <T> enumPreference(name: String, defaultValue: T): IDataStoreEnumPreference<T> where T : Enum<T>, T : Keyed =
     EnumPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
 fun booleanPreference(name: String, defaultValue: Boolean): IDataStorePreference<Boolean> =

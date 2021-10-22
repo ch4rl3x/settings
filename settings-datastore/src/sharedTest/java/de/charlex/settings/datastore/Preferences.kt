@@ -10,5 +10,6 @@ object Preferences {
     val PreferenceLong = longPreference("preference_long", 1L)
     val PreferenceBoolean = booleanPreference("preference_boolean", true)
 
+    val PreferenceStringSet = stringSetPreference("preference_stringset", setOf())
     val PreferenceEnum = enumPreference("key", Speed.Medium)
 }

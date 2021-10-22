@@ -12,8 +12,8 @@ import kotlinx.serialization.json.Json
 val json = Json { encodeDefaults = true }
 
 inline fun <reified T> SettingsDataStore.get(pref: IDataStoreEncryptedPreference<T>): Flow<T> {
-    val x = this.get(stringPreference(pref.preferenceKey.name, "NULL"))
-    return x.map {
+    val rawValue = this.get(stringPreference(pref.preferenceKey.name, "NULL"))
+    return rawValue.map {
         if (it == "NULL") {
             pref.defaultValue
         } else {
@@ -24,7 +24,7 @@ inline fun <reified T> SettingsDataStore.get(pref: IDataStoreEncryptedPreference
     }
 }
 
-inline fun <reified T> decrypt(encrypted: String):T {
+inline fun <reified T> decrypt(encrypted: String): T {
     val (iv, cipherText) = Security.extractIvAndCipherText(encrypted) ?: error("Invalid data stored")
     val decryptedValue = Security.decryptData(
         Security.securityKeyAlias,

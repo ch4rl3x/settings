@@ -2,7 +2,6 @@ package de.charlex.settings.sharedpreferences.encryption
 
 import de.charlex.settings.sharedpreferences.Keyed
 
-
 class EncryptedSettingsInMemoryImpl internal constructor() : EncryptedSettings {
 
     private val settings = mutableMapOf<String, Any>()

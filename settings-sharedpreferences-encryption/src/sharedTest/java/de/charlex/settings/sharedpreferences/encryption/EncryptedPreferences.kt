@@ -1,6 +1,5 @@
 package de.charlex.settings.sharedpreferences.encryption
 
-
 object EncryptedPreferences {
     val PreferenceEnum = EncryptedEnumPreference("preference_complex", Speed.Medium)
 

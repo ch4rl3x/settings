@@ -25,11 +25,22 @@ class SettingsImpl internal constructor(
             is Int -> edit.putInt(name, value)
             is Long -> edit.putLong(name, value)
             is Float -> edit.putFloat(name, value)
-            else -> error("Cannot save ${pref.preferenceKey}")
+            is Set<*> -> {
+                val stringSet = value.filterIsInstance<String>().toSet()
+                if (stringSet.size != value.size) {
+                    error("Cannot save preference with key: ${pref.preferenceKey}, value: ${value}\".\n" +
+                        "Only String sets can be saved and this set seems to contain other instances.")
+                }
+                edit.putStringSet(name, stringSet)
+            }
+            else -> error("Cannot save preference with key: ${pref.preferenceKey}, value: $value")
         }
         edit.commit()
     }
 
-
+    override fun <T> put(pref: ISharedEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+        val edit = settings.edit()
+        edit.putString(pref.preferenceKey, value.key)
+        edit.commit()
+    }
 }
-
