@@ -1,6 +1,6 @@
 package de.charlex.settings.datastore
 
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map

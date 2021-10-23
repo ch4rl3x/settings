@@ -11,8 +11,10 @@ class SettingsInMemoryImpl internal constructor() : Settings {
 
     override fun <T> put(pref: ISharedPreference<T>, value: T) {
         if (value is Set<*> && value.filterIsInstance<String>().size != value.size) {
-            error("Cannot save preference with key: ${pref.preferenceKey}, value: ${value}\".\n" +
-                "Only String sets can be saved and this set seems to contain other instances.")
+            error(
+                "Cannot save preference with key: ${pref.preferenceKey}, value: ${value}\".\n" +
+                    "Only String sets can be saved and this set seems to contain other instances."
+            )
         }
         settings[pref.preferenceKey] = value as Any
     }
