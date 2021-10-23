@@ -16,27 +16,44 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
-apply plugin: 'io.codearte.nexus-staging'
+plugins {
+    id "io.codearte.nexus-staging" version "0.30.0"
+    id "com.diffplug.spotless" version "5.9.0"
+}
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+subprojects {
+    apply plugin: 'com.diffplug.spotless'
 
     ext {
         PUBLISH_GROUP_ID = 'de.charlex.settings'
         PUBLISH_VERSION = '1.0.0-rc01'
     }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    spotless {
+        kotlin {
+            target "**/*.kt"
+            ktlint("0.42.1")
+//            licenseHeaderFile rootProject.file('spotless/copyright.txt')
+        }
+
+        groovyGradle {
+            target '**/*.gradle'
+            greclipse().configFile(rootProject.file('spotless/greclipse.properties'))
+//            licenseHeaderFile rootProject.file('spotless/copyright.txt'),
+//                    '(buildscript|apply|import|plugins)'
+        }
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+
 }

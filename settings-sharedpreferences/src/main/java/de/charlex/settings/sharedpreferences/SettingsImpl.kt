@@ -28,8 +28,10 @@ class SettingsImpl internal constructor(
             is Set<*> -> {
                 val stringSet = value.filterIsInstance<String>().toSet()
                 if (stringSet.size != value.size) {
-                    error("Cannot save preference with key: ${pref.preferenceKey}, value: ${value}\".\n" +
-                        "Only String sets can be saved and this set seems to contain other instances.")
+                    error(
+                        "Cannot save preference with key: ${pref.preferenceKey}, value: ${value}\".\n" +
+                            "Only String sets can be saved and this set seems to contain other instances."
+                    )
                 }
                 edit.putStringSet(name, stringSet)
             }
