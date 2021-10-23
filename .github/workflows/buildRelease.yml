@@ -76,7 +76,7 @@ jobs:
           retention-days: 1
 
   testRelease:
-    needs: [spotless, assembleRelease]
+    needs: [ assembleRelease]
     name: TestRelease
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -110,7 +110,7 @@ jobs:
           ./gradlew testRelease
 
   lintRelease:
-    needs: [ spotless, assembleRelease ]
+    needs: [ assembleRelease ]
     name: LintRelease
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -144,7 +144,7 @@ jobs:
           ./gradlew lintRelease
 
   androidReleaseTest:
-    needs: [ spotless, assembleRelease ]
+    needs: [ assembleRelease ]
     name: AndroidReleaseTest
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
     timeout-minutes: 60
@@ -184,7 +184,7 @@ jobs:
           script: ./gradlew connectedReleaseAndroidTest
 
   publish:
-    needs: [ spotless, assembleRelease, testRelease, lintRelease, androidReleaseTest ]
+    needs: [ testRelease, lintRelease, androidReleaseTest ]
     name: Release build and publish
     runs-on: ubuntu-latest
     steps:
@@ -221,7 +221,7 @@ jobs:
           SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
 
   mkdocs-gh-deploy:
-    needs: [ spotless, assembleRelease, testRelease, lintRelease, androidReleaseTest, publish ]
+    needs: [ publish ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

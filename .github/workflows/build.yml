@@ -2,6 +2,7 @@ name: Build
 
 on:
   push:
+    tags-ignore:
     paths-ignore:
       - 'README.md'
 
@@ -76,7 +77,7 @@ jobs:
           retention-days: 1
 
   testDebug:
-    needs: [spotless, assembleDebug]
+    needs: [ assembleDebug]
     if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]') && ! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     name: TestDebug
     runs-on: ubuntu-latest
@@ -111,7 +112,7 @@ jobs:
           ./gradlew testDebug
 
   lintDebug:
-    needs: [ spotless, assembleDebug ]
+    needs: [ assembleDebug ]
     if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]') && ! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     name: LintDebug
     runs-on: ubuntu-latest
@@ -146,7 +147,7 @@ jobs:
           ./gradlew lintDebug
 
   androidDebugTest:
-    needs: [spotless, assembleDebug]
+    needs: [ assembleDebug]
     if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]') && ! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
     name: AndroidDebugTest
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
