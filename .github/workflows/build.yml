@@ -146,10 +146,10 @@ jobs:
         run: |
           ./gradlew lintDebug
 
-  androidDebugTest:
+  connectedCheck:
     needs: [ assembleDebug]
     if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]') && ! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
-    name: AndroidDebugTest
+    name: ConnectedCheck
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
     timeout-minutes: 60
 
@@ -185,4 +185,4 @@ jobs:
           arch: x86
           emulator-build: 7425822 # https://github.com/ReactiveCircus/android-emulator-runner/issues/160
           disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest
+          script: ./gradlew connectedCheck

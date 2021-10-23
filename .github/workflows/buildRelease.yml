@@ -143,9 +143,9 @@ jobs:
         run: |
           ./gradlew lintRelease
 
-  androidReleaseTest:
+  connectedCheck:
     needs: [ assembleRelease ]
-    name: AndroidReleaseTest
+    name: ConnectedCheck
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
     timeout-minutes: 60
 
@@ -181,10 +181,10 @@ jobs:
           arch: x86
           emulator-build: 7425822 # https://github.com/ReactiveCircus/android-emulator-runner/issues/160
           disable-animations: true
-          script: ./gradlew connectedReleaseAndroidTest
+          script: ./gradlew connectedCheck
 
   publish:
-    needs: [ testRelease, lintRelease, androidReleaseTest ]
+    needs: [ testRelease, lintRelease, connectedCheck ]
     name: Release build and publish
     runs-on: ubuntu-latest
     steps:
