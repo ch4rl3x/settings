@@ -1,10 +1,7 @@
 # Settings
 Settings is an easy wrapper with type safety for SharedPreferences. By using it, you will no longer use Strings as keys
 
-<a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3AInstrumentation-Test"><img src="https://github.com/Ch4rl3x/Settings/workflows/Instrumentation-Test/badge.svg" alt="Instrumentation-Test"></a>
-<a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3ALint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Lint/badge.svg" alt="Lint"></a>
-<a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3AKtlint"><img src="https://github.com/Ch4rl3x/Settings/workflows/Ktlint/badge.svg" alt="Ktlint"></a>
-
+<a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3ABuild"><img src="https://github.com/ch4rl3x/settings/actions/workflows/build.yml/badge.svg" alt="Build"></a>
 <a href="https://www.codefactor.io/repository/github/ch4rl3x/settings"><img src="https://www.codefactor.io/repository/github/ch4rl3x/settings/badge" alt="CodeFactor" /></a>
 <a href="https://repo1.maven.org/maven2/de/charlex/settings/settings-core/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings-core" alt="Maven Central" /></a>
 
