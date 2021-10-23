@@ -1,7 +1,6 @@
 name: Build
 
 on:
-  pull_request:
   push:
     paths-ignore:
       - 'README.md'
@@ -146,10 +145,10 @@ jobs:
         run: |
           ./gradlew lintDebug
 
-  androidTest:
+  androidDebugTest:
     needs: [spotless, assembleDebug]
     if: "! contains(toJSON(github.event.commits.*.message), '[ci skip]') && ! contains(toJSON(github.event.commits.*.message), '[skip ci]')"
-    name: AndroidTest
+    name: AndroidDebugTest
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
     timeout-minutes: 60
 

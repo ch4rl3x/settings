@@ -75,9 +75,9 @@ jobs:
             ./*/build/
           retention-days: 1
 
-  testDebug:
+  testRelease:
     needs: [spotless, assembleRelease]
-    name: TestDebug
+    name: TestRelease
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -103,15 +103,15 @@ jobs:
         with:
           name: build-files
 
-      - name: testDebug
+      - name: testRelease
         env:
           DEPENDENCY_GITHUB_PACKAGES_PASSWORD: ${{ secrets.DEPENDENCY_GITHUB_PACKAGES_PASSWORD }}
         run: |
-          ./gradlew testDebug
+          ./gradlew testRelease
 
-  lintDebug:
+  lintRelease:
     needs: [ spotless, assembleRelease ]
-    name: LintDebug
+    name: LintRelease
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -137,15 +137,15 @@ jobs:
         with:
           name: build-files
 
-      - name: lintDebug
+      - name: lintRelease
         env:
           DEPENDENCY_GITHUB_PACKAGES_PASSWORD: ${{ secrets.DEPENDENCY_GITHUB_PACKAGES_PASSWORD }}
         run: |
-          ./gradlew lintDebug
+          ./gradlew lintRelease
 
-  androidTest:
+  androidReleaseTest:
     needs: [ spotless, assembleRelease ]
-    name: AndroidTest
+    name: AndroidReleaseTest
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
     timeout-minutes: 60
 
@@ -181,10 +181,10 @@ jobs:
           arch: x86
           emulator-build: 7425822 # https://github.com/ReactiveCircus/android-emulator-runner/issues/160
           disable-animations: true
-          script: ./gradlew connectedDebugAndroidTest
+          script: ./gradlew connectedReleaseAndroidTest
 
   publish:
-    needs: [ spotless, assembleRelease, testDebug, lintDebug, androidTest ]
+    needs: [ spotless, assembleRelease, testRelease, lintRelease, androidReleaseTest ]
     name: Release build and publish
     runs-on: ubuntu-latest
     steps:
@@ -221,7 +221,7 @@ jobs:
           SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
 
   mkdocs-gh-deploy:
-    needs: [ spotless, assembleRelease, testDebug, lintDebug, androidTest, publish ]
+    needs: [ spotless, assembleRelease, testRelease, lintRelease, androidReleaseTest, publish ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
