@@ -1,61 +1,79 @@
 # Settings
-Settings is an easy wrapper with type safety for SharedPreferences. By using it, you will no longer use Strings as keys
 
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3ABuild"><img src="https://github.com/ch4rl3x/settings/actions/workflows/build.yml/badge.svg" alt="Build"></a>
 <a href="https://www.codefactor.io/repository/github/ch4rl3x/settings"><img src="https://www.codefactor.io/repository/github/ch4rl3x/settings/badge" alt="CodeFactor" /></a>
 <a href="https://repo1.maven.org/maven2/de/charlex/settings/settings-datastore/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings-datastore" alt="Maven Central" /></a>
 
+Settings is an easy wrapper with type safety for SharedPreferences and Datastore. By using it, you will no longer use Strings as keys.
+
+
+## Features
+
+- Type safty for SharedPreferences and Datastore
+- Simple usage for both SharedPrefernces and Datastore
+- Encryption for SharedPreferences and **Datastore**
 
 ## Dependency
 
 Add the library to your module `build.gradle`
 ```gradle
 dependencies {
-    implementation 'de.charlex.settings:settings-datastore:1.0.0-rc01'
-    implementation 'de.charlex.settings:settings-datastore-encryption:1.0.0-rc01'
-    implementation 'de.charlex.settings:settings-sharedpreferences:1.0.0-rc01'
-    implementation 'de.charlex.settings:settings-sharedpreferences-encryption:1.0.0-rc01'
+    implementation 'de.charlex.settings:settings-datastore:1.0.0-rc03'
+    implementation 'de.charlex.settings:settings-datastore-encryption:1.0.0-rc03'
+    implementation 'de.charlex.settings:settings-sharedpreferences:1.0.0-rc03'
+    implementation 'de.charlex.settings:settings-sharedpreferences-encryption:1.0.0-rc03'
 }
 ```
-
-## Features
-- Typed access and easy access to SharedPreferences and Preferences DataStore
 
 ## Usage
 
 ```kotlin
-val settings = Settings.create(context)
+enum class ExampleEnumWithKey(val preferenceKey: String) {
+    Value1("value1_key"),
+    Value2("value2_key"),
+    Value3("value3_key")
+}
 
-//Write
-settings.putString(Preferences.PreferenceString, "my value")
-settings.putString(Preferences.PreferenceComplex.Slow)
-
-//Read
-settings.getString(Preferences.PreferenceString)
-settings.getString(Preferences.PreferenceComplex)
-```
-
-```kotlin
-class SpeedPreference(override val preferenceKey: String) : IPreference<String> {
-
-    val Slow: PreferenceValue<String> = PreferenceValue(this, "slow")
-    val Medium: PreferenceValue<String> = PreferenceValue(this, "medium")
-    val Fast: PreferenceValue<String> = PreferenceValue(this, "fast")
-
-    override val defaultValue = Medium.value
+enum class SimpleEnum {
+    Value1,
+    Value2,
+    Value3
 }
 ```
 
 ```kotlin
 object Preferences {
-    val PreferenceComplex = SpeedPreference("preference_complex")
+    val PreferenceExampleEnumWithKey = enumPreference("preference_enum_with_key", ExampleEnumWithKey.Value2, ExampleEnumWithKey::preferenceKey)
+    val PreferenceExampleEnumWithOrdinal = enumPreference("preference_enum_with_ordinal", SimpleEnum.Value2, SimpleEnum::ordinal)
+    val PreferenceExampleEnumWithName = enumPreference("preference_enum_with_name", SimpleEnum.Value2, SimpleEnum::name)
 
-    val PreferenceInt = Preference("preference_int", 1)
-    val PreferenceString = Preference("preference_string", "default")
-    val PreferenceFloat = Preference("preference_float", 1.1f)
-    val PreferenceLong = Preference("preference_long", 1L)
-    val PreferenceBoolean = Preference("preference_boolean", true)
+    val PreferenceInt = intPreference("preference_int", 1)
+    val PreferenceString = stringPreference("preference_string", "default")
+    val PreferenceFloat = floatPreference("preference_float", 1.1f)
+    val PreferenceLong = longPreference("preference_long", 1L)
+    val PreferenceBoolean = boolenPreference("preference_boolean", true)
+    
+    val PreferenceStringEncrypted = encryptedStringPreference("preference_string_encrypted", "default")
 }
+```
+
+```kotlin
+val settings = Settings.create(context)
+val encryptedSettings = Settings.createEncrypted(context)
+
+//Read
+val exampleString: String = settings.get(Preferences.PreferenceString)
+val exampleEnumWithKey: ExampleEnumWithKey = settings.get(Preferences.PreferenceExampleEnumWithKey)
+
+val encryptedExampleString: String = encryptedSettings.get(Preferences.PreferenceStringEncrypted)
+
+//Write
+settings.put(Preferences.PreferenceString, "my value")
+settings.put(Preferences.PreferenceExampleEnumWithKey, ExampleEnumWithKey.Value1)
+settings.put(Preferences.PreferenceExampleEnumWithOrdinal, SimpleEnum.Value1)
+
+encryptedSettings.put(Preferences.PreferenceStringEncrypted, "my secrets")
+
 ```
 
 That's it!
