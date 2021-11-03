@@ -14,7 +14,7 @@ interface SettingsDataStore {
 
     fun <T> get(key: IDataStorePreference<T>): Flow<T>
     suspend fun <T> put(key: IDataStorePreference<T>, value: T)
-    suspend fun <T> put(key: IDataStoreEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed
+    suspend fun <T : Enum<T>, U> put(key: IDataStoreEnumPreference<T, U>, value: T)
 
     companion object {
 
@@ -46,8 +46,17 @@ interface SettingsDataStore {
     }
 }
 
-inline fun <reified T> SettingsDataStore.get(pref: IDataStoreEnumPreference<T>): Flow<T> where T : Enum<T>, T : Keyed {
-    return get(stringPreference(pref.preferenceKey.name, pref.defaultValue.key)).map { prefValue ->
-        enumValues<T>().find { it.key == prefValue } ?: pref.defaultValue
+inline fun <reified T : Enum<T>, U> SettingsDataStore.get(pref: IDataStoreEnumPreference<T, U>): Flow<T> {
+    val keyProperty = pref.keyProperty
+    val preference = when (val defaultValue = keyProperty.call(pref.defaultValue)) {
+        is String -> stringPreference(pref.preferenceKey.name, defaultValue as String)
+        is Int -> intPreference(pref.preferenceKey.name, defaultValue as Int)
+        is Float -> floatPreference(pref.preferenceKey.name, defaultValue as Float)
+        is Long -> longPreference(pref.preferenceKey.name, defaultValue as Long)
+        is Boolean -> booleanPreference(pref.preferenceKey.name, defaultValue as Boolean)
+        else -> error("No valid enum key: $defaultValue")
+    }
+    return get(preference).map { prefValue ->
+        enumValues<T>().find { pref.keyProperty.call(it) == prefValue } ?: pref.defaultValue
     }
 }

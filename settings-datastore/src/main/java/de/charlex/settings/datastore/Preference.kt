@@ -8,22 +8,35 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import kotlin.reflect.KProperty
 
 internal data class Preference<T> (
     override val preferenceKey: Preferences.Key<T>,
     override val defaultValue: T,
 ) : IDataStorePreference<T>
 
-internal data class EnumPreference<T> (
-    override val preferenceKey: Preferences.Key<String>,
+internal data class EnumPreference<T, U> (
+    override val preferenceKey: Preferences.Key<U>,
     override val defaultValue: T,
-) : IDataStoreEnumPreference<T>
+    override val keyProperty: KProperty<U>,
+) : IDataStoreEnumPreference<T, U>
 
 fun stringPreference(name: String, defaultValue: String): IDataStorePreference<String> =
     Preference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
-fun <T> enumPreference(name: String, defaultValue: T): IDataStoreEnumPreference<T> where T : Enum<T>, T : Keyed =
-    EnumPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
+@Suppress("UNCHECKED_CAST")
+fun <T : Enum<T>, U> enumPreference(name: String, defaultValue: T, keyProperty: KProperty<U>): IDataStoreEnumPreference<T, U> {
+    val preferenceKey: Preferences.Key<U> = when(keyProperty.call(defaultValue)) {
+        is String -> stringPreferencesKey(name) as Preferences.Key<U>
+        is Int -> intPreferencesKey(name) as Preferences.Key<U>
+        is Double -> doublePreferencesKey(name) as Preferences.Key<U>
+        is Boolean -> booleanPreferencesKey(name) as Preferences.Key<U>
+        is Float -> floatPreferencesKey(name) as Preferences.Key<U>
+        is Long -> longPreferencesKey(name) as Preferences.Key<U>
+        else -> error("Invalid type for enumPreferences")
+    }
+    return EnumPreference(preferenceKey = preferenceKey, defaultValue = defaultValue, keyProperty = keyProperty)
+}
 
 fun booleanPreference(name: String, defaultValue: Boolean): IDataStorePreference<Boolean> =
     Preference(preferenceKey = booleanPreferencesKey(name), defaultValue = defaultValue)

@@ -38,9 +38,9 @@ class SettingsDataStoreImpl internal constructor(
         }
     }
 
-    override suspend fun <T> put(key: IDataStoreEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+    override suspend fun <T : Enum<T>, U> put(key: IDataStoreEnumPreference<T, U>, value: T) {
         context.dataStore.edit { settings ->
-            settings[key.preferenceKey] = value.key
+            settings[key.preferenceKey] = key.keyProperty.call(value)
         }
     }
 }

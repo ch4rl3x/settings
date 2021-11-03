@@ -39,6 +39,7 @@ inline fun <reified T : Enum<T>, U> Settings.get(pref: IEnumSharedPreference<T, 
         is Boolean -> booleanPreference(pref.preferenceKey, defaultValue as Boolean)
         else -> error("No valid enum key: $defaultValue")
     }
-    val enumKey = get(sharedPreference)
-    return enumValues<T>().find { pref.keyProperty.call(it) == enumKey } ?: pref.defaultValue
+    return get(sharedPreference).let { prefValue ->
+        enumValues<T>().find { pref.keyProperty.call(it) == prefValue } ?: pref.defaultValue
+    }
 }

@@ -11,7 +11,7 @@ abstract class SettingsDataStoreEncryptionTest {
     lateinit var settings: SettingsDataStore
 
     @Test
-    fun test_Int_Generic_Settings() = runBlocking {
+    fun test_Int_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceInt, EncryptedPreferences.PreferenceInt.defaultValue)
         Assert.assertEquals(1, settings.get(EncryptedPreferences.PreferenceInt).first())
 
@@ -20,7 +20,7 @@ abstract class SettingsDataStoreEncryptionTest {
     }
 
     @Test
-    fun test_String_Generic_Settings() = runBlocking {
+    fun test_String_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceString, EncryptedPreferences.PreferenceString.defaultValue)
         Assert.assertEquals("default", settings.get(EncryptedPreferences.PreferenceString).first())
 
@@ -29,7 +29,7 @@ abstract class SettingsDataStoreEncryptionTest {
     }
 
     @Test
-    fun test_Float_Generic_Settings() = runBlocking {
+    fun test_Float_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceFloat, EncryptedPreferences.PreferenceFloat.defaultValue)
         Assert.assertEquals(1.1f, settings.get(EncryptedPreferences.PreferenceFloat).first())
 
@@ -38,7 +38,7 @@ abstract class SettingsDataStoreEncryptionTest {
     }
 
     @Test
-    fun test_Double_Generic_Settings() = runBlocking {
+    fun test_Double_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceDouble, EncryptedPreferences.PreferenceDouble.defaultValue)
         Assert.assertEquals(1.1, settings.get(EncryptedPreferences.PreferenceDouble).first(), 0.0)
 
@@ -47,7 +47,7 @@ abstract class SettingsDataStoreEncryptionTest {
     }
 
     @Test
-    fun test_Long_Generic_Settings() = runBlocking {
+    fun test_Long_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceLong, EncryptedPreferences.PreferenceLong.defaultValue)
         Assert.assertEquals(1L, settings.get(EncryptedPreferences.PreferenceLong).first())
 
@@ -56,7 +56,7 @@ abstract class SettingsDataStoreEncryptionTest {
     }
 
     @Test
-    fun test_Boolean_Generic_Settings() = runBlocking {
+    fun test_Boolean_Settings() = runBlocking {
         settings.put(EncryptedPreferences.PreferenceBoolean, EncryptedPreferences.PreferenceBoolean.defaultValue)
         Assert.assertEquals(true, settings.get(EncryptedPreferences.PreferenceBoolean).first())
 
@@ -65,21 +65,39 @@ abstract class SettingsDataStoreEncryptionTest {
     }
 
     @Test
-    fun test_Enum_Settings() = runBlocking {
-        settings.put(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
-        Assert.assertEquals(Speed.Medium, settings.get(EncryptedPreferences.PreferenceEnum).first())
+    fun test_Enum_String_Key_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceEnumStringKey, EncryptedPreferences.PreferenceEnumStringKey.defaultValue)
+        Assert.assertEquals(StringKeyEnum.Value2, settings.get(EncryptedPreferences.PreferenceEnumStringKey).first())
 
-        settings.put(EncryptedPreferences.PreferenceEnum, Speed.Slow)
-        Assert.assertEquals(Speed.Slow, settings.get(EncryptedPreferences.PreferenceEnum).first())
+        settings.put(EncryptedPreferences.PreferenceEnumStringKey, StringKeyEnum.Value1)
+        Assert.assertEquals(StringKeyEnum.Value1, settings.get(EncryptedPreferences.PreferenceEnumStringKey).first())
     }
 
     @Test
-    fun test_Enum_Generic_Settings() = runBlocking {
-        settings.put(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
-        Assert.assertEquals(Speed.Medium, settings.get(EncryptedPreferences.PreferenceEnum).first())
+    fun test_Enum_Int_Key_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceEnumIntKey, EncryptedPreferences.PreferenceEnumIntKey.defaultValue)
+        Assert.assertEquals(IntKeyEnum.Value2, settings.get(EncryptedPreferences.PreferenceEnumIntKey).first())
 
-        settings.put(EncryptedPreferences.PreferenceEnum, Speed.Slow)
-        Assert.assertEquals(Speed.Slow, settings.get(EncryptedPreferences.PreferenceEnum).first())
+        settings.put(EncryptedPreferences.PreferenceEnumIntKey, IntKeyEnum.Value1)
+        Assert.assertEquals(IntKeyEnum.Value1, settings.get(EncryptedPreferences.PreferenceEnumIntKey).first())
+    }
+
+    @Test
+    fun test_Enum_Ordinal_Key_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceEnumOrdinalKey, EncryptedPreferences.PreferenceEnumOrdinalKey.defaultValue)
+        Assert.assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumOrdinalKey).first())
+
+        settings.put(EncryptedPreferences.PreferenceEnumOrdinalKey, Enum.Value1)
+        Assert.assertEquals(Enum.Value1, settings.get(EncryptedPreferences.PreferenceEnumOrdinalKey).first())
+    }
+
+    @Test
+    fun test_Enum_Name_Key_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, EncryptedPreferences.PreferenceEnumNameKey.defaultValue)
+        Assert.assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey).first())
+
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
+        Assert.assertEquals(Enum.Value1, settings.get(EncryptedPreferences.PreferenceEnumNameKey).first())
     }
 
     @Test

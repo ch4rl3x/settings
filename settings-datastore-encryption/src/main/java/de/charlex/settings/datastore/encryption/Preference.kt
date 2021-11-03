@@ -2,7 +2,6 @@ package de.charlex.settings.datastore.encryption
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import de.charlex.settings.datastore.Keyed
 
 internal data class EncryptedPreference<T> (
     override val defaultValue: T,
@@ -12,7 +11,7 @@ internal data class EncryptedPreference<T> (
 fun encryptedStringPreference(name: String, defaultValue: String): IDataStoreEncryptedPreference<String> =
     EncryptedPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
-fun <T> encryptedEnumPreference(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> where T : Enum<T>, T : Keyed =
+fun <T : Enum<T>> encryptedEnumPreference(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> =
     EncryptedPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
 fun encryptedBooleanPreference(name: String, defaultValue: Boolean): IDataStoreEncryptedPreference<Boolean> =

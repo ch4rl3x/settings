@@ -20,8 +20,8 @@ class SettingsDataStoreInMemoryImpl internal constructor() : SettingsDataStore {
         stateFlow.value = value
     }
 
-    override suspend fun <T> put(key: IDataStoreEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed {
-        val stateFlow = flows.getOrPut(key.preferenceKey as Preferences.Key<Any>, { MutableStateFlow(key.defaultValue.key) }) as MutableStateFlow<String>
-        stateFlow.value = value.key
+    override suspend fun <T : Enum<T>, U> put(key: IDataStoreEnumPreference<T, U>, value: T) {
+        val stateFlow = flows.getOrPut(key.preferenceKey as Preferences.Key<Any>, { MutableStateFlow(key.keyProperty.call(key.defaultValue) as Any) }) as MutableStateFlow<U>
+        stateFlow.value = key.keyProperty.call(value)
     }
 }

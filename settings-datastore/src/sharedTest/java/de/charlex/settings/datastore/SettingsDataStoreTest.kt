@@ -64,21 +64,48 @@ abstract class SettingsDataStoreTest {
     }
 
     @Test
-    fun test_Enum_Settings() = runBlocking {
-        settings.put(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
-        Assert.assertEquals(Speed.Medium, settings.get(Preferences.PreferenceEnum).first())
-
-        settings.put(Preferences.PreferenceEnum, Speed.Slow)
-        Assert.assertEquals(Speed.Slow, settings.get(Preferences.PreferenceEnum).first())
-    }
-
-    @Test
     fun test_StringSet_Settings() = runBlocking {
         settings.put(Preferences.PreferenceStringSet, Preferences.PreferenceStringSet.defaultValue)
         Assert.assertEquals(setOf<String>(), settings.get(Preferences.PreferenceStringSet).first())
 
         settings.put(Preferences.PreferenceStringSet, setOf("1", "2", "3"))
         Assert.assertEquals(setOf("1", "2", "3"), settings.get(Preferences.PreferenceStringSet).first())
+    }
+
+    @Test
+    fun test_Enum_String_Key_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceEnumStringKey, Preferences.PreferenceEnumStringKey.defaultValue)
+        Assert.assertEquals(StringKeyEnum.Value2, settings.get(Preferences.PreferenceEnumStringKey).first())
+
+        settings.put(Preferences.PreferenceEnumStringKey, StringKeyEnum.Value1)
+        Assert.assertEquals(StringKeyEnum.Value1, settings.get(Preferences.PreferenceEnumStringKey).first())
+    }
+
+    @Test
+    fun test_Enum_Int_Key_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceEnumIntKey, Preferences.PreferenceEnumIntKey.defaultValue)
+        Assert.assertEquals(IntKeyEnum.Value2, settings.get(Preferences.PreferenceEnumIntKey).first())
+
+        settings.put(Preferences.PreferenceEnumIntKey, IntKeyEnum.Value1)
+        Assert.assertEquals(IntKeyEnum.Value1, settings.get(Preferences.PreferenceEnumIntKey).first())
+    }
+
+    @Test
+    fun test_Enum_Ordinal_Key_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceEnumOrdinalKey, Preferences.PreferenceEnumOrdinalKey.defaultValue)
+        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumOrdinalKey).first())
+
+        settings.put(Preferences.PreferenceEnumOrdinalKey, Enum.Value1)
+        Assert.assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumOrdinalKey).first())
+    }
+
+    @Test
+    fun test_Enum_Name_Key_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceEnumNameKey, Preferences.PreferenceEnumNameKey.defaultValue)
+        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+
+        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+        Assert.assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumNameKey).first())
     }
 
     @Test
