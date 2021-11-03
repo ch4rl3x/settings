@@ -2,7 +2,7 @@
 buildscript {
     ext {
         kotlin_version = "1.5.31"
-        roboelectric = "4.5.1"
+        roboelectric = "4.6.1"
         buildConfig = [
                 'compileSdk': 31,
                 'minSdk'    : 23,
@@ -24,7 +24,7 @@ buildscript {
 
 plugins {
     id "io.codearte.nexus-staging" version "0.30.0"
-    id "com.diffplug.spotless" version "5.9.0"
+    id "com.diffplug.spotless" version "5.17.1"
 }
 
 subprojects {
