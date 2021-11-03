@@ -5,7 +5,7 @@ interface ISharedPreference<T> {
     val defaultValue: T
 }
 
-interface ISharedEnumPreference<T> where T : Enum<*>, T : Keyed {
+interface IEnumSharedPreference<T> where T : Enum<*>, T : Keyed {
     val preferenceKey: String
     val defaultValue: T
 }

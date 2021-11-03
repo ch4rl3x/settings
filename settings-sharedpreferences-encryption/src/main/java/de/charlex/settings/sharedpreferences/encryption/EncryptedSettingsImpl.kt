@@ -25,55 +25,63 @@ class EncryptedSettingsImpl internal constructor(
         return settings.getString(key, null)
     }
 
-    override fun getString(pref: IEncryptedPreference<String>): String {
+    override fun getString(pref: IEncryptedSharedPreference<String>): String {
         return settings.getString(pref.preferenceKey, pref.defaultValue) ?: ""
     }
 
-    override fun getInt(pref: IEncryptedPreference<Int>): Int {
+    override fun getInt(pref: IEncryptedSharedPreference<Int>): Int {
         return settings.getInt(pref.preferenceKey, pref.defaultValue)
     }
 
-    override fun getFloat(pref: IEncryptedPreference<Float>): Float {
+    override fun getFloat(pref: IEncryptedSharedPreference<Float>): Float {
         return settings.getFloat(pref.preferenceKey, pref.defaultValue)
     }
 
-    override fun getDouble(pref: IEncryptedPreference<Double>): Double {
+    override fun getDouble(pref: IEncryptedSharedPreference<Double>): Double {
         return java.lang.Double.longBitsToDouble(settings.getLong(pref.preferenceKey, java.lang.Double.doubleToRawLongBits(pref.defaultValue)))
     }
 
-    override fun getBoolean(pref: IEncryptedPreference<Boolean>): Boolean {
+    override fun getBoolean(pref: IEncryptedSharedPreference<Boolean>): Boolean {
         return settings.getBoolean(pref.preferenceKey, pref.defaultValue)
     }
 
-    override fun getLong(pref: IEncryptedPreference<Long>): Long {
+    override fun getLong(pref: IEncryptedSharedPreference<Long>): Long {
         return settings.getLong(pref.preferenceKey, pref.defaultValue)
     }
 
-    override fun putString(pref: IEncryptedPreference<String>, value: String) {
+    override fun getStringSet(pref: IEncryptedSharedPreference<Set<String>>): Set<String> {
+        return settings.getStringSet(pref.preferenceKey, pref.defaultValue) ?: setOf()
+    }
+
+    override fun putString(pref: IEncryptedSharedPreference<String>, value: String) {
         settings.edit().putString(pref.preferenceKey, value).apply()
     }
 
-    override fun putInt(pref: IEncryptedPreference<Int>, value: Int) {
+    override fun putInt(pref: IEncryptedSharedPreference<Int>, value: Int) {
         settings.edit().putInt(pref.preferenceKey, value).apply()
     }
 
-    override fun putFloat(pref: IEncryptedPreference<Float>, value: Float) {
+    override fun putFloat(pref: IEncryptedSharedPreference<Float>, value: Float) {
         settings.edit().putFloat(pref.preferenceKey, value).apply()
     }
 
-    override fun putDouble(pref: IEncryptedPreference<Double>, value: Double) {
+    override fun putDouble(pref: IEncryptedSharedPreference<Double>, value: Double) {
         settings.edit().putLong(pref.preferenceKey, java.lang.Double.doubleToRawLongBits(value)).apply()
     }
 
-    override fun putBoolean(pref: IEncryptedPreference<Boolean>, value: Boolean) {
+    override fun putBoolean(pref: IEncryptedSharedPreference<Boolean>, value: Boolean) {
         settings.edit().putBoolean(pref.preferenceKey, value).apply()
     }
 
-    override fun putLong(pref: IEncryptedPreference<Long>, value: Long) {
+    override fun putLong(pref: IEncryptedSharedPreference<Long>, value: Long) {
         settings.edit().putLong(pref.preferenceKey, value).apply()
     }
 
-    override fun <T> putEnum(pref: IEncryptedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+    override fun <T> putEnum(pref: IEncryptedSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
         settings.edit().putString(pref.preferenceKey, value.key).apply()
+    }
+
+    override fun putStringSet(pref: IEncryptedSharedPreference<Set<String>>, value: Set<String>) {
+        settings.edit().putStringSet(pref.preferenceKey, value).apply()
     }
 }

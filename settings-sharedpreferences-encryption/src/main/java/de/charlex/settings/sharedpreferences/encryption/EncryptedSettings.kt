@@ -8,20 +8,22 @@ import de.charlex.settings.sharedpreferences.Settings
 interface EncryptedSettings {
 
     fun getRaw(key: String): String?
-    fun getString(pref: IEncryptedPreference<String>): String
-    fun getInt(pref: IEncryptedPreference<Int>): Int
-    fun getFloat(pref: IEncryptedPreference<Float>): Float
-    fun getDouble(pref: IEncryptedPreference<Double>): Double
-    fun getBoolean(pref: IEncryptedPreference<Boolean>): Boolean
-    fun getLong(pref: IEncryptedPreference<Long>): Long
+    fun getString(pref: IEncryptedSharedPreference<String>): String
+    fun getInt(pref: IEncryptedSharedPreference<Int>): Int
+    fun getFloat(pref: IEncryptedSharedPreference<Float>): Float
+    fun getDouble(pref: IEncryptedSharedPreference<Double>): Double
+    fun getBoolean(pref: IEncryptedSharedPreference<Boolean>): Boolean
+    fun getLong(pref: IEncryptedSharedPreference<Long>): Long
+    fun getStringSet(pref: IEncryptedSharedPreference<Set<String>>): Set<String>
 
-    fun putString(pref: IEncryptedPreference<String>, value: String)
-    fun putInt(pref: IEncryptedPreference<Int>, value: Int)
-    fun putFloat(pref: IEncryptedPreference<Float>, value: Float)
-    fun putDouble(pref: IEncryptedPreference<Double>, value: Double)
-    fun putBoolean(pref: IEncryptedPreference<Boolean>, value: Boolean)
-    fun putLong(pref: IEncryptedPreference<Long>, value: Long)
-    fun <T> putEnum(pref: IEncryptedPreference<T>, value: T) where T : Enum<T>, T : Keyed
+    fun putString(pref: IEncryptedSharedPreference<String>, value: String)
+    fun putInt(pref: IEncryptedSharedPreference<Int>, value: Int)
+    fun putFloat(pref: IEncryptedSharedPreference<Float>, value: Float)
+    fun putDouble(pref: IEncryptedSharedPreference<Double>, value: Double)
+    fun putBoolean(pref: IEncryptedSharedPreference<Boolean>, value: Boolean)
+    fun putLong(pref: IEncryptedSharedPreference<Long>, value: Long)
+    fun <T> putEnum(pref: IEncryptedSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed
+    fun putStringSet(pref: IEncryptedSharedPreference<Set<String>>, value: Set<String>)
 }
 
 fun Settings.Companion.createEncrypted(
@@ -44,7 +46,7 @@ fun Settings.Companion.createInMemoryEncrypted(): EncryptedSettings {
     return EncryptedSettingsInMemoryImpl()
 }
 
-inline fun <reified T> EncryptedSettings.getEnum(pref: IEncryptedPreference<T>): T where T : Enum<T>, T : Keyed {
+inline fun <reified T> EncryptedSettings.getEnum(pref: IEncryptedSharedPreference<T>): T where T : Enum<T>, T : Keyed {
     val enumKey = getRaw(pref.preferenceKey)
     return enumValues<T>().find { it.key == enumKey } ?: pref.defaultValue
 }

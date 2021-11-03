@@ -6,7 +6,7 @@ interface Settings {
 
     fun <T> get(pref: ISharedPreference<T>): T
     fun <T> put(pref: ISharedPreference<T>, value: T)
-    fun <T> put(pref: ISharedEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed
+    fun <T> put(pref: IEnumSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed
 
     companion object {
 
@@ -29,7 +29,7 @@ interface Settings {
     }
 }
 
-inline fun <reified T> Settings.get(pref: ISharedEnumPreference<T>): T where T : Enum<*>, T : Keyed {
+inline fun <reified T> Settings.get(pref: IEnumSharedPreference<T>): T where T : Enum<*>, T : Keyed {
     val enumKey = get(stringPreference(pref.preferenceKey, pref.defaultValue.key))
     return enumValues<T>().find { it.key == enumKey } ?: pref.defaultValue
 }

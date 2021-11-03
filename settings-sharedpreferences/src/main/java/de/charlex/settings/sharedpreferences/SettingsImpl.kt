@@ -40,7 +40,7 @@ class SettingsImpl internal constructor(
         edit.commit()
     }
 
-    override fun <T> put(pref: ISharedEnumPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+    override fun <T> put(pref: IEnumSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
         val edit = settings.edit()
         edit.putString(pref.preferenceKey, value.key)
         edit.commit()

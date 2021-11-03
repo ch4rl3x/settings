@@ -1,5 +1,6 @@
 package de.charlex.settings.sharedpreferences.encryption
 
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -68,5 +69,14 @@ abstract class SettingsEncryptionTest {
 
         settings.putEnum(EncryptedPreferences.PreferenceEnum, Speed.Slow)
         assertEquals(Speed.Slow, settings.getEnum(EncryptedPreferences.PreferenceEnum))
+    }
+
+    @Test
+    fun test_StringSet_Settings() {
+        settings.putStringSet(EncryptedPreferences.PreferenceStringSet, EncryptedPreferences.PreferenceStringSet.defaultValue)
+        assertArrayEquals(setOf("Element 1", "Element 2").toTypedArray(), settings.getStringSet(EncryptedPreferences.PreferenceStringSet).toTypedArray())
+
+        settings.putStringSet(EncryptedPreferences.PreferenceStringSet, setOf("Element 1a", "Element 2b", "Element 3c"))
+        assertArrayEquals(setOf("Element 1a", "Element 2b", "Element 3c").toTypedArray(), settings.getStringSet(EncryptedPreferences.PreferenceStringSet).toTypedArray())
     }
 }
