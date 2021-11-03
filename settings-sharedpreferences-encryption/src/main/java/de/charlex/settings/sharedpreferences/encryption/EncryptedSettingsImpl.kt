@@ -3,7 +3,8 @@ package de.charlex.settings.sharedpreferences.encryption
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
-import de.charlex.settings.sharedpreferences.Keyed
+import de.charlex.settings.sharedpreferences.IEnumSharedPreference
+import de.charlex.settings.sharedpreferences.ISharedPreference
 
 class EncryptedSettingsImpl internal constructor(
     context: Context,
@@ -21,67 +22,45 @@ class EncryptedSettingsImpl internal constructor(
         prefValueEncryptionScheme
     )
 
-    override fun getRaw(key: String): String? {
-        return settings.getString(key, null)
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> get(pref: IEncryptedSharedPreference<T>): T {
+        return settings.all[pref.preferenceKey] as T ?: pref.defaultValue
     }
 
-    override fun getString(pref: IEncryptedSharedPreference<String>): String {
-        return settings.getString(pref.preferenceKey, pref.defaultValue) ?: ""
+    override fun <T> put(pref: IEncryptedSharedPreference<T>, value: T) {
+        val edit = settings.edit()
+        val name = pref.preferenceKey
+        when (value) {
+            is String -> edit.putString(name, value)
+            is Boolean -> edit.putBoolean(name, value)
+            is Int -> edit.putInt(name, value)
+            is Long -> edit.putLong(name, value)
+            is Float -> edit.putFloat(name, value)
+            is Set<*> -> {
+                val stringSet = value.filterIsInstance<String>().toSet()
+                if (stringSet.size != value.size) {
+                    error(
+                        "Cannot save preference with key: ${pref.preferenceKey}, value: ${value}\".\n" +
+                            "Only String sets can be saved and this set seems to contain other instances."
+                    )
+                }
+                edit.putStringSet(name, stringSet)
+            }
+            else -> error("Cannot save preference with key: ${pref.preferenceKey}, value: $value")
+        }
+        edit.apply()
     }
 
-    override fun getInt(pref: IEncryptedSharedPreference<Int>): Int {
-        return settings.getInt(pref.preferenceKey, pref.defaultValue)
-    }
-
-    override fun getFloat(pref: IEncryptedSharedPreference<Float>): Float {
-        return settings.getFloat(pref.preferenceKey, pref.defaultValue)
-    }
-
-    override fun getDouble(pref: IEncryptedSharedPreference<Double>): Double {
-        return java.lang.Double.longBitsToDouble(settings.getLong(pref.preferenceKey, java.lang.Double.doubleToRawLongBits(pref.defaultValue)))
-    }
-
-    override fun getBoolean(pref: IEncryptedSharedPreference<Boolean>): Boolean {
-        return settings.getBoolean(pref.preferenceKey, pref.defaultValue)
-    }
-
-    override fun getLong(pref: IEncryptedSharedPreference<Long>): Long {
-        return settings.getLong(pref.preferenceKey, pref.defaultValue)
-    }
-
-    override fun getStringSet(pref: IEncryptedSharedPreference<Set<String>>): Set<String> {
-        return settings.getStringSet(pref.preferenceKey, pref.defaultValue) ?: setOf()
-    }
-
-    override fun putString(pref: IEncryptedSharedPreference<String>, value: String) {
-        settings.edit().putString(pref.preferenceKey, value).apply()
-    }
-
-    override fun putInt(pref: IEncryptedSharedPreference<Int>, value: Int) {
-        settings.edit().putInt(pref.preferenceKey, value).apply()
-    }
-
-    override fun putFloat(pref: IEncryptedSharedPreference<Float>, value: Float) {
-        settings.edit().putFloat(pref.preferenceKey, value).apply()
-    }
-
-    override fun putDouble(pref: IEncryptedSharedPreference<Double>, value: Double) {
-        settings.edit().putLong(pref.preferenceKey, java.lang.Double.doubleToRawLongBits(value)).apply()
-    }
-
-    override fun putBoolean(pref: IEncryptedSharedPreference<Boolean>, value: Boolean) {
-        settings.edit().putBoolean(pref.preferenceKey, value).apply()
-    }
-
-    override fun putLong(pref: IEncryptedSharedPreference<Long>, value: Long) {
-        settings.edit().putLong(pref.preferenceKey, value).apply()
-    }
-
-    override fun <T> putEnum(pref: IEncryptedSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
-        settings.edit().putString(pref.preferenceKey, value.key).apply()
-    }
-
-    override fun putStringSet(pref: IEncryptedSharedPreference<Set<String>>, value: Set<String>) {
-        settings.edit().putStringSet(pref.preferenceKey, value).apply()
+    override fun <T : Enum<T>, U> put(pref: IEncryptedEnumSharedPreference<T, U>, value: T) {
+        val edit = settings.edit()
+        when(val enumValue = pref.keyProperty.call(value)) {
+            is String -> edit.putString(pref.preferenceKey, enumValue as String)
+            is Int -> edit.putInt(pref.preferenceKey, enumValue as Int)
+            is Float -> edit.putFloat(pref.preferenceKey, enumValue as Float)
+            is Long -> edit.putLong(pref.preferenceKey, enumValue as Long)
+            is Boolean -> edit.putBoolean(pref.preferenceKey, enumValue as Boolean)
+            else -> error("No valid enum key value: $enumValue")
+        }
+        edit.apply()
     }
 }

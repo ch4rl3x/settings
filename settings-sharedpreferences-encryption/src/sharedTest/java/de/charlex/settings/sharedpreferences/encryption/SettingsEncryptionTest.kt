@@ -10,73 +10,91 @@ abstract class SettingsEncryptionTest {
 
     @Test
     fun test_Int_Settings() {
-        settings.putInt(EncryptedPreferences.PreferenceInt, EncryptedPreferences.PreferenceInt.defaultValue)
-        assertEquals(1, settings.getInt(EncryptedPreferences.PreferenceInt))
+        settings.put(EncryptedPreferences.PreferenceInt, EncryptedPreferences.PreferenceInt.defaultValue)
+        assertEquals(1, settings.get(EncryptedPreferences.PreferenceInt))
 
-        settings.putInt(EncryptedPreferences.PreferenceInt, 10)
-        assertEquals(10, settings.getInt(EncryptedPreferences.PreferenceInt))
+        settings.put(EncryptedPreferences.PreferenceInt, 10)
+        assertEquals(10, settings.get(EncryptedPreferences.PreferenceInt))
     }
 
     @Test
     fun test_String_Settings() {
-        settings.putString(EncryptedPreferences.PreferenceString, EncryptedPreferences.PreferenceString.defaultValue)
-        assertEquals("default", settings.getString(EncryptedPreferences.PreferenceString))
+        settings.put(EncryptedPreferences.PreferenceString, EncryptedPreferences.PreferenceString.defaultValue)
+        assertEquals("default", settings.get(EncryptedPreferences.PreferenceString))
 
-        settings.putString(EncryptedPreferences.PreferenceString, "test")
-        assertEquals("test", settings.getString(EncryptedPreferences.PreferenceString))
+        settings.put(EncryptedPreferences.PreferenceString, "test")
+        assertEquals("test", settings.get(EncryptedPreferences.PreferenceString))
     }
 
     @Test
     fun test_Float_Settings() {
-        settings.putFloat(EncryptedPreferences.PreferenceFloat, EncryptedPreferences.PreferenceFloat.defaultValue)
-        assertEquals(1.1f, settings.getFloat(EncryptedPreferences.PreferenceFloat))
+        settings.put(EncryptedPreferences.PreferenceFloat, EncryptedPreferences.PreferenceFloat.defaultValue)
+        assertEquals(1.1f, settings.get(EncryptedPreferences.PreferenceFloat))
 
-        settings.putFloat(EncryptedPreferences.PreferenceFloat, 2.2f)
-        assertEquals(2.2f, settings.getFloat(EncryptedPreferences.PreferenceFloat))
-    }
-
-    @Test
-    fun test_Double_Settings() {
-        settings.putDouble(EncryptedPreferences.PreferenceDouble, EncryptedPreferences.PreferenceDouble.defaultValue)
-        assertEquals(1.1, settings.getDouble(EncryptedPreferences.PreferenceDouble), 0.0)
-
-        settings.putDouble(EncryptedPreferences.PreferenceDouble, 2.2)
-        assertEquals(2.2, settings.getDouble(EncryptedPreferences.PreferenceDouble), 0.0)
+        settings.put(EncryptedPreferences.PreferenceFloat, 2.2f)
+        assertEquals(2.2f, settings.get(EncryptedPreferences.PreferenceFloat))
     }
 
     @Test
     fun test_Long_Settings() {
-        settings.putLong(EncryptedPreferences.PreferenceLong, EncryptedPreferences.PreferenceLong.defaultValue)
-        assertEquals(1L, settings.getLong(EncryptedPreferences.PreferenceLong))
+        settings.put(EncryptedPreferences.PreferenceLong, EncryptedPreferences.PreferenceLong.defaultValue)
+        assertEquals(1L, settings.get(EncryptedPreferences.PreferenceLong))
 
-        settings.putLong(EncryptedPreferences.PreferenceLong, 2L)
-        assertEquals(2L, settings.getLong(EncryptedPreferences.PreferenceLong))
+        settings.put(EncryptedPreferences.PreferenceLong, 2L)
+        assertEquals(2L, settings.get(EncryptedPreferences.PreferenceLong))
     }
 
     @Test
     fun test_Boolean_Settings() {
-        settings.putBoolean(EncryptedPreferences.PreferenceBoolean, EncryptedPreferences.PreferenceBoolean.defaultValue)
-        assertEquals(true, settings.getBoolean(EncryptedPreferences.PreferenceBoolean))
+        settings.put(EncryptedPreferences.PreferenceBoolean, EncryptedPreferences.PreferenceBoolean.defaultValue)
+        assertEquals(true, settings.get(EncryptedPreferences.PreferenceBoolean))
 
-        settings.putBoolean(EncryptedPreferences.PreferenceBoolean, false)
-        assertEquals(false, settings.getBoolean(EncryptedPreferences.PreferenceBoolean))
-    }
-
-    @Test
-    fun test_Enum_Settings() {
-        settings.putEnum(EncryptedPreferences.PreferenceEnum, EncryptedPreferences.PreferenceEnum.defaultValue)
-        assertEquals(Speed.Medium, settings.getEnum(EncryptedPreferences.PreferenceEnum))
-
-        settings.putEnum(EncryptedPreferences.PreferenceEnum, Speed.Slow)
-        assertEquals(Speed.Slow, settings.getEnum(EncryptedPreferences.PreferenceEnum))
+        settings.put(EncryptedPreferences.PreferenceBoolean, false)
+        assertEquals(false, settings.get(EncryptedPreferences.PreferenceBoolean))
     }
 
     @Test
     fun test_StringSet_Settings() {
-        settings.putStringSet(EncryptedPreferences.PreferenceStringSet, EncryptedPreferences.PreferenceStringSet.defaultValue)
-        assertArrayEquals(setOf("Element 1", "Element 2").toTypedArray(), settings.getStringSet(EncryptedPreferences.PreferenceStringSet).toTypedArray())
+        settings.put(EncryptedPreferences.PreferenceStringSet, EncryptedPreferences.PreferenceStringSet.defaultValue)
+        assertArrayEquals(setOf("Element 1", "Element 2").toTypedArray(), settings.get(EncryptedPreferences.PreferenceStringSet).toTypedArray())
 
-        settings.putStringSet(EncryptedPreferences.PreferenceStringSet, setOf("Element 1a", "Element 2b", "Element 3c"))
-        assertArrayEquals(setOf("Element 1a", "Element 2b", "Element 3c").toTypedArray(), settings.getStringSet(EncryptedPreferences.PreferenceStringSet).toTypedArray())
+        settings.put(EncryptedPreferences.PreferenceStringSet, setOf("Element 1a", "Element 2b", "Element 3c"))
+        assertArrayEquals(setOf("Element 1a", "Element 2b", "Element 3c").toTypedArray(), settings.get(EncryptedPreferences.PreferenceStringSet).toTypedArray())
+    }
+
+    @Test
+    fun test_Enum_Settings() {
+        settings.put(EncryptedPreferences.PreferenceEnumStringKey, EncryptedPreferences.PreferenceEnumStringKey.defaultValue)
+        assertEquals(StringKeyEnum.Value2, settings.get(EncryptedPreferences.PreferenceEnumStringKey))
+
+        settings.put(EncryptedPreferences.PreferenceEnumStringKey, StringKeyEnum.Value1)
+        assertEquals(StringKeyEnum.Value1, settings.get(EncryptedPreferences.PreferenceEnumStringKey))
+    }
+
+    @Test
+    fun test_Enum_Int_Key_Settings() {
+        settings.put(EncryptedPreferences.PreferenceEnumIntKey, EncryptedPreferences.PreferenceEnumIntKey.defaultValue)
+        assertEquals(IntKeyEnum.Value2, settings.get(EncryptedPreferences.PreferenceEnumIntKey))
+
+        settings.put(EncryptedPreferences.PreferenceEnumIntKey, IntKeyEnum.Value1)
+        assertEquals(IntKeyEnum.Value1, settings.get(EncryptedPreferences.PreferenceEnumIntKey))
+    }
+
+    @Test
+    fun test_Enum_Ordinal_Key_Settings() {
+        settings.put(EncryptedPreferences.PreferenceEnumOrdinalKey, EncryptedPreferences.PreferenceEnumOrdinalKey.defaultValue)
+        assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumOrdinalKey))
+
+        settings.put(EncryptedPreferences.PreferenceEnumOrdinalKey, Enum.Value1)
+        assertEquals(Enum.Value1, settings.get(EncryptedPreferences.PreferenceEnumOrdinalKey))
+    }
+
+    @Test
+    fun test_Enum_Name_Key_Settings() {
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, EncryptedPreferences.PreferenceEnumNameKey.defaultValue)
+        assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey))
+
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
+        assertEquals(Enum.Value1, settings.get(EncryptedPreferences.PreferenceEnumNameKey))
     }
 }

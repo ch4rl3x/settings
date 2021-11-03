@@ -1,10 +1,14 @@
 package de.charlex.settings.sharedpreferences.encryption
 
-import de.charlex.settings.sharedpreferences.Keyed
+import kotlin.reflect.KProperty
 
 interface IEncryptedSharedPreference<T> {
     val preferenceKey: String
     val defaultValue: T
 }
 
-interface IEncryptedEnumSharedPreference<T> : IEncryptedSharedPreference<T> where T : Enum<T>, T : Keyed
+interface IEncryptedEnumSharedPreference<T : Enum<T>, U> {
+    val preferenceKey: String
+    val defaultValue: T
+    val keyProperty: KProperty<U>
+}

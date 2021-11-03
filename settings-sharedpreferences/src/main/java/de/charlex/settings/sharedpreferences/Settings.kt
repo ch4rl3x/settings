@@ -6,7 +6,7 @@ interface Settings {
 
     fun <T> get(pref: ISharedPreference<T>): T
     fun <T> put(pref: ISharedPreference<T>, value: T)
-    fun <T> put(pref: IEnumSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed
+    fun <T: Enum<T>, U> put(pref: IEnumSharedPreference<T, U>, value: T)
 
     companion object {
 
@@ -29,7 +29,16 @@ interface Settings {
     }
 }
 
-inline fun <reified T> Settings.get(pref: IEnumSharedPreference<T>): T where T : Enum<*>, T : Keyed {
-    val enumKey = get(stringPreference(pref.preferenceKey, pref.defaultValue.key))
-    return enumValues<T>().find { it.key == enumKey } ?: pref.defaultValue
+inline fun <reified T : Enum<T>, U> Settings.get(pref: IEnumSharedPreference<T, U>): T {
+    val keyProperty = pref.keyProperty
+    val sharedPreference = when(val defaultValue = keyProperty.call(pref.defaultValue)) {
+        is String -> stringPreference(pref.preferenceKey, defaultValue as String)
+        is Int -> intPreference(pref.preferenceKey, defaultValue as Int)
+        is Float -> floatPreference(pref.preferenceKey, defaultValue as Float)
+        is Long -> longPreference(pref.preferenceKey, defaultValue as Long)
+        is Boolean -> booleanPreference(pref.preferenceKey, defaultValue as Boolean)
+        else -> error("No valid enum key: $defaultValue")
+    }
+    val enumKey = get(sharedPreference)
+    return enumValues<T>().find { pref.keyProperty.call(it) == enumKey } ?: pref.defaultValue
 }

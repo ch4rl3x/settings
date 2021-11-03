@@ -69,11 +69,38 @@ abstract class SettingsTest {
     }
 
     @Test
-    fun test_Enum_Settings() {
-        settings.put(Preferences.PreferenceEnum, Preferences.PreferenceEnum.defaultValue)
-        assertEquals(Speed.Medium, settings.get(Preferences.PreferenceEnum))
+    fun test_Enum_String_Key_Settings() {
+        settings.put(Preferences.PreferenceEnumStringKey, Preferences.PreferenceEnumStringKey.defaultValue)
+        assertEquals(StringKeyEnum.Value2, settings.get(Preferences.PreferenceEnumStringKey))
 
-        settings.put(Preferences.PreferenceEnum, Speed.Slow)
-        assertEquals(Speed.Slow, settings.get(Preferences.PreferenceEnum))
+        settings.put(Preferences.PreferenceEnumStringKey, StringKeyEnum.Value1)
+        assertEquals(StringKeyEnum.Value1, settings.get(Preferences.PreferenceEnumStringKey))
+    }
+
+    @Test
+    fun test_Enum_Int_Key_Settings() {
+        settings.put(Preferences.PreferenceEnumIntKey, Preferences.PreferenceEnumIntKey.defaultValue)
+        assertEquals(IntKeyEnum.Value2, settings.get(Preferences.PreferenceEnumIntKey))
+
+        settings.put(Preferences.PreferenceEnumIntKey, IntKeyEnum.Value1)
+        assertEquals(IntKeyEnum.Value1, settings.get(Preferences.PreferenceEnumIntKey))
+    }
+
+    @Test
+    fun test_Enum_Ordinal_Key_Settings() {
+        settings.put(Preferences.PreferenceEnumOrdinalKey, Preferences.PreferenceEnumOrdinalKey.defaultValue)
+        assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumOrdinalKey))
+
+        settings.put(Preferences.PreferenceEnumOrdinalKey, Enum.Value1)
+        assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumOrdinalKey))
+    }
+
+    @Test
+    fun test_Enum_Name_Key_Settings() {
+        settings.put(Preferences.PreferenceEnumNameKey, Preferences.PreferenceEnumNameKey.defaultValue)
+        assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey))
+
+        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+        assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumNameKey))
     }
 }

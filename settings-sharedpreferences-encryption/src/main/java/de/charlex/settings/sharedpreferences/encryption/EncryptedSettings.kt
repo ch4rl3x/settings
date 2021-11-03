@@ -2,28 +2,19 @@ package de.charlex.settings.sharedpreferences.encryption
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
-import de.charlex.settings.sharedpreferences.Keyed
+import de.charlex.settings.sharedpreferences.IEnumSharedPreference
+import de.charlex.settings.sharedpreferences.ISharedPreference
 import de.charlex.settings.sharedpreferences.Settings
+import de.charlex.settings.sharedpreferences.booleanPreference
+import de.charlex.settings.sharedpreferences.floatPreference
+import de.charlex.settings.sharedpreferences.intPreference
+import de.charlex.settings.sharedpreferences.longPreference
+import de.charlex.settings.sharedpreferences.stringPreference
 
 interface EncryptedSettings {
-
-    fun getRaw(key: String): String?
-    fun getString(pref: IEncryptedSharedPreference<String>): String
-    fun getInt(pref: IEncryptedSharedPreference<Int>): Int
-    fun getFloat(pref: IEncryptedSharedPreference<Float>): Float
-    fun getDouble(pref: IEncryptedSharedPreference<Double>): Double
-    fun getBoolean(pref: IEncryptedSharedPreference<Boolean>): Boolean
-    fun getLong(pref: IEncryptedSharedPreference<Long>): Long
-    fun getStringSet(pref: IEncryptedSharedPreference<Set<String>>): Set<String>
-
-    fun putString(pref: IEncryptedSharedPreference<String>, value: String)
-    fun putInt(pref: IEncryptedSharedPreference<Int>, value: Int)
-    fun putFloat(pref: IEncryptedSharedPreference<Float>, value: Float)
-    fun putDouble(pref: IEncryptedSharedPreference<Double>, value: Double)
-    fun putBoolean(pref: IEncryptedSharedPreference<Boolean>, value: Boolean)
-    fun putLong(pref: IEncryptedSharedPreference<Long>, value: Long)
-    fun <T> putEnum(pref: IEncryptedSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed
-    fun putStringSet(pref: IEncryptedSharedPreference<Set<String>>, value: Set<String>)
+    fun <T> get(pref: IEncryptedSharedPreference<T>): T
+    fun <T> put(pref: IEncryptedSharedPreference<T>, value: T)
+    fun <T: Enum<T>, U> put(pref: IEncryptedEnumSharedPreference<T, U>, value: T)
 }
 
 fun Settings.Companion.createEncrypted(
@@ -46,7 +37,16 @@ fun Settings.Companion.createInMemoryEncrypted(): EncryptedSettings {
     return EncryptedSettingsInMemoryImpl()
 }
 
-inline fun <reified T> EncryptedSettings.getEnum(pref: IEncryptedSharedPreference<T>): T where T : Enum<T>, T : Keyed {
-    val enumKey = getRaw(pref.preferenceKey)
-    return enumValues<T>().find { it.key == enumKey } ?: pref.defaultValue
+inline fun <reified T : Enum<T>, U> EncryptedSettings.get(pref: IEncryptedEnumSharedPreference<T, U>): T {
+    val keyProperty = pref.keyProperty
+    val sharedPreference = when(val defaultValue = keyProperty.call(pref.defaultValue)) {
+        is String -> encryptedStringPreference(pref.preferenceKey, defaultValue as String)
+        is Int -> encryptedIntPreference(pref.preferenceKey, defaultValue as Int)
+        is Float -> encryptedFloatPreference(pref.preferenceKey, defaultValue as Float)
+        is Long -> encryptedLongPreference(pref.preferenceKey, defaultValue as Long)
+        is Boolean -> encryptedBooleanPreference(pref.preferenceKey, defaultValue as Boolean)
+        else -> error("No valid enum key: $defaultValue")
+    }
+    val enumKey = get(sharedPreference)
+    return enumValues<T>().find { pref.keyProperty.call(it) == enumKey } ?: pref.defaultValue
 }

@@ -37,12 +37,19 @@ class SettingsImpl internal constructor(
             }
             else -> error("Cannot save preference with key: ${pref.preferenceKey}, value: $value")
         }
-        edit.commit()
+        edit.apply()
     }
 
-    override fun <T> put(pref: IEnumSharedPreference<T>, value: T) where T : Enum<T>, T : Keyed {
+    override fun <T : Enum<T>, U> put(pref: IEnumSharedPreference<T, U>, value: T) {
         val edit = settings.edit()
-        edit.putString(pref.preferenceKey, value.key)
-        edit.commit()
+        when(val enumValue = pref.keyProperty.call(value)) {
+            is String -> edit.putString(pref.preferenceKey, enumValue as String)
+            is Int -> edit.putInt(pref.preferenceKey, enumValue as Int)
+            is Float -> edit.putFloat(pref.preferenceKey, enumValue as Float)
+            is Long -> edit.putLong(pref.preferenceKey, enumValue as Long)
+            is Boolean -> edit.putBoolean(pref.preferenceKey, enumValue as Boolean)
+            else -> error("No valid enum key value: $enumValue")
+        }
+        edit.apply()
     }
 }
