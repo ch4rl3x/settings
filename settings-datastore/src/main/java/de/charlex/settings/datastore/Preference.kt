@@ -26,7 +26,7 @@ fun stringPreference(name: String, defaultValue: String): IDataStorePreference<S
 
 @Suppress("UNCHECKED_CAST")
 fun <T : Enum<T>, U> enumPreference(name: String, defaultValue: T, keyProperty: KProperty<U>): IDataStoreEnumPreference<T, U> {
-    val preferenceKey: Preferences.Key<U> = when(keyProperty.call(defaultValue)) {
+    val preferenceKey: Preferences.Key<U> = when (keyProperty.call(defaultValue)) {
         is String -> stringPreferencesKey(name) as Preferences.Key<U>
         is Int -> intPreferencesKey(name) as Preferences.Key<U>
         is Double -> doublePreferencesKey(name) as Preferences.Key<U>
