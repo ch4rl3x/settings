@@ -40,7 +40,7 @@ inline fun <reified T> decrypt(encrypted: String): T {
 
 inline fun <reified T> encrypt(value: T): String {
     val (iv, ciphertext) = Security.encryptData(Security.securityKeyAlias, Json.encodeToString(value))
-    return "${iv.joinToString(Security.bytesToStringSeparator)}${Security.bytesToStringSeparator}${Security.bytesToStringSeparator}${ciphertext.joinToString(Security.bytesToStringSeparator)}"
+    return Security.joinIvAndCipherText(iv, ciphertext)
 }
 
 suspend inline fun <reified T> SettingsDataStore.put(pref: IDataStoreEncryptedPreference<T>, value: T) {

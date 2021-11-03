@@ -6,6 +6,7 @@ import android.security.keystore.KeyProperties.ENCRYPTION_PADDING_NONE
 import android.security.keystore.KeyProperties.KEY_ALGORITHM_AES
 import android.security.keystore.KeyProperties.PURPOSE_DECRYPT
 import android.security.keystore.KeyProperties.PURPOSE_ENCRYPT
+import android.util.Base64
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -15,12 +16,13 @@ import javax.crypto.spec.GCMParameterSpec
 object Security {
 
     val securityKeyAlias = "data-store"
-    val bytesToStringSeparator = "|"
+    val ivLength = 12 // in bytes
+    val tagLength = 128 // in bits
 
     private val provider = "AndroidKeyStore"
 
     private val cipher by lazy {
-        Cipher.getInstance("AES/GCM/NoPadding")
+        Cipher.getInstance("$KEY_ALGORITHM_AES/$BLOCK_MODE_GCM/$ENCRYPTION_PADDING_NONE")
     }
     private val charset by lazy {
         charset("UTF-8")
@@ -43,17 +45,25 @@ object Security {
     }
 
     fun decryptData(keyAlias: String, iv: ByteArray, encryptedData: ByteArray): String {
-        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(keyAlias), GCMParameterSpec(128, iv))
+        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(keyAlias), GCMParameterSpec(tagLength, iv))
         return cipher.doFinal(encryptedData).toString(charset)
     }
 
-    fun extractIvAndCipherText(encryptedText: String): Pair<ByteArray, ByteArray>? {
-        val parts = encryptedText.split("$bytesToStringSeparator$bytesToStringSeparator")
-        if (parts.size != 2) return null
-        val iv = parts[0].split(bytesToStringSeparator).map { it.toByte() }.toByteArray()
-        val ciphertext = parts[1].split(bytesToStringSeparator).map { it.toByte() }.toByteArray()
-        return iv to ciphertext
-    }
+    fun extractIvAndCipherText(encryptedText: String): Pair<ByteArray, ByteArray>? =
+        try {
+            val combined = encryptedText.decodeBase64()
+            val iv = combined.copyOfRange(0, ivLength)
+            val ciphertext = combined.copyOfRange(ivLength, combined.size)
+            iv to ciphertext
+        } catch (t: Throwable) {
+            if (BuildConfig.DEBUG) {
+                t.printStackTrace()
+            }
+            null
+        }
+
+    fun joinIvAndCipherText(iv: ByteArray, ciphertext: ByteArray): String =
+        (iv + ciphertext).encodeBase64()
 
     private fun generateSecretKey(keyAlias: String): SecretKey {
         return keyGenerator.apply {
@@ -69,4 +79,8 @@ object Security {
 
     private fun getSecretKey(keyAlias: String): SecretKey? =
         (keyStore.getEntry(keyAlias, null) as KeyStore.SecretKeyEntry?)?.secretKey
+
+    private fun ByteArray.encodeBase64(): String = Base64.encodeToString(this, Base64.DEFAULT)
+
+    private fun String.decodeBase64(): ByteArray = Base64.decode(this, Base64.DEFAULT)
 }
