@@ -33,4 +33,3 @@ enum class Enum {
     Value2,
     Value3
 }
-

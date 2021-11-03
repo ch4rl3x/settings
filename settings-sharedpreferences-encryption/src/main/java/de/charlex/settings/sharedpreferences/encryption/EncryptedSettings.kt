@@ -2,19 +2,12 @@ package de.charlex.settings.sharedpreferences.encryption
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
-import de.charlex.settings.sharedpreferences.IEnumSharedPreference
-import de.charlex.settings.sharedpreferences.ISharedPreference
 import de.charlex.settings.sharedpreferences.Settings
-import de.charlex.settings.sharedpreferences.booleanPreference
-import de.charlex.settings.sharedpreferences.floatPreference
-import de.charlex.settings.sharedpreferences.intPreference
-import de.charlex.settings.sharedpreferences.longPreference
-import de.charlex.settings.sharedpreferences.stringPreference
 
 interface EncryptedSettings {
     fun <T> get(pref: IEncryptedSharedPreference<T>): T
     fun <T> put(pref: IEncryptedSharedPreference<T>, value: T)
-    fun <T: Enum<T>, U> put(pref: IEncryptedEnumSharedPreference<T, U>, value: T)
+    fun <T : Enum<T>, U> put(pref: IEncryptedEnumSharedPreference<T, U>, value: T)
 }
 
 fun Settings.Companion.createEncrypted(
@@ -39,7 +32,7 @@ fun Settings.Companion.createInMemoryEncrypted(): EncryptedSettings {
 
 inline fun <reified T : Enum<T>, U> EncryptedSettings.get(pref: IEncryptedEnumSharedPreference<T, U>): T {
     val keyProperty = pref.keyProperty
-    val sharedPreference = when(val defaultValue = keyProperty.call(pref.defaultValue)) {
+    val sharedPreference = when (val defaultValue = keyProperty.call(pref.defaultValue)) {
         is String -> encryptedStringPreference(pref.preferenceKey, defaultValue as String)
         is Int -> encryptedIntPreference(pref.preferenceKey, defaultValue as Int)
         is Float -> encryptedFloatPreference(pref.preferenceKey, defaultValue as Float)

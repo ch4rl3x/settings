@@ -42,7 +42,7 @@ class SettingsImpl internal constructor(
 
     override fun <T : Enum<T>, U> put(pref: IEnumSharedPreference<T, U>, value: T) {
         val edit = settings.edit()
-        when(val enumValue = pref.keyProperty.call(value)) {
+        when (val enumValue = pref.keyProperty.call(value)) {
             is String -> edit.putString(pref.preferenceKey, enumValue as String)
             is Int -> edit.putInt(pref.preferenceKey, enumValue as Int)
             is Float -> edit.putFloat(pref.preferenceKey, enumValue as Float)
