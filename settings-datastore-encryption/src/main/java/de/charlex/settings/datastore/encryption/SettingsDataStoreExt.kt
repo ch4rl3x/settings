@@ -1,5 +1,6 @@
 package de.charlex.settings.datastore.encryption
 
+import androidx.datastore.core.CorruptionException
 import de.charlex.settings.datastore.SettingsDataStore
 import de.charlex.settings.datastore.stringPreference
 import kotlinx.coroutines.flow.Flow
@@ -19,8 +20,8 @@ inline fun <reified T> SettingsDataStore.get(pref: IDataStoreEncryptedPreference
         } else {
             decrypt(it)
         }
-    }.catch {
-        error("Invalid data stored in Preference: ${pref.preferenceKey.name}")
+    }.catch { e ->
+        throw CorruptionException("Invalid data stored in Preference: ${pref.preferenceKey.name}", e)
     }
 }
 
