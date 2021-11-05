@@ -10,11 +10,9 @@ open class AndroidSecurityTest {
      */
     @Test
     fun cipher_noRaceCondition() {
-        val millis = System.currentTimeMillis()
         val (iv, cipherText) = Security.encryptData("testAlias", "secret")
         (1..100).toList().parallelStream().map {
             Security.decryptData("testAlias", iv, cipherText)
         }.count()
-        println("Took ${System.currentTimeMillis() - millis}ms")
     }
 }
