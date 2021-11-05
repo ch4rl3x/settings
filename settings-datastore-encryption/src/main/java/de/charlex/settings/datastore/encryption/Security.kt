@@ -21,9 +21,6 @@ object Security {
 
     private val provider = "AndroidKeyStore"
 
-    private val cipher by lazy {
-        Cipher.getInstance("$KEY_ALGORITHM_AES/$BLOCK_MODE_GCM/$ENCRYPTION_PADDING_NONE")
-    }
     private val charset by lazy {
         charset("UTF-8")
     }
@@ -36,8 +33,11 @@ object Security {
         KeyGenerator.getInstance(KEY_ALGORITHM_AES, provider)
     }
 
+    private fun createCipher() = Cipher.getInstance("$KEY_ALGORITHM_AES/$BLOCK_MODE_GCM/$ENCRYPTION_PADDING_NONE")
+
     fun encryptData(keyAlias: String, text: String): Pair<ByteArray, ByteArray> {
         val secretKey = getSecretKey(keyAlias) ?: generateSecretKey(keyAlias)
+        val cipher = createCipher()
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
         val iv = cipher.iv.copyOf()
         val ciphertext = cipher.doFinal(text.toByteArray(charset))
@@ -45,7 +45,9 @@ object Security {
     }
 
     fun decryptData(keyAlias: String, iv: ByteArray, encryptedData: ByteArray): String {
-        cipher.init(Cipher.DECRYPT_MODE, getSecretKey(keyAlias), GCMParameterSpec(tagLength, iv))
+        val secretKey = getSecretKey(keyAlias)
+        val cipher = createCipher()
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(tagLength, iv))
         return cipher.doFinal(encryptedData).toString(charset)
     }
 
