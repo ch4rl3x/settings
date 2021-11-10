@@ -22,4 +22,12 @@ class EncryptedSettingsInMemoryImpl internal constructor() : EncryptedSettings {
     override fun <T : Enum<T>, U> put(pref: IEncryptedEnumSharedPreference<T, U>, value: T) {
         settings[pref.preferenceKey] = pref.keyProperty.call(value) as Any
     }
+
+    override fun <T> remove(pref: IEncryptedSharedPreference<T>) {
+        settings.remove(pref.preferenceKey)
+    }
+
+    override fun <T : Enum<T>, U> remove(pref: IEncryptedEnumSharedPreference<T, U>) {
+        settings.remove(pref.preferenceKey)
+    }
 }

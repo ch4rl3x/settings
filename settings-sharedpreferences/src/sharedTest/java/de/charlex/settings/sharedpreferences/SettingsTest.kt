@@ -103,4 +103,17 @@ abstract class SettingsTest {
         settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
         assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumNameKey))
     }
+
+    @Test
+    fun removeEnum() {
+        // prepare
+        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.remove(Preferences.PreferenceEnumNameKey)
+
+        // verify
+        // should be reset to default when calling get
+        assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey))
+    }
 }

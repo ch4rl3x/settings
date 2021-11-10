@@ -97,4 +97,17 @@ abstract class SettingsEncryptionTest {
         settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
         assertEquals(Enum.Value1, settings.get(EncryptedPreferences.PreferenceEnumNameKey))
     }
+
+    @Test
+    fun removeEnum() {
+        // prepare
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.remove(EncryptedPreferences.PreferenceEnumNameKey)
+
+        // verify
+        // should be reset to default when calling get
+        assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey))
+    }
 }

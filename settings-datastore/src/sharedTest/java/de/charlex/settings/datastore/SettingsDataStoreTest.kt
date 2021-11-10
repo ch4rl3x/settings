@@ -124,4 +124,17 @@ abstract class SettingsDataStoreTest {
             }
         }
     }
+
+    @Test
+    fun removeEnum() = runBlocking {
+        // prepare
+        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.remove(Preferences.PreferenceEnumNameKey)
+
+        // verify
+        // should be reset to default when calling get
+        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+    }
 }

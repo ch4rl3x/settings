@@ -8,6 +8,9 @@ interface EncryptedSettings {
     fun <T> get(pref: IEncryptedSharedPreference<T>): T
     fun <T> put(pref: IEncryptedSharedPreference<T>, value: T)
     fun <T : Enum<T>, U> put(pref: IEncryptedEnumSharedPreference<T, U>, value: T)
+
+    fun <T> remove(pref: IEncryptedSharedPreference<T>)
+    fun <T : Enum<T>, U> remove(pref: IEncryptedEnumSharedPreference<T, U>)
 }
 
 fun Settings.Companion.createEncrypted(

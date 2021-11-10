@@ -120,4 +120,17 @@ abstract class SettingsDataStoreEncryptionTest {
         settings.put(EncryptedPreferences.PreferenceString_WithIntKey, "TEST2")
         intFlow.first()
     }
+
+    @Test
+    fun removeEnum() = runBlocking {
+        // prepare
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.remove(EncryptedPreferences.PreferenceEnumNameKey)
+
+        // verify
+        // should be reset to default when calling get
+        Assert.assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey).first())
+    }
 }

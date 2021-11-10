@@ -22,4 +22,12 @@ class SettingsInMemoryImpl internal constructor() : Settings {
     override fun <T : Enum<T>, U> put(pref: IEnumSharedPreference<T, U>, value: T) {
         settings[pref.preferenceKey] = pref.keyProperty.call(value) as Any
     }
+
+    override fun <T> remove(pref: ISharedPreference<T>) {
+        settings.remove(pref.preferenceKey)
+    }
+
+    override fun <T : Enum<T>, U> remove(pref: IEnumSharedPreference<T, U>) {
+        settings.remove(pref.preferenceKey)
+    }
 }

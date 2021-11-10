@@ -48,3 +48,7 @@ suspend inline fun <reified T> SettingsDataStore.put(pref: IDataStoreEncryptedPr
     val encrypted = encrypt(value)
     this.put(stringPreference(pref.preferenceKey.name, "NULL"), encrypted)
 }
+
+suspend inline fun <reified T> SettingsDataStore.remove(pref: IDataStoreEncryptedPreference<T>) {
+    this.remove(stringPreference(pref.preferenceKey.name, "NULL"))
+}
