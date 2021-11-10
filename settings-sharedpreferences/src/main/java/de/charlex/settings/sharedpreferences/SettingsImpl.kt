@@ -52,4 +52,16 @@ class SettingsImpl internal constructor(
         }
         edit.apply()
     }
+
+    override fun <T> remove(pref: ISharedPreference<T>) {
+        val edit = settings.edit()
+        edit.remove(pref.preferenceKey)
+        edit.apply()
+    }
+
+    override fun <T : Enum<T>, U> remove(pref: IEnumSharedPreference<T, U>) {
+        val edit = settings.edit()
+        edit.remove(pref.preferenceKey)
+        edit.apply()
+    }
 }

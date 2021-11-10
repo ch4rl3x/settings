@@ -61,4 +61,16 @@ class EncryptedSettingsImpl internal constructor(
         }
         edit.apply()
     }
+
+    override fun <T> remove(pref: IEncryptedSharedPreference<T>) {
+        val edit = settings.edit()
+        edit.remove(pref.preferenceKey)
+        edit.apply()
+    }
+
+    override fun <T : Enum<T>, U> remove(pref: IEncryptedEnumSharedPreference<T, U>) {
+        val edit = settings.edit()
+        edit.remove(pref.preferenceKey)
+        edit.apply()
+    }
 }

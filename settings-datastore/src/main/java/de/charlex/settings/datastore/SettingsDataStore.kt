@@ -16,6 +16,9 @@ interface SettingsDataStore {
     suspend fun <T> put(key: IDataStorePreference<T>, value: T)
     suspend fun <T : Enum<T>, U> put(key: IDataStoreEnumPreference<T, U>, value: T)
 
+    suspend fun <T> remove(pref: IDataStorePreference<T>)
+    suspend fun <T : Enum<T>, U> remove(pref: IDataStoreEnumPreference<T, U>)
+
     companion object {
 
         private var settingsDataStore: SettingsDataStore? = null

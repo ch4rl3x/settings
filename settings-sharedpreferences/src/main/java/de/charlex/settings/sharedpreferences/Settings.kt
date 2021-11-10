@@ -8,6 +8,9 @@ interface Settings {
     fun <T> put(pref: ISharedPreference<T>, value: T)
     fun <T : Enum<T>, U> put(pref: IEnumSharedPreference<T, U>, value: T)
 
+    fun <T> remove(pref: ISharedPreference<T>)
+    fun <T : Enum<T>, U> remove(pref: IEnumSharedPreference<T, U>)
+
     companion object {
 
         @JvmOverloads

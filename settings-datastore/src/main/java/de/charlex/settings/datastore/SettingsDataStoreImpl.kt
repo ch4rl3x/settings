@@ -43,4 +43,16 @@ class SettingsDataStoreImpl internal constructor(
             settings[key.preferenceKey] = key.keyProperty.call(value)
         }
     }
+
+    override suspend fun <T> remove(pref: IDataStorePreference<T>) {
+        context.dataStore.edit { settings ->
+            settings.remove(pref.preferenceKey)
+        }
+    }
+
+    override suspend fun <T : Enum<T>, U> remove(pref: IDataStoreEnumPreference<T, U>) {
+        context.dataStore.edit { settings ->
+            settings.remove(pref.preferenceKey)
+        }
+    }
 }
