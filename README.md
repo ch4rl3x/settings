@@ -18,10 +18,10 @@ Settings is an easy wrapper with type safety for SharedPreferences and Datastore
 Add the library to your module `build.gradle`
 ```gradle
 dependencies {
-    implementation 'de.charlex.settings:settings-datastore:1.0.0-rc04'
-    implementation 'de.charlex.settings:settings-datastore-encryption:1.0.0-rc04'
-    implementation 'de.charlex.settings:settings-sharedpreferences:1.0.0-rc04'
-    implementation 'de.charlex.settings:settings-sharedpreferences-encryption:1.0.0-rc04'
+    implementation 'de.charlex.settings:settings-datastore:1.0.0'
+    implementation 'de.charlex.settings:settings-datastore-encryption:1.0.0'
+    implementation 'de.charlex.settings:settings-sharedpreferences:1.0.0'
+    implementation 'de.charlex.settings:settings-sharedpreferences-encryption:1.0.0'
 }
 ```
 
