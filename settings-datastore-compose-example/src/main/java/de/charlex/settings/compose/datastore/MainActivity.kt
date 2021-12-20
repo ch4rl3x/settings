@@ -48,11 +48,9 @@ fun Body(settingsDataStore: SettingsDataStore) {
                     boolean(booleanPreference("key5", false), "Label Key 5")
                 }
             }
-
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
