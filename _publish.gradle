@@ -52,6 +52,62 @@ nexusStaging {
     serverUrl = "https://s01.oss.sonatype.org/service/local/"
 }
 
+task lookForArtifacts {
+    group "upload"
+    doLast {
+
+        def pomFileName = "${PUBLISH_ARTIFACT_ID}-${PUBLISH_VERSION}.pom"
+        def artifactPath = "${PUBLISH_GROUP_ID.replace(".", "/")}/${PUBLISH_ARTIFACT_ID}/${PUBLISH_VERSION}/${pomFileName}"
+        def repositoryUrl = "https://s01.oss.sonatype.org/service/local/repositories/releases/content/${artifactPath}"
+
+        println("# searching for existing artifact wit id ${PUBLISH_VERSION}")
+        println("$repositoryUrl")
+
+        if (urlExists(repositoryUrl)) {
+            println("# Existing artifact found")
+            println("")
+
+            project.tasks.publish.enabled = false
+        } else {
+            println("# No existing artifact found. Preceding to publish")
+            println("")
+        }
+
+        println("${project} enabled: ${project.tasks.publish.enabled}")
+    }
+}
+
+def urlExists(String repositoryUrl) {
+
+    try {
+        def connection = (HttpURLConnection) new URL(repositoryUrl).openConnection()
+
+        connection.setRequestProperty("Authorization", "Basic " + getBase64EncodedCredentials())
+        connection.setConnectTimeout(10000)
+        connection.setReadTimeout(10000)
+        connection.setRequestMethod("HEAD")
+
+        def responseCode = connection.getResponseCode()
+
+        if (responseCode == 401) {
+            throw new RuntimeException("Unauthorized MavenUser user. Please provide valid username and password.")
+        }
+
+        return (200 == responseCode)
+
+    } catch (IOException ignored) {
+        println(ignored)
+        return false
+    }
+}
+
+def getBase64EncodedCredentials() {
+    def s = "${ossrhUsername}" + ":" + "${ossrhPassword}"
+    return s.bytes.encodeBase64().toString()
+}
+
+publish.dependsOn lookForArtifacts
+
 publishing {
     publications {
         release(MavenPublication) {
@@ -59,6 +115,9 @@ publishing {
             // we'll set up later
             groupId PUBLISH_GROUP_ID
             artifactId PUBLISH_ARTIFACT_ID
+
+            println("$artifactId : $version")
+
             version PUBLISH_VERSION
 
             // Two artifacts, the `aar` (or `jar`) and the sources

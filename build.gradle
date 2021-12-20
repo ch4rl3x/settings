@@ -8,6 +8,7 @@ buildscript {
                 'minSdk'    : 23,
                 'targetSdk' : 31,
         ]
+        compose_version = '1.0.5'
     }
     repositories {
         google()

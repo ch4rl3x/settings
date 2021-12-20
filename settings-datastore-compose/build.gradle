@@ -1,0 +1,86 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+apply from: '../_ktlint.gradle'
+apply from: 'buildCompose.gradle'
+
+
+ext {
+    PUBLISH_GROUP_ID = 'de.charlex.compose'
+    PUBLISH_ARTIFACT_ID = 'settings-datastore'
+    PUBLISH_VERSION = '1.0.0-alpha01'
+}
+
+apply from: '../_publish.gradle'
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion "31.0.0"
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    sourceSets {
+        test {
+            java.srcDirs += 'src/sharedTest/java'
+        }
+        androidTest {
+            java.srcDirs += 'src/sharedTest/java'
+        }
+    }
+
+    // Used for assembleAndroidTest
+    packagingOptions {
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
+}
+
+dependencies {
+    implementation project(':settings-datastore')
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.robolectric:robolectric:$roboelectric"
+    testImplementation 'androidx.test:core:1.4.0'
+    testImplementation 'androidx.test.ext:junit:1.1.3'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

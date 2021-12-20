@@ -1,5 +1,7 @@
 include ':settings-datastore'
 include ':settings-datastore-encryption'
+include ':settings-datastore-compose'
 include ':settings-sharedpreferences'
 include ':settings-sharedpreferences-encryption'
 rootProject.name = "Settings"
+include ':settings-datastore-compose-example'
