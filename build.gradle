@@ -2,7 +2,7 @@
 buildscript {
     ext {
         kotlin_version = "1.5.31"
-        roboelectric = "4.6.1"
+        roboelectric = "4.8.1"
         buildConfig = [
                 'compileSdk': 31,
                 'minSdk'    : 23,
