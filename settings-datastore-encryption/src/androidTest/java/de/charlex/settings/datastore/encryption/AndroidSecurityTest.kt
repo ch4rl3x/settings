@@ -1,6 +1,7 @@
 package de.charlex.settings.datastore.encryption
 
 import android.os.Build
+import de.charlex.settings.datastore.security.AESSecurity
 import org.junit.Test
 import java.util.concurrent.CountDownLatch
 
@@ -12,7 +13,7 @@ open class AndroidSecurityTest {
      */
     @Test
     fun cipher_noRaceCondition() {
-        val (iv, cipherText) = Security.encryptData("testAlias", "secret")
+        val encryptedText = AESSecurity.encryptData("secret")
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             // use old-fashioned threads
             val numThreads = 10
@@ -23,7 +24,7 @@ open class AndroidSecurityTest {
                         countDown.countDown()
                         countDown.await()
                         (0..10).toList().map {
-                            Security.decryptData("testAlias", iv, cipherText)
+                            AESSecurity.decryptData(encryptedText)
                         }
                     }
                 }
@@ -35,7 +36,7 @@ open class AndroidSecurityTest {
         } else {
             // use parallelStream
             (1..100).toList().parallelStream().map {
-                Security.decryptData("testAlias", iv, cipherText)
+                AESSecurity.decryptData(encryptedText)
             }.count()
         }
     }
