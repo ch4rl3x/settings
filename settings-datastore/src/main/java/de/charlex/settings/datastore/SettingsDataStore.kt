@@ -1,14 +1,18 @@
 package de.charlex.settings.datastore
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.datastore.core.DataMigration
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.Preferences
+import de.charlex.settings.datastore.security.AESSecurity
+import de.charlex.settings.datastore.security.Security
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.jetbrains.annotations.TestOnly
 
 interface SettingsDataStore {
 
@@ -29,7 +33,8 @@ interface SettingsDataStore {
             name: String = "settings",
             corruptionHandler: ReplaceFileCorruptionHandler<Preferences>? = null,
             migrations: (Context) -> List<DataMigration<Preferences>> = { listOf() },
-            scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+            scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+            security: Security = AESSecurity
         ): SettingsDataStore {
             if (settingsDataStore == null) {
                 settingsDataStore = SettingsDataStoreImpl(
@@ -37,14 +42,28 @@ interface SettingsDataStore {
                     name = name,
                     corruptionHandler = corruptionHandler,
                     migrations = migrations,
-                    scope = scope
+                    scope = scope,
+                    security = security
                 )
             }
             return settingsDataStore!!
         }
 
-        fun createInMemory(): SettingsDataStore {
-            return SettingsDataStoreInMemoryImpl()
+        /**
+         * When using with robolectric, please use
+         *
+         * security = NoOpSecurity
+         *
+         * @see de.charlex.settings.datastore.security.NoOpSecurity
+         */
+        @TestOnly
+        @VisibleForTesting
+        fun createInMemory(
+            security: Security = AESSecurity
+        ): SettingsDataStore {
+            return SettingsDataStoreInMemoryImpl(
+                security = security
+            )
         }
     }
 }

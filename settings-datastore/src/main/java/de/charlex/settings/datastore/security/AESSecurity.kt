@@ -1,4 +1,4 @@
-package de.charlex.settings.datastore.encryption
+package de.charlex.settings.datastore.security
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties.BLOCK_MODE_GCM
@@ -7,23 +7,21 @@ import android.security.keystore.KeyProperties.KEY_ALGORITHM_AES
 import android.security.keystore.KeyProperties.PURPOSE_DECRYPT
 import android.security.keystore.KeyProperties.PURPOSE_ENCRYPT
 import android.util.Base64
+import de.charlex.settings.datastore.BuildConfig
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
-object Security {
+object AESSecurity : Security {
 
-    val securityKeyAlias = "data-store"
-    val ivLength = 12 // in bytes
-    val tagLength = 128 // in bits
+    private val securityKeyAlias = "data-store"
+    private val ivLength = 12 // in bytes
+    private val tagLength = 128 // in bits
 
     private val provider = "AndroidKeyStore"
 
-    private val charset by lazy {
-        charset("UTF-8")
-    }
     private val keyStore by lazy {
         KeyStore.getInstance(provider).apply {
             load(null)
@@ -35,23 +33,24 @@ object Security {
 
     private fun createCipher() = Cipher.getInstance("$KEY_ALGORITHM_AES/$BLOCK_MODE_GCM/$ENCRYPTION_PADDING_NONE")
 
-    fun encryptData(keyAlias: String, text: String): Pair<ByteArray, ByteArray> {
-        val secretKey = getSecretKey(keyAlias) ?: generateSecretKey(keyAlias)
+    override fun encryptData(text: String): String {
+        val secretKey = getSecretKey(securityKeyAlias) ?: generateSecretKey(securityKeyAlias)
         val cipher = createCipher()
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
         val iv = cipher.iv.copyOf()
-        val ciphertext = cipher.doFinal(text.toByteArray(charset))
-        return iv to ciphertext
+        val ciphertext = cipher.doFinal(text.toByteArray(Charsets.UTF_8))
+        return joinIvAndCipherText(iv, ciphertext)
     }
 
-    fun decryptData(keyAlias: String, iv: ByteArray, encryptedData: ByteArray): String {
-        val secretKey = getSecretKey(keyAlias)
+    override fun decryptData(encrypted: String): String {
+        val (iv, cipherText) = extractIvAndCipherText(encrypted) ?: error("Invalid data stored")
+        val secretKey = getSecretKey(securityKeyAlias)
         val cipher = createCipher()
         cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(tagLength, iv))
-        return cipher.doFinal(encryptedData).toString(charset)
+        return cipher.doFinal(cipherText).toString(Charsets.UTF_8)
     }
 
-    fun extractIvAndCipherText(encryptedText: String): Pair<ByteArray, ByteArray>? =
+    private fun extractIvAndCipherText(encryptedText: String): Pair<ByteArray, ByteArray>? =
         try {
             val combined = encryptedText.decodeBase64()
             val iv = combined.copyOfRange(0, ivLength)
@@ -64,7 +63,7 @@ object Security {
             null
         }
 
-    fun joinIvAndCipherText(iv: ByteArray, ciphertext: ByteArray): String =
+    private fun joinIvAndCipherText(iv: ByteArray, ciphertext: ByteArray): String =
         (iv + ciphertext).encodeBase64()
 
     private fun generateSecretKey(keyAlias: String): SecretKey {
