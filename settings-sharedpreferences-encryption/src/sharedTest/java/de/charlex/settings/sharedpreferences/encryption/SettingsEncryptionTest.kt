@@ -110,4 +110,18 @@ abstract class SettingsEncryptionTest {
         // should be reset to default when calling get
         assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey))
     }
+
+    @Test
+    fun clear() {
+        // prepare
+        settings.put(EncryptedPreferences.PreferenceString, "test")
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.clear()
+
+        // verify
+        assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey))
+        assertEquals("default", settings.get(EncryptedPreferences.PreferenceString))
+    }
 }

@@ -116,4 +116,18 @@ abstract class SettingsTest {
         // should be reset to default when calling get
         assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey))
     }
+
+    @Test
+    fun clear() {
+        // prepare
+        settings.put(Preferences.PreferenceString, "test")
+        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.clear()
+
+        // verify
+        assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey))
+        assertEquals("default", settings.get(Preferences.PreferenceString))
+    }
 }

@@ -64,4 +64,10 @@ class SettingsImpl internal constructor(
         edit.remove(pref.preferenceKey)
         edit.apply()
     }
+
+    override fun clear() {
+        val edit = settings.edit()
+        edit.clear()
+        edit.apply()
+    }
 }

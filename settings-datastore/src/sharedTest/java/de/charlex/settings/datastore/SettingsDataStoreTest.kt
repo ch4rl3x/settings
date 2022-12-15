@@ -137,4 +137,18 @@ abstract class SettingsDataStoreTest {
         // should be reset to default when calling get
         Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
     }
+
+    @Test
+    fun clear() = runBlocking {
+        // prepare
+        settings.put(Preferences.PreferenceString, "test")
+        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.clear()
+
+        // verify
+        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+        Assert.assertEquals("default", settings.get(Preferences.PreferenceString).first())
+    }
 }

@@ -11,6 +11,8 @@ interface Settings {
     fun <T> remove(pref: ISharedPreference<T>)
     fun <T : Enum<T>, U> remove(pref: IEnumSharedPreference<T, U>)
 
+    fun clear()
+
     companion object {
 
         @JvmOverloads

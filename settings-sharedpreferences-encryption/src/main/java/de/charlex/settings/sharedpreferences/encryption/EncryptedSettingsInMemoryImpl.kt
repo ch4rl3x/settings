@@ -30,4 +30,8 @@ class EncryptedSettingsInMemoryImpl internal constructor() : EncryptedSettings {
     override fun <T : Enum<T>, U> remove(pref: IEncryptedEnumSharedPreference<T, U>) {
         settings.remove(pref.preferenceKey)
     }
+
+    override fun clear() {
+        settings.clear()
+    }
 }

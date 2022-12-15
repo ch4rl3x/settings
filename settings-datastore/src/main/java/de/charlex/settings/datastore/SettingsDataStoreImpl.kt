@@ -57,4 +57,10 @@ class SettingsDataStoreImpl internal constructor(
             settings.remove(pref.preferenceKey)
         }
     }
+
+    override suspend fun clear() {
+        context.dataStore.edit {
+            it.clear()
+        }
+    }
 }
