@@ -35,4 +35,8 @@ class SettingsDataStoreInMemoryImpl internal constructor(
     override suspend fun <T : Enum<T>, U> remove(pref: IDataStoreEnumPreference<T, U>) {
         flows.remove(pref.preferenceKey)
     }
+
+    override suspend fun clear() {
+        flows.clear()
+    }
 }

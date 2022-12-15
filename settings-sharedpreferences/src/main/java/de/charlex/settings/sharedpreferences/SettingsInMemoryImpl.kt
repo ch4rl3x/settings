@@ -30,4 +30,8 @@ class SettingsInMemoryImpl internal constructor() : Settings {
     override fun <T : Enum<T>, U> remove(pref: IEnumSharedPreference<T, U>) {
         settings.remove(pref.preferenceKey)
     }
+
+    override fun clear() {
+        settings.clear()
+    }
 }

@@ -11,6 +11,8 @@ interface EncryptedSettings {
 
     fun <T> remove(pref: IEncryptedSharedPreference<T>)
     fun <T : Enum<T>, U> remove(pref: IEncryptedEnumSharedPreference<T, U>)
+
+    fun clear()
 }
 
 fun Settings.Companion.createEncrypted(
