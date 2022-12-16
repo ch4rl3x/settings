@@ -107,6 +107,7 @@ def getBase64EncodedCredentials() {
 }
 
 publish.dependsOn lookForArtifacts
+publishReleasePublicationToSonatypeRepository.dependsOn lookForArtifacts
 
 publishing {
     publications {
