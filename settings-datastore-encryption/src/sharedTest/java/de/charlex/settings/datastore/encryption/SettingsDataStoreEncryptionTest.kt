@@ -1,10 +1,12 @@
 package de.charlex.settings.datastore.encryption
 
+import androidx.datastore.core.CorruptionException
 import de.charlex.settings.datastore.SettingsDataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
+import java.security.KeyStore
 
 abstract class SettingsDataStoreEncryptionTest {
 
@@ -132,5 +134,38 @@ abstract class SettingsDataStoreEncryptionTest {
         // verify
         // should be reset to default when calling get
         Assert.assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey).first())
+    }
+
+    @Test
+    fun clear() = runBlocking {
+        // prepare
+        settings.put(EncryptedPreferences.PreferenceString, "test")
+        settings.put(EncryptedPreferences.PreferenceEnumNameKey, Enum.Value1)
+
+        // execute
+        settings.clear()
+
+        // verify
+        Assert.assertEquals(Enum.Value2, settings.get(EncryptedPreferences.PreferenceEnumNameKey).first())
+        Assert.assertEquals("default", settings.get(EncryptedPreferences.PreferenceString).first())
+    }
+
+    /**
+     * On some Samsung devices, we were getting a null SecretKey some times.
+     * As we only retrieve keys AFTER we generated them (and wrote something to the datastore),
+     * this suggests, the key is lost between saving data to prefs and reading it.
+     *
+     * This mimics the suggested behaviour of a device which looses the key.
+     */
+    @Test(expected = CorruptionException::class)
+    fun decryptionFailure(): Unit = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceString, "my value")
+
+        // now we loose the key!
+        KeyStore.getInstance("AndroidKeyStore").apply {
+            load(null)
+        }.deleteEntry("data-store")
+
+        settings.get(EncryptedPreferences.PreferenceString).first()
     }
 }

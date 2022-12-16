@@ -44,7 +44,7 @@ object AESSecurity : Security {
 
     override fun decryptData(encrypted: String): String {
         val (iv, cipherText) = extractIvAndCipherText(encrypted) ?: error("Invalid data stored")
-        val secretKey = getSecretKey(securityKeyAlias)
+        val secretKey = getSecretKey(securityKeyAlias) ?: throw KeyNotFoundException("Could not find key with key alias $securityKeyAlias")
         val cipher = createCipher()
         cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(tagLength, iv))
         return cipher.doFinal(cipherText).toString(Charsets.UTF_8)
