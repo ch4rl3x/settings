@@ -106,8 +106,9 @@ def getBase64EncodedCredentials() {
     return s.bytes.encodeBase64().toString()
 }
 
-publish.dependsOn lookForArtifacts
-publishReleasePublicationToSonatypeRepository.dependsOn lookForArtifacts
+afterEvaluate {
+    tasks.getByName("publishReleasePublicationToSonatypeRepository").dependsOn lookForArtifacts
+}
 
 publishing {
     publications {
