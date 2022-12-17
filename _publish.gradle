@@ -50,6 +50,7 @@ nexusStaging {
     username = ossrhUsername
     password = ossrhPassword
     serverUrl = "https://s01.oss.sonatype.org/service/local/"
+    delayBetweenRetriesInMillis = 30000
 }
 
 task lookForArtifacts {
