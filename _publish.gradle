@@ -68,7 +68,7 @@ task lookForArtifacts {
             println("# Existing artifact found")
             println("")
 
-            project.tasks.publish.enabled = false
+            project.tasks.tasks.getByName("publishReleasePublicationToSonatypeRepository").enabled = false
         } else {
             println("# No existing artifact found. Preceding to publish")
             println("")
