@@ -1,7 +1,7 @@
 package de.charlex.settings.datastore
 
 import androidx.datastore.preferences.core.Preferences
-import kotlin.reflect.KProperty
+import kotlin.reflect.KCallable
 
 interface IDataStorePreference<T> {
     val preferenceKey: Preferences.Key<T>
@@ -11,5 +11,5 @@ interface IDataStorePreference<T> {
 interface IDataStoreEnumPreference<T, U> {
     val preferenceKey: Preferences.Key<U>
     val defaultValue: T
-    val keyProperty: KProperty<U>
+    val keyProperty: KCallable<U>
 }

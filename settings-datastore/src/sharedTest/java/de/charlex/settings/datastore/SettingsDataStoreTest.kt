@@ -2,6 +2,8 @@ package de.charlex.settings.datastore
 
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers
+import org.hamcrest.MatcherAssert
 import org.junit.Assert
 import org.junit.Test
 
@@ -25,6 +27,15 @@ abstract class SettingsDataStoreTest {
 
         settings.put(Preferences.PreferenceString, "test")
         Assert.assertEquals("test", settings.get(Preferences.PreferenceString).first())
+    }
+
+    @Test
+    fun test_String_nullable_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceStringNullable, Preferences.PreferenceStringNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceStringNullable).first())
+
+        settings.put(Preferences.PreferenceStringNullable, "test")
+        Assert.assertEquals("test", settings.get(Preferences.PreferenceStringNullable).first())
     }
 
     @Test
@@ -93,19 +104,19 @@ abstract class SettingsDataStoreTest {
     @Test
     fun test_Enum_Ordinal_Key_Settings() = runBlocking {
         settings.put(Preferences.PreferenceEnumOrdinalKey, Preferences.PreferenceEnumOrdinalKey.defaultValue)
-        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumOrdinalKey).first())
+        Assert.assertEquals(TestEnum.Value2, settings.get(Preferences.PreferenceEnumOrdinalKey).first())
 
-        settings.put(Preferences.PreferenceEnumOrdinalKey, Enum.Value1)
-        Assert.assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumOrdinalKey).first())
+        settings.put(Preferences.PreferenceEnumOrdinalKey, TestEnum.Value1)
+        Assert.assertEquals(TestEnum.Value1, settings.get(Preferences.PreferenceEnumOrdinalKey).first())
     }
 
     @Test
     fun test_Enum_Name_Key_Settings() = runBlocking {
         settings.put(Preferences.PreferenceEnumNameKey, Preferences.PreferenceEnumNameKey.defaultValue)
-        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+        Assert.assertEquals(TestEnum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
 
-        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
-        Assert.assertEquals(Enum.Value1, settings.get(Preferences.PreferenceEnumNameKey).first())
+        settings.put(Preferences.PreferenceEnumNameKey, TestEnum.Value1)
+        Assert.assertEquals(TestEnum.Value1, settings.get(Preferences.PreferenceEnumNameKey).first())
     }
 
     @Test
@@ -128,27 +139,101 @@ abstract class SettingsDataStoreTest {
     @Test
     fun removeEnum() = runBlocking {
         // prepare
-        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+        settings.put(Preferences.PreferenceEnumNameKey, TestEnum.Value1)
 
         // execute
         settings.remove(Preferences.PreferenceEnumNameKey)
 
         // verify
         // should be reset to default when calling get
-        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+        Assert.assertEquals(TestEnum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+    }
+
+    // ----------------
+    //     Nullable
+    // -----------------
+
+    @Test
+    fun test_Nullable_Int_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceIntNullable, Preferences.PreferenceIntNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceIntNullable).first())
+
+        settings.put(Preferences.PreferenceIntNullable, 1)
+        Assert.assertEquals(1, settings.get(Preferences.PreferenceIntNullable).first())
+    }
+
+    @Test
+    fun test_Nullable_String_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceStringNullable, Preferences.PreferenceStringNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceStringNullable).first())
+
+        settings.put(Preferences.PreferenceStringNullable, "test")
+        Assert.assertEquals("test", settings.get(Preferences.PreferenceStringNullable).first())
+    }
+
+    @Test
+    fun test_Nullable_Float_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceFloatNullable, Preferences.PreferenceFloatNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceFloatNullable).first())
+
+        settings.put(Preferences.PreferenceFloatNullable, 1.1f)
+        Assert.assertEquals(1.1f, settings.get(Preferences.PreferenceFloatNullable).first())
+    }
+
+    @Test
+    fun test_Nullable_Double_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceDoubleNullable, Preferences.PreferenceDoubleNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceDoubleNullable).first())
+
+        settings.put(Preferences.PreferenceDoubleNullable, 1.1)
+        Assert.assertEquals(1.1, settings.get(Preferences.PreferenceDoubleNullable).first())
+    }
+
+    @Test
+    fun test_Nullable_Long_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceLongNullable, Preferences.PreferenceLongNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceLongNullable).first())
+
+        settings.put(Preferences.PreferenceLongNullable, 1L)
+        Assert.assertEquals(1L, settings.get(Preferences.PreferenceLongNullable).first())
+    }
+
+    @Test
+    fun test_Nullable_Boolean_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceBooleanNullable, Preferences.PreferenceBooleanNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceBooleanNullable).first())
+
+        settings.put(Preferences.PreferenceBooleanNullable, true)
+        Assert.assertEquals(true, settings.get(Preferences.PreferenceBooleanNullable).first())
+    }
+
+    @Test
+    fun test_Nullable_StringSet_Settings() = runBlocking {
+        settings.put(Preferences.PreferenceStringSetNullable, Preferences.PreferenceStringSetNullable.defaultValue)
+        Assert.assertNull(settings.get(Preferences.PreferenceStringSetNullable).first())
+
+        settings.put(Preferences.PreferenceStringSetNullable, setOf("1", "2"))
+        Assert.assertEquals(setOf("1", "2"), settings.get(Preferences.PreferenceStringSetNullable).first())
+    }
+
+    @Test
+    fun nullableStringPref_readWrite() = runBlocking {
+        settings.put(Preferences.PreferenceStringNullable, "test")
+        val res = settings.get(Preferences.PreferenceStringNullable).first()
+        MatcherAssert.assertThat(res, CoreMatchers.equalTo("test"))
     }
 
     @Test
     fun clear() = runBlocking {
         // prepare
         settings.put(Preferences.PreferenceString, "test")
-        settings.put(Preferences.PreferenceEnumNameKey, Enum.Value1)
+        settings.put(Preferences.PreferenceEnumNameKey, TestEnum.Value1)
 
         // execute
         settings.clear()
 
         // verify
-        Assert.assertEquals(Enum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
+        Assert.assertEquals(TestEnum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
         Assert.assertEquals("default", settings.get(Preferences.PreferenceString).first())
     }
 }

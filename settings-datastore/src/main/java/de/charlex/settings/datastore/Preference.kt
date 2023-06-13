@@ -8,21 +8,40 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import kotlin.reflect.KCallable
 import kotlin.reflect.KProperty
 
-internal data class Preference<T> (
+data class Preference<T> (
     override val preferenceKey: Preferences.Key<T>,
     override val defaultValue: T,
 ) : IDataStorePreference<T>
 
-internal data class EnumPreference<T, U> (
+data class EnumPreference<T, U> (
     override val preferenceKey: Preferences.Key<U>,
     override val defaultValue: T,
-    override val keyProperty: KProperty<U>,
+    override val keyProperty: KCallable<U>,
 ) : IDataStoreEnumPreference<T, U>
 
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T> preference(name: String, defaultValue: T): IDataStorePreference<T> {
+    val key: Preferences.Key<T> = when (T::class) {
+        String::class -> stringPreferencesKey(name) as Preferences.Key<T>
+        Int::class -> intPreferencesKey(name) as Preferences.Key<T>
+        Double::class -> doublePreferencesKey(name) as Preferences.Key<T>
+        Boolean::class -> booleanPreferencesKey(name) as Preferences.Key<T>
+        Float::class -> floatPreferencesKey(name) as Preferences.Key<T>
+        Long::class -> longPreferencesKey(name) as Preferences.Key<T>
+        else -> error("Invalid type for preference: ${T::class}")
+    }
+    return Preference(preferenceKey = key, defaultValue = defaultValue)
+}
+
+@Deprecated(
+    "Use preference() instead",
+    ReplaceWith("preference(name, defaultValue)")
+)
 fun stringPreference(name: String, defaultValue: String): IDataStorePreference<String> =
-    Preference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
+    preference(name, defaultValue)
 
 @Suppress("UNCHECKED_CAST")
 fun <T : Enum<T>, U> enumPreference(name: String, defaultValue: T, keyProperty: KProperty<U>): IDataStoreEnumPreference<T, U> {
@@ -38,20 +57,45 @@ fun <T : Enum<T>, U> enumPreference(name: String, defaultValue: T, keyProperty: 
     return EnumPreference(preferenceKey = preferenceKey, defaultValue = defaultValue, keyProperty = keyProperty)
 }
 
+@Deprecated(
+    "Use preference() instead",
+    ReplaceWith("preference(name, defaultValue)")
+)
 fun booleanPreference(name: String, defaultValue: Boolean): IDataStorePreference<Boolean> =
-    Preference(preferenceKey = booleanPreferencesKey(name), defaultValue = defaultValue)
+    preference(name, defaultValue)
 
+@Deprecated(
+    "Use preference() instead",
+    ReplaceWith("preference(name, defaultValue)")
+)
 fun intPreference(name: String, defaultValue: Int): IDataStorePreference<Int> =
-    Preference(preferenceKey = intPreferencesKey(name), defaultValue = defaultValue)
+    preference(name, defaultValue)
 
+@Deprecated(
+    "Use preference() instead",
+    ReplaceWith("preference(name, defaultValue)")
+)
 fun floatPreference(name: String, defaultValue: Float): IDataStorePreference<Float> =
-    Preference(preferenceKey = floatPreferencesKey(name), defaultValue = defaultValue)
+    preference(name, defaultValue)
 
+@Deprecated(
+    "Use preference() instead",
+    ReplaceWith("preference(name, defaultValue)")
+)
 fun longPreference(name: String, defaultValue: Long): IDataStorePreference<Long> =
-    Preference(preferenceKey = longPreferencesKey(name), defaultValue = defaultValue)
+    preference(name, defaultValue)
 
+@Deprecated(
+    "Use preference() instead",
+    ReplaceWith("preference(name, defaultValue)")
+)
 fun doublePreference(name: String, defaultValue: Double): IDataStorePreference<Double> =
-    Preference(preferenceKey = doublePreferencesKey(name), defaultValue = defaultValue)
+    preference(name, defaultValue)
 
+@JvmName("stringSetPreference")
 fun stringSetPreference(name: String, defaultValue: Set<String>): IDataStorePreference<Set<String>> =
     Preference(preferenceKey = stringSetPreferencesKey(name), defaultValue = defaultValue)
+
+@JvmName("nullableStringSetPreference")
+fun stringSetPreference(name: String, defaultValue: Set<String>?): IDataStorePreference<Set<String>?> =
+    Preference(preferenceKey = stringSetPreferencesKey(name) as Preferences.Key<Set<String>?>, defaultValue = defaultValue)
