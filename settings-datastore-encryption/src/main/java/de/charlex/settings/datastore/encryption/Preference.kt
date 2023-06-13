@@ -3,12 +3,12 @@ package de.charlex.settings.datastore.encryption
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 
-data class EncryptedPreference<T> (
+private data class EncryptedPreference<T> (
     override val defaultValue: T,
     override val preferenceKey: Preferences.Key<String>,
 ) : IDataStoreEncryptedPreference<T>
 
-inline fun <reified T> encryptedPreference(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> {
+private inline fun <reified T> encryptedPreferenceImpl(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> {
     val key = when (T::class) {
         String::class,
         Int::class,
@@ -24,51 +24,25 @@ inline fun <reified T> encryptedPreference(name: String, defaultValue: T): IData
 fun <T : Enum<T>> encryptedEnumPreference(name: String, defaultValue: T): IDataStoreEncryptedPreference<T> =
     EncryptedPreference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
 
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedStringPreference(name: String, defaultValue: String): IDataStoreEncryptedPreference<String> =
-    encryptedPreference(name, defaultValue)
+fun encryptedStringPreference(name: String, defaultValue: String) = encryptedPreferenceImpl(name, defaultValue)
+fun encryptedBooleanPreference(name: String, defaultValue: Boolean) = encryptedPreferenceImpl(name, defaultValue)
+fun encryptedIntPreference(name: String, defaultValue: Int) = encryptedPreferenceImpl(name, defaultValue)
+fun encryptedFloatPreference(name: String, defaultValue: Float) = encryptedPreferenceImpl(name, defaultValue)
+fun encryptedLongPreference(name: String, defaultValue: Long) = encryptedPreferenceImpl(name, defaultValue)
+fun encryptedDoublePreference(name: String, defaultValue: Double) = encryptedPreferenceImpl(name, defaultValue)
+fun encryptedStringSetPreference(name: String, defaultValue: Set<String>) = encryptedPreferenceImpl(name, defaultValue)
 
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedBooleanPreference(name: String, defaultValue: Boolean): IDataStoreEncryptedPreference<Boolean> =
-    encryptedPreference(name, defaultValue)
-
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedIntPreference(name: String, defaultValue: Int): IDataStoreEncryptedPreference<Int> =
-    encryptedPreference(name, defaultValue)
-
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedFloatPreference(name: String, defaultValue: Float): IDataStoreEncryptedPreference<Float> =
-    encryptedPreference(name, defaultValue)
-
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedLongPreference(name: String, defaultValue: Long): IDataStoreEncryptedPreference<Long> =
-    encryptedPreference(name, defaultValue)
-
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedDoublePreference(name: String, defaultValue: Double): IDataStoreEncryptedPreference<Double> =
-    encryptedPreference(name, defaultValue)
-
-@Deprecated(
-    "Use encryptedPreference() instead",
-    ReplaceWith("encryptedPreference(name, defaultValue)")
-)
-fun encryptedStringSetPreference(name: String, defaultValue: Set<String>): IDataStoreEncryptedPreference<Set<String>> =
-    encryptedPreference(name, defaultValue)
+@JvmName("encryptedStringNullablePreference")
+fun encryptedStringPreference(name: String, defaultValue: String?) = encryptedPreferenceImpl(name, defaultValue)
+@JvmName("encryptedBooleanNullablePreference")
+fun encryptedBooleanPreference(name: String, defaultValue: Boolean?) = encryptedPreferenceImpl(name, defaultValue)
+@JvmName("encryptedIntNullablePreference")
+fun encryptedIntPreference(name: String, defaultValue: Int?) = encryptedPreferenceImpl(name, defaultValue)
+@JvmName("encryptedFloatNullablePreference")
+fun encryptedFloatPreference(name: String, defaultValue: Float?) = encryptedPreferenceImpl(name, defaultValue)
+@JvmName("encryptedLongNullablePreference")
+fun encryptedLongPreference(name: String, defaultValue: Long?) = encryptedPreferenceImpl(name, defaultValue)
+@JvmName("encryptedDoubleNullablePreference")
+fun encryptedDoublePreference(name: String, defaultValue: Double?) = encryptedPreferenceImpl(name, defaultValue)
+@JvmName("encryptedStringSetNullablePreference")
+fun encryptedStringSetPreference(name: String, defaultValue: Set<String>?) = encryptedPreferenceImpl(name, defaultValue)
