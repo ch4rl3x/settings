@@ -151,7 +151,7 @@ jobs:
 
     strategy:
       matrix:
-        api-level: [ 23, 24, 25, 26, 27, 28, 29 ]
+        api-level: [ 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
     steps:
       - uses: actions/checkout@v2
 
@@ -174,12 +174,22 @@ jobs:
         with:
           name: build-files
 
+      - name: Determine emulator arch
+        id: determine-arch
+        env: 
+          API_LEVEL: ${{ matrix.api-level }}
+        run: |
+          ARCH="x86"
+          if [ "$API_LEVEL" -ge "31" ]; then
+            ARCH="x86_64"
+          fi
+          echo "ARCH=$ARCH" >> $GITHUB_OUTPUT
+
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
-          arch: x86
-          emulator-build: 7425822 # https://github.com/ReactiveCircus/android-emulator-runner/issues/160
+          arch: ${{ steps.determine-arch.outputs.ARCH }}
           disable-animations: true
           script: ./gradlew connectedCheck
 
