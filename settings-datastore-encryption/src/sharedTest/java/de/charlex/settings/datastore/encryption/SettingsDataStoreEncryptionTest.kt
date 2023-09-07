@@ -168,4 +168,58 @@ abstract class SettingsDataStoreEncryptionTest {
 
         settings.get(EncryptedPreferences.PreferenceString).first()
     }
+
+    @Test
+    fun test_Int_Nullable_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceIntNullable, EncryptedPreferences.PreferenceIntNullable.defaultValue)
+        Assert.assertNull(settings.get(EncryptedPreferences.PreferenceIntNullable).first())
+
+        settings.put(EncryptedPreferences.PreferenceIntNullable, 10)
+        Assert.assertEquals(10, settings.get(EncryptedPreferences.PreferenceIntNullable).first())
+    }
+
+    @Test
+    fun test_String_Nullable_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceStringNullable, EncryptedPreferences.PreferenceStringNullable.defaultValue)
+        Assert.assertNull(settings.get(EncryptedPreferences.PreferenceStringNullable).first())
+
+        settings.put(EncryptedPreferences.PreferenceStringNullable, "test")
+        Assert.assertEquals("test", settings.get(EncryptedPreferences.PreferenceStringNullable).first())
+    }
+
+    @Test
+    fun test_Float_Nullable_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceFloatNullable, EncryptedPreferences.PreferenceFloatNullable.defaultValue)
+        Assert.assertNull(settings.get(EncryptedPreferences.PreferenceFloatNullable).first())
+
+        settings.put(EncryptedPreferences.PreferenceFloat, 2.2f)
+        Assert.assertEquals(2.2f, settings.get(EncryptedPreferences.PreferenceFloat).first())
+    }
+
+    @Test
+    fun test_Double_Nullable_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceDoubleNullable, EncryptedPreferences.PreferenceDoubleNullable.defaultValue)
+        Assert.assertNull(settings.get(EncryptedPreferences.PreferenceDoubleNullable).first())
+
+        settings.put(EncryptedPreferences.PreferenceDoubleNullable, 2.2)
+        Assert.assertEquals(2.2, settings.get(EncryptedPreferences.PreferenceDoubleNullable).first()!!, 0.0)
+    }
+
+    @Test
+    fun test_Long_Nullable_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceLongNullable, EncryptedPreferences.PreferenceLongNullable.defaultValue)
+        Assert.assertNull(settings.get(EncryptedPreferences.PreferenceLongNullable).first())
+
+        settings.put(EncryptedPreferences.PreferenceLongNullable, 2L)
+        Assert.assertEquals(2L, settings.get(EncryptedPreferences.PreferenceLongNullable).first())
+    }
+
+    @Test
+    fun test_Boolean_Nullable_Settings() = runBlocking {
+        settings.put(EncryptedPreferences.PreferenceBooleanNullable, EncryptedPreferences.PreferenceBooleanNullable.defaultValue)
+        Assert.assertNull(settings.get(EncryptedPreferences.PreferenceBooleanNullable).first())
+
+        settings.put(EncryptedPreferences.PreferenceBooleanNullable, false)
+        Assert.assertEquals(false, settings.get(EncryptedPreferences.PreferenceBooleanNullable).first())
+    }
 }

@@ -12,6 +12,13 @@ object EncryptedPreferences {
     val PreferenceLong = encryptedLongPreference("preference_long", 1L)
     val PreferenceBoolean = encryptedBooleanPreference("preference_boolean", true)
 
+    val PreferenceIntNullable = encryptedIntPreference("preference_int_nullable", null)
+    val PreferenceStringNullable = encryptedStringPreference("preference_string_nullable", null)
+    val PreferenceFloatNullable = encryptedFloatPreference("preference_float_nullable", null)
+    val PreferenceDoubleNullable = encryptedDoublePreference("preference_double_nullable", null)
+    val PreferenceLongNullable = encryptedLongPreference("preference_long_nullable", null)
+    val PreferenceBooleanNullable = encryptedBooleanPreference("preference_boolean_nullable", null)
+
     val PreferenceEnumStringKey = encryptedEnumPreference("key", StringKeyEnum.Value2)
     val PreferenceEnumIntKey = encryptedEnumPreference("key", IntKeyEnum.Value2)
     val PreferenceEnumOrdinalKey = encryptedEnumPreference("key", Enum.Value2)

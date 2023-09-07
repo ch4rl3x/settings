@@ -11,16 +11,20 @@ class SettingsDataStoreInMemoryImpl internal constructor(
     override val security: Security
 ) : SettingsDataStore, SecurityProvider {
 
-    private val flows = mutableMapOf<Preferences.Key<*>, MutableStateFlow<Any>>()
+    private val flows = mutableMapOf<Preferences.Key<*>, MutableStateFlow<*>>()
 
     override fun <T> get(key: IDataStorePreference<T>): Flow<T> {
-        val stateFlow = flows.getOrPut(key.preferenceKey, { MutableStateFlow(key.defaultValue as Any) }) as Flow<T>
+        val stateFlow = flows.getOrPut(key.preferenceKey, { MutableStateFlow(key.defaultValue as Any?) }) as Flow<T>
         return stateFlow.map { it }
     }
 
     override suspend fun <T> put(key: IDataStorePreference<T>, value: T) {
-        val stateFlow = flows.getOrPut(key.preferenceKey, { MutableStateFlow(key.defaultValue as Any) }) as MutableStateFlow<T>
-        stateFlow.value = value
+        if (value != null) {
+            val stateFlow = flows.getOrPut(key.preferenceKey, { MutableStateFlow(key.defaultValue as Any?) }) as MutableStateFlow<T>
+            stateFlow.value = value
+        } else {
+            flows.remove(key.preferenceKey)
+        }
     }
 
     override suspend fun <T : Enum<T>, U> put(key: IDataStoreEnumPreference<T, U>, value: T) {

@@ -8,21 +8,34 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import kotlin.reflect.KCallable
 import kotlin.reflect.KProperty
 
-internal data class Preference<T> (
+private data class Preference<T> (
     override val preferenceKey: Preferences.Key<T>,
     override val defaultValue: T,
 ) : IDataStorePreference<T>
 
-internal data class EnumPreference<T, U> (
+private data class EnumPreference<T, U> (
     override val preferenceKey: Preferences.Key<U>,
     override val defaultValue: T,
-    override val keyProperty: KProperty<U>,
+    override val keyProperty: KCallable<U>,
 ) : IDataStoreEnumPreference<T, U>
 
-fun stringPreference(name: String, defaultValue: String): IDataStorePreference<String> =
-    Preference(preferenceKey = stringPreferencesKey(name), defaultValue = defaultValue)
+@Suppress("UNCHECKED_CAST")
+private inline fun <reified T> preferenceImpl(name: String, defaultValue: T): IDataStorePreference<T> {
+    val key: Preferences.Key<T> = when (T::class) {
+        String::class -> stringPreferencesKey(name) as Preferences.Key<T>
+        Int::class -> intPreferencesKey(name) as Preferences.Key<T>
+        Double::class -> doublePreferencesKey(name) as Preferences.Key<T>
+        Boolean::class -> booleanPreferencesKey(name) as Preferences.Key<T>
+        Float::class -> floatPreferencesKey(name) as Preferences.Key<T>
+        Long::class -> longPreferencesKey(name) as Preferences.Key<T>
+        Set::class -> stringSetPreferencesKey(name) as Preferences.Key<T>
+        else -> error("Invalid type for preference: ${T::class}")
+    }
+    return Preference(preferenceKey = key, defaultValue = defaultValue)
+}
 
 @Suppress("UNCHECKED_CAST")
 fun <T : Enum<T>, U> enumPreference(name: String, defaultValue: T, keyProperty: KProperty<U>): IDataStoreEnumPreference<T, U> {
@@ -38,20 +51,25 @@ fun <T : Enum<T>, U> enumPreference(name: String, defaultValue: T, keyProperty: 
     return EnumPreference(preferenceKey = preferenceKey, defaultValue = defaultValue, keyProperty = keyProperty)
 }
 
-fun booleanPreference(name: String, defaultValue: Boolean): IDataStorePreference<Boolean> =
-    Preference(preferenceKey = booleanPreferencesKey(name), defaultValue = defaultValue)
+fun stringPreference(name: String, defaultValue: String) = preferenceImpl(name, defaultValue)
+fun booleanPreference(name: String, defaultValue: Boolean) = preferenceImpl(name, defaultValue)
+fun intPreference(name: String, defaultValue: Int) = preferenceImpl(name, defaultValue)
+fun floatPreference(name: String, defaultValue: Float) = preferenceImpl(name, defaultValue)
+fun longPreference(name: String, defaultValue: Long) = preferenceImpl(name, defaultValue)
+fun doublePreference(name: String, defaultValue: Double) = preferenceImpl(name, defaultValue)
+fun stringSetPreference(name: String, defaultValue: Set<String>) = preferenceImpl(name, defaultValue)
 
-fun intPreference(name: String, defaultValue: Int): IDataStorePreference<Int> =
-    Preference(preferenceKey = intPreferencesKey(name), defaultValue = defaultValue)
-
-fun floatPreference(name: String, defaultValue: Float): IDataStorePreference<Float> =
-    Preference(preferenceKey = floatPreferencesKey(name), defaultValue = defaultValue)
-
-fun longPreference(name: String, defaultValue: Long): IDataStorePreference<Long> =
-    Preference(preferenceKey = longPreferencesKey(name), defaultValue = defaultValue)
-
-fun doublePreference(name: String, defaultValue: Double): IDataStorePreference<Double> =
-    Preference(preferenceKey = doublePreferencesKey(name), defaultValue = defaultValue)
-
-fun stringSetPreference(name: String, defaultValue: Set<String>): IDataStorePreference<Set<String>> =
-    Preference(preferenceKey = stringSetPreferencesKey(name), defaultValue = defaultValue)
+@JvmName("stringNullablePreference")
+fun stringPreference(name: String, defaultValue: String?) = preferenceImpl(name, defaultValue)
+@JvmName("booleanNullablePreference")
+fun booleanPreference(name: String, defaultValue: Boolean?) = preferenceImpl(name, defaultValue)
+@JvmName("intNullablePreference")
+fun intPreference(name: String, defaultValue: Int?) = preferenceImpl(name, defaultValue)
+@JvmName("floatNullablePreference")
+fun floatPreference(name: String, defaultValue: Float?) = preferenceImpl(name, defaultValue)
+@JvmName("longNullablePreference")
+fun longPreference(name: String, defaultValue: Long?) = preferenceImpl(name, defaultValue)
+@JvmName("doubleNullablePreference")
+fun doublePreference(name: String, defaultValue: Double?) = preferenceImpl(name, defaultValue)
+@JvmName("stringSetNullablePreference")
+fun stringSetPreference(name: String, defaultValue: Set<String>?) = preferenceImpl(name, defaultValue)
