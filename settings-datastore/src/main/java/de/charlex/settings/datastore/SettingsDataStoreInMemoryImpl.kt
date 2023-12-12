@@ -33,10 +33,18 @@ class SettingsDataStoreInMemoryImpl internal constructor(
     }
 
     override suspend fun <T> remove(pref: IDataStorePreference<T>) {
+        val stateFlow = flows[pref.preferenceKey]
+        stateFlow?.let {
+            (it as MutableStateFlow<T>).value = pref.defaultValue
+        }
         flows.remove(pref.preferenceKey)
     }
 
     override suspend fun <T : Enum<T>, U> remove(pref: IDataStoreEnumPreference<T, U>) {
+        val stateFlow = flows[pref.preferenceKey]
+        stateFlow?.let {
+            (it as MutableStateFlow<T>).value = pref.defaultValue
+        }
         flows.remove(pref.preferenceKey)
     }
 
