@@ -1,7 +1,12 @@
 package de.charlex.settings.datastore
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert
 import org.junit.Assert
@@ -10,6 +15,8 @@ import org.junit.Test
 abstract class SettingsDataStoreTest {
 
     lateinit var settings: SettingsDataStore
+
+    val testScope = TestScope()
 
     @Test
     fun test_Int_Settings() = runBlocking {
@@ -128,8 +135,8 @@ abstract class SettingsDataStoreTest {
             settings.put(Preferences.PreferenceString_WithIntKey, "TEST2")
 
             try {
-                intFlow.first() as Int
-                Assert.fail("Exception expected")
+                val result = intFlow.first()
+                Assert.fail("Exception expected as $result is not int")
             } catch (e: ClassCastException) {
                 true
             }
@@ -235,5 +242,87 @@ abstract class SettingsDataStoreTest {
         // verify
         Assert.assertEquals(TestEnum.Value2, settings.get(Preferences.PreferenceEnumNameKey).first())
         Assert.assertEquals("default", settings.get(Preferences.PreferenceString).first())
+    }
+
+    // ----------------
+    //     Flows
+    // -----------------
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun stringFlow() = runBlocking {
+        // prepare
+        val values = mutableListOf<String>()
+        settings.put(Preferences.PreferenceString, "1")
+
+        // execute
+        testScope.backgroundScope.launch(UnconfinedTestDispatcher()) {
+            settings.get(Preferences.PreferenceString).take(3).collect {
+                values.add(it)
+            }
+        }
+        settings.put(Preferences.PreferenceString, "2")
+        settings.put(Preferences.PreferenceString, "3")
+
+        // verify
+        MatcherAssert.assertThat(values, CoreMatchers.equalTo(listOf("1", "2", "3")))
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun stringFlow_remove() = runBlocking {
+        // prepare
+        val values = mutableListOf<String>()
+        settings.put(Preferences.PreferenceString, "1")
+
+        // execute
+        testScope.backgroundScope.launch(UnconfinedTestDispatcher()) {
+            settings.get(Preferences.PreferenceString).take(2).collect {
+                values.add(it)
+            }
+        }
+        settings.remove(Preferences.PreferenceString)
+
+        // verify
+        MatcherAssert.assertThat(values, CoreMatchers.equalTo(listOf("1", Preferences.PreferenceString.defaultValue)))
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun enumFlow() = runBlocking {
+        // prepare
+        val values = mutableListOf<TestEnum>()
+        settings.put(Preferences.PreferenceEnumOrdinalKey, TestEnum.Value1)
+
+        // execute
+        testScope.backgroundScope.launch(UnconfinedTestDispatcher()) {
+            settings.get(Preferences.PreferenceEnumOrdinalKey).take(3).collect {
+                values.add(it)
+            }
+        }
+        settings.put(Preferences.PreferenceEnumOrdinalKey, TestEnum.Value2)
+        settings.put(Preferences.PreferenceEnumOrdinalKey, TestEnum.Value3)
+
+        // verify
+        MatcherAssert.assertThat(values, CoreMatchers.equalTo(listOf(TestEnum.Value1, TestEnum.Value2, TestEnum.Value3)))
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun enumFlow_remove() = runBlocking {
+        // prepare
+        val values = mutableListOf<TestEnum>()
+        settings.put(Preferences.PreferenceEnumOrdinalKey, TestEnum.Value1)
+
+        // execute
+        testScope.backgroundScope.launch(UnconfinedTestDispatcher()) {
+            settings.get(Preferences.PreferenceEnumOrdinalKey).take(2).collect {
+                values.add(it)
+            }
+        }
+        settings.remove(Preferences.PreferenceEnumOrdinalKey)
+
+        // verify
+        MatcherAssert.assertThat(values, CoreMatchers.equalTo(listOf(TestEnum.Value1, Preferences.PreferenceEnumOrdinalKey.defaultValue)))
     }
 }
