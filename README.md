@@ -2,24 +2,25 @@
 
 <a href="https://github.com/Ch4rl3x/Settings/actions?query=workflow%3ABuild"><img src="https://github.com/ch4rl3x/settings/actions/workflows/build.yml/badge.svg" alt="Build"></a>
 <a href="https://www.codefactor.io/repository/github/ch4rl3x/settings"><img src="https://www.codefactor.io/repository/github/ch4rl3x/settings/badge" alt="CodeFactor" /></a>
-<a href="https://repo1.maven.org/maven2/de/charlex/settings/settings-datastore/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings-datastore" alt="Maven Central" /></a>
+<a href="https://repo1.maven.org/maven2/de/charlex/settings/settings-sharedpreferences/"><img src="https://img.shields.io/maven-central/v/de.charlex.settings/settings-sharedpreferences" alt="Maven Central" /></a>
 
-Settings is an easy wrapper with type safety for SharedPreferences and Datastore. By using it, you will no longer need to use Strings as keys. Instead, each Preference is represented by an object.
+Settings is an simple wrapper with type safety for SharedPreferences and <s>Datastore</s>. By using it, you will no longer need to use Strings as keys. Instead, each Preference is represented by an object.
+
+> :warning: Settings Datastore will now be published from  \
+> [https://github.com/ch4rl3x/settings-multiplatform](https://github.com/ch4rl3x/settings-multiplatform)
 
 
 ## Features
 
-- Type safety for SharedPreferences and Datastore
-- Simple usage for both SharedPrefernces and Datastore
-- Encryption for SharedPreferences and **Datastore**
+- Type safety for SharedPreferences
+- Simple usage for both SharedPrefernces
+- Encryption for SharedPreferences
 
 ## Dependency
 
 Add the library to your module `build.gradle`
 ```gradle
 dependencies {
-    implementation 'de.charlex.settings:settings-datastore:<version>'
-    implementation 'de.charlex.settings:settings-datastore-encryption:<version>'
     implementation 'de.charlex.settings:settings-sharedpreferences:<version>'
     implementation 'de.charlex.settings:settings-sharedpreferences-encryption:<version>'
 }
