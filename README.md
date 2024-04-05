@@ -13,8 +13,8 @@ Settings is an simple wrapper with type safety for SharedPreferences and <s>Data
 ## Features
 
 - Type safety for SharedPreferences
-- Simple usage for both SharedPrefernces
-- Encryption for SharedPreferences
+- Simple usage for SharedPrefernces
+- Encryption
 
 ## Dependency
 
