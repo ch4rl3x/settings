@@ -6,9 +6,9 @@
 
 Settings is a simple wrapper with type safety for SharedPreferences and <s>Datastore</s>. By using it, you will no longer need to use Strings as keys. Instead, each Preference is represented by an object.
 
-> :warning: Settings Datastore will now be published from  \
+> [!WARNING]
+> Settings Datastore will now be published from  \
 > [https://github.com/ch4rl3x/settings-multiplatform](https://github.com/ch4rl3x/settings-multiplatform)
-
 
 ## Features
 
